@@ -32,7 +32,7 @@ class HomeCenterOutsideServices extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p4),
+                    padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p4,right: AppPadding.p4),
                     child: Row(
                       children: [
                         SvgPicture.asset(ImageAssets.serviceInCenterIcon,width: AppSize.s40,height: AppSize.s40,)
@@ -66,7 +66,7 @@ class HomeCenterOutsideServices extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p4),
+                    padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p4,right: AppPadding.p4),
                     child: Row(
                       children: [
                         SvgPicture.asset(ImageAssets.serviceOutSideIcon,width: AppSize.s40,height: AppSize.s40,)

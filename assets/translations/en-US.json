@@ -96,6 +96,12 @@
   "enter_valid_email": "Enter a valid email address",
   "enter_valid_phone": "Enter a valid phone number",
   "password_must_be_6_character": "Password must be at least 6 characters long",
-  "confirm_password_must_at_the_same_password": "Confirm password must match the password"
+  "confirm_password_must_at_the_same_password": "Confirm password must match the password",
+  "you_registered_successfully": "You registered successfully, please activate your account to be able to login.",
+  "enter_full_code_with_6_digits": "Enter full code with 6 digits",
+  "account_activated_successfully": "The account has been activated successfully. Wait for the admin's approval of the account so you can log in.",
+  "code_sent_success": "Code sent successfully",
+  "resend_code_after": "Resend the code after"
+
 
 }

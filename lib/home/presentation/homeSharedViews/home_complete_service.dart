@@ -25,7 +25,7 @@ class HomeCompleteService extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p16),
+              padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p16,right: AppPadding.p16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -36,7 +36,7 @@ class HomeCompleteService extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,right: AppPadding.p16),
+              padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p16,right: AppPadding.p16),
               child: Row(
                 children: [
                   Text("20",style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.size16)),

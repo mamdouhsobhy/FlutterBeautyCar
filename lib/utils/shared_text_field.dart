@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import '../resources/assetsManager.dart';
 import '../resources/colorManager.dart';
 import '../resources/fontManager.dart';
+import '../resources/languageManager.dart';
 import '../resources/styleManager.dart';
 import '../resources/valuesManager.dart';
 
@@ -42,6 +43,9 @@ class _MyTextFieldState extends State<MyTextField> {
 
   @override
   Widget build(BuildContext context) {
+
+    final isArabic = LanguageManager.getCurrentLanguage(context) == ARABIC;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: widget.paddingHorizontal),
       child: Column(
@@ -52,7 +56,7 @@ class _MyTextFieldState extends State<MyTextField> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Align(
-                alignment: Alignment.topLeft,
+                alignment: isArabic ? Alignment.topRight : Alignment.topLeft,
                 child: Text(
                   widget.title,
                   style: getBoldStyle(

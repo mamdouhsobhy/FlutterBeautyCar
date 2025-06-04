@@ -1,4 +1,8 @@
-import 'package:beauty_car/authentication/presentation/sharedViews/auth_title_and_subtitle.dart';
+import 'dart:async';
+
+import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
+import 'package:beauty_car/authentication/data/response/verifyAccount/verify_account.dart';
+import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
 import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../app/di/di.dart';
-import '../../../../app/sharedPrefs/app_prefs.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/assetsManager.dart';
 import '../../../../resources/colorManager.dart';
@@ -16,9 +19,6 @@ import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_button.dart';
-import '../../../../utils/shared_checkbox.dart';
-import '../../../../utils/shared_text_field.dart';
-import '../../../../utils/shared_text_field_with_phone_code.dart';
 import '../../../utils/shared_appbar.dart';
 import '../routeManager/routesManager.dart';
 
@@ -30,47 +30,61 @@ class VerifyCodeScreen extends StatefulWidget {
 }
 
 class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
+
+  final VerifyViewModel _verifyViewModel = instance<VerifyViewModel>();
   String? _phoneNumber;
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController _otpController = TextEditingController();
-  bool _isInitialized = false;
+
+  int _remainingTime = 60;
+  String _countdownTime = "00:00";
+  Timer? _timer;
+
+  void _startCountdown() {
+    _timer?.cancel();
+    _remainingTime = 60;
+    _countdownTime = "00:00";
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingTime > 0) {
+        setState(() {
+          _remainingTime--;
+          _countdownTime = "${_remainingTime ~/ 60}:${(_remainingTime % 60).toString().padLeft(2, '0')}";
+        });
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  _bind() {
+    _verifyViewModel.start();
+  }
 
   @override
   void initState() {
+    _bind();
+    _startCountdown();
     super.initState();
-    // Don't access ModalRoute here
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!_isInitialized) {
-      // Get phone number from route arguments
       final args = ModalRoute.of(context)?.settings.arguments;
-      print("Verify Screen - didChangeDependencies - Received args: $args");
-      
       if (args != null && args is String) {
         setState(() {
           _phoneNumber = args;
-          _isInitialized = true;
-          print("Verify Screen - didChangeDependencies - Set phone number to: $_phoneNumber");
+          _verifyViewModel.verifyRequest.phone = _phoneNumber!;
         });
       }
-    }
+  }
+
+  _navigateToLogin(){
+    context.showSuccessToast(AppStrings.accountActivatedSuccessfully.tr());
+    Navigator.pushReplacementNamed(context, Routes.loginRoute);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Only check args in build if we haven't initialized yet
-    if (!_isInitialized) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args != null && args is String) {
-        _phoneNumber = args;
-        _isInitialized = true;
-        print("Verify Screen - build - Set phone number to: $_phoneNumber");
-      }
-    }
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           statusBarColor: ColorManager.white,
@@ -83,98 +97,107 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             child: MyAppBar(title: ''),
           ),
           body: SafeArea(
-            child: _getVerifyCodeScreenContent(),
+            child: StreamBuilder<FlowState>(
+              stream: _verifyViewModel.outputState,
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _handleVerifyAccountStateChanged(snapshot.data!);
+                  });
+                }
+                return _getVerifyCodeScreenContent();
+              },
+            ),
           ),
         ));
   }
 
   Widget _getVerifyCodeScreenContent() {
-    return Form(
-      autovalidateMode: AutovalidateMode.onUnfocus,
-      key: _formKey,
-      child: SingleChildScrollView(
-        child: Column(
+    return StreamBuilder<ModelVerifyAccountResponseRemote>(
+      stream: _verifyViewModel.outputVerifyData,
+      builder: (context, snapshot) {
+        if (snapshot.data != null && snapshot.data?.status == true) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if(_verifyViewModel.isVerifyLoading == true) {
+              _verifyViewModel.isVerifyLoading = false;
+              _navigateToLogin();
+            }
+          });
+        }
+        return SingleChildScrollView(
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: AppSize.s40),
             Align(
               alignment: Alignment.center,
-              child: SvgPicture.asset(
-                ImageAssets.forgetPasswordIcon,
-                width: AppSize.s190,
-                height: AppSize.s190
-              ),
+              child: SvgPicture.asset(ImageAssets.forgetPasswordIcon,
+                  width: AppSize.s190, height: AppSize.s190),
             ),
             const SizedBox(height: AppSize.s30),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.enterVerificationCode.tr(),
-                    style: getBoldStyle(
-                      color: ColorManager.colorBlack33,
-                      fontSize: FontSize.size16
-                    )
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.verificationCodeSentTo.tr(),
-                        style: getRegularStyle(
-                          color: ColorManager.colorBlack03,
-                          fontSize: FontSize.size12
+                padding:
+                    const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppStrings.enterVerificationCode.tr(),
+                        style: getBoldStyle(
+                            color: ColorManager.colorBlack33,
+                            fontSize: FontSize.size16)),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Text(
+                          AppStrings.verificationCodeSentTo.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.colorBlack03,
+                              fontSize: FontSize.size12),
                         ),
-                      ),
-                      const Text(" "),
-                      Text(
-                        _phoneNumber ?? "No phone number",
-                        style: getRegularStyle(
-                          color: ColorManager.colorRedB2,
-                          fontSize: FontSize.size12
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              )
-            ),
+                        const Text(" "),
+                        Text(
+                          _phoneNumber ?? "",
+                          style: getRegularStyle(
+                              color: ColorManager.colorRedB2,
+                              fontSize: FontSize.size12),
+                        )
+                      ],
+                    ),
+                  ],
+                )),
             const SizedBox(height: AppSize.s30),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p10),
               child: PinCodeTextField(
                 appContext: context,
-                length: 6,
+                length: 5,
                 keyboardType: TextInputType.number,
                 animationType: AnimationType.none,
-                autoFocus: true,
+                autoFocus: false,
                 controller: _otpController,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _verifyViewModel.verifyRequest.otp = value;
+                },
                 onCompleted: (value) {
                   // Handle OTP completion
                   print("OTP Completed: $value");
                 },
                 pinTheme: PinTheme(
-                  shape: PinCodeFieldShape.circle,
-                  borderRadius: BorderRadius.circular(AppSize.s30),
-                  fieldHeight: AppSize.s50,
-                  fieldWidth: AppSize.s56,
-                  activeColor: ColorManager.colorRedB5,
-                  selectedColor: ColorManager.colorRedFA,
-                  inactiveColor: ColorManager.colorGrayD9,
-                  activeFillColor: ColorManager.colorRedFA,
-                  inactiveFillColor: ColorManager.colorGrayD9,
-                  selectedFillColor: ColorManager.colorGrayD9,
-                  borderWidth: AppSize.s1_5
-                ),
+                    shape: PinCodeFieldShape.circle,
+                    borderRadius: BorderRadius.circular(AppSize.s30),
+                    fieldHeight: AppSize.s50,
+                    fieldWidth: AppSize.s56,
+                    activeColor: ColorManager.colorRedB5,
+                    selectedColor: ColorManager.colorRedFA,
+                    inactiveColor: ColorManager.colorGrayD9,
+                    activeFillColor: ColorManager.colorRedFA,
+                    inactiveFillColor: ColorManager.colorGrayD9,
+                    selectedFillColor: ColorManager.colorGrayD9,
+                    borderWidth: AppSize.s1_5),
                 textStyle: getMediumStyle(
-                  color: ColorManager.colorBlack_0D,
-                  fontSize: AppSize.s16
-                ),
+                    color: ColorManager.colorBlack_0D, fontSize: AppSize.s16),
                 enableActiveFill: true,
               ),
             ),
@@ -184,65 +207,85 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
               buttonText: AppStrings.confirm.tr(),
               paddingVertical: AppPadding.p0,
               fun: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  // Handle verification
-                  if (_otpController.text.length == 6) {
-                    // TODO: Implement verification logic
-                    Navigator.pushNamed(context, Routes.resetPasswordRoute);
+                  if (_otpController.text.length == 5) {
+                    _verifyViewModel.verifyAccount();
                   } else {
-                    context.showErrorToast("AppStrings.enterValidCode.tr()");
+                    context.showErrorToast(
+                        AppStrings.enter_full_code_with_6_digits.tr());
                   }
-                }
               },
             ),
             const SizedBox(height: AppSize.s16),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "00:00",
-                style: getRegularStyle(
-                  color: ColorManager.colorRedB2,
-                  fontSize: FontSize.size16
-                )
-              )
-            ),
-            const SizedBox(height: AppSize.s16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppStrings.didNotReceiveCode.tr(),
-                  style: getRegularStyle(
-                    color: ColorManager.black,
-                    fontSize: FontSize.size16
-                  ),
-                ),
-                const Text(" "),
-                InkWell(
-                  onTap: () {
-                    // TODO: Implement resend code logic
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    AppStrings.resendCode.tr(),
+            _remainingTime == 0 ? Align(
+                alignment: Alignment.center,
+                child: Text("00:00",
                     style: getRegularStyle(
-                      color: ColorManager.colorRedB2,
-                      fontSize: FontSize.size16
+                        color: ColorManager.colorRedB2,
+                        fontSize: FontSize.size16))) : SizedBox(),
+            const SizedBox(height: AppSize.s16),
+            StreamBuilder<ModelSendVerifyCodeResponseRemote>(
+              stream: _verifyViewModel.outputSendOtpData,
+              builder: (context, snapshot) {
+                if (snapshot.data != null && snapshot.data?.status == true) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_verifyViewModel.isSendOtpLoading == true) {
+                      _startCountdown();
+                      _verifyViewModel.isSendOtpLoading = false;
+                      context.showSuccessToast(AppStrings.code_sent_success.tr());
+                    }
+                  });
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _remainingTime != 0 ? AppStrings.resend_code_after.tr() : AppStrings.didNotReceiveCode.tr(),
+                      style: getRegularStyle(
+                          color: ColorManager.black, fontSize: FontSize.size16),
                     ),
-                  ),
-                ),
-              ],
-            ),
+                    const Text(" "),
+                    InkWell(
+                      onTap: () {
+                        if(_remainingTime == 0) {
+                          _verifyViewModel.sendOtp();
+                        }
+                      },
+                      child: Text(
+                _remainingTime != 0 ? _countdownTime : AppStrings.resendCode.tr(),
+                        style: getRegularStyle(
+                            color: ColorManager.colorRedB2, fontSize: FontSize.size16),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ) ,
             const SizedBox(height: AppSize.s40),
           ],
-        )
-      ),
+        ));
+      },
     );
+  }
+
+  _handleVerifyAccountStateChanged(FlowState state) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (state is LoadingState && !isLoadingDialogShowing()) {
+        showLoadingDialog(context);
+      } else if (state is ErrorState) {
+        dismissLoadingDialog();
+        showErrorDialog(context, message: state.getMessage());
+      } else if (state is SuccessState) {
+        dismissLoadingDialog();
+      } else {
+        dismissLoadingDialog();
+      }
+    });
   }
 
   @override
   void dispose() {
     _otpController.dispose();
+    _verifyViewModel.dispose();
     super.dispose();
   }
 }

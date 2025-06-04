@@ -1,6 +1,10 @@
 
+import 'package:beauty_car/authentication/domain/usecase/login_usecase.dart';
 import 'package:beauty_car/authentication/domain/usecase/register_usecase.dart';
+import 'package:beauty_car/authentication/domain/usecase/verify_code_usecase.dart';
+import 'package:beauty_car/authentication/presentation/loginScreen/viewmodel/login_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/registerScreen/viewmodel/register_viewmodel.dart';
+import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -43,6 +47,15 @@ Future<void> initAppModule() async{
   // instance.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(instance(), instance()));
 }
 
+initLoginModule(){
+
+  if(!GetIt.I.isRegistered<LoginUseCase>()) {
+    instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+    instance.registerFactory<LoginViewModel>(() => LoginViewModel(instance()));
+  }
+
+}
+
 initRegisterModule(){
 
   if(!GetIt.I.isRegistered<RegisterUseCase>()) {
@@ -54,9 +67,9 @@ initRegisterModule(){
 
 initVerifyModule(){
 
-  if(!GetIt.I.isRegistered<RegisterUseCase>()) {
-    instance.registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
-    instance.registerFactory<RegisterViewModel>(() => RegisterViewModel(instance()));
+  if(!GetIt.I.isRegistered<VerifyCodeUseCase>()) {
+    instance.registerFactory<VerifyCodeUseCase>(() => VerifyCodeUseCase(instance()));
+    instance.registerFactory<VerifyViewModel>(() => VerifyViewModel(instance()));
   }
 
 }

@@ -19,7 +19,7 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.loginRoute:
-        //initLoginModule();
+        initLoginModule();
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
           settings: settings,
@@ -31,13 +31,13 @@ class RouteGenerator {
           settings: settings,
         );
       case Routes.forgetPasswordRoute:
-        //initLoginModule();
+        initVerifyModule();
         return MaterialPageRoute(
           builder: (_) => const ForgetPasswordScreen(),
           settings: settings,
         );
       case Routes.verifyCodeRoute:
-        //nitLoginModule();
+        initVerifyModule();
         return MaterialPageRoute(
           builder: (_) => const VerifyCodeScreen(),
           settings: settings,

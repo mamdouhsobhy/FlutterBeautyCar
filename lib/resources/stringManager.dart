@@ -99,5 +99,10 @@ class AppStrings {
   static const String enter_valid_phone = "enter_valid_phone";
   static const String password_must_be_6_character = "password_must_be_6_character";
   static const String confirm_password_must_at_the_same_password = "confirm_password_must_at_the_same_password";
+  static const String you_registered_successfully = 'you_registered_successfully';
+  static const String enter_full_code_with_6_digits = 'enter_full_code_with_6_digits';
+  static const String accountActivatedSuccessfully = "account_activated_successfully";
+  static const String code_sent_success = "code_sent_success";
+  static const String resend_code_after = "resend_code_after";
 
 }

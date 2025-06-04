@@ -1,8 +1,10 @@
 
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../authentication/data/response/login/login.dart';
 import '../../resources/languageManager.dart';
 
 const String PREFS_KEY_LANG = "PREFS_KEY_LANG";
@@ -37,7 +39,7 @@ class AppPreferences{
     if(currentLang == LanguageType.ARABIC.getValue()){
       return ARABIC_LOCALE;
     }else{
-      return ENGLISH_LOCALE;
+      return ARABIC_LOCALE;
     }
   }
 
@@ -60,21 +62,21 @@ class AppPreferences{
     return isLoggedIn;
   }
 
-  // Future<void> setUserData(ModelLoginResponseRemote userData) async {
-  //   // Convert userData to JSON
-  //   String userJson = json.encode(userData.toJson());
-  //
-  //   // Save to SharedPreferences
-  //   await _sharedPreferences.setString(PREFS_KEY_USER_DATA, userJson);
-  // }
-  //
-  // Future<ModelLoginResponseRemote?> getUserData() async {
-  //   String? userJson = _sharedPreferences.getString(PREFS_KEY_USER_DATA);
-  //   if (userJson != null) {
-  //     Map<String, dynamic> userMap = json.decode(userJson);
-  //     return ModelLoginResponseRemote.fromJson(userMap);
-  //   }
-  //   return null;
-  // }
+  Future<void> setUserData(ModelLoginResponseRemote userData) async {
+    // Convert userData to JSON
+    String userJson = json.encode(userData.toJson());
+
+    // Save to SharedPreferences
+    await _sharedPreferences.setString(PREFS_KEY_USER_DATA, userJson);
+  }
+
+  Future<ModelLoginResponseRemote?> getUserData() async {
+    String? userJson = _sharedPreferences.getString(PREFS_KEY_USER_DATA);
+    if (userJson != null) {
+      Map<String, dynamic> userMap = json.decode(userJson);
+      return ModelLoginResponseRemote.fromJson(userMap);
+    }
+    return null;
+  }
 
 }

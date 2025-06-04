@@ -37,7 +37,7 @@ class OrderRequestItemCard extends StatelessWidget {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: AppPadding.p16),
+                      padding: const EdgeInsets.only(left: AppPadding.p16,right: AppPadding.p16),
                       child: SvgPicture.asset(ImageAssets.avatarIcon),
                     ),
                     Padding(
@@ -57,7 +57,7 @@ class OrderRequestItemCard extends StatelessWidget {
                 Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: AppPadding.p8),
+                      padding: const EdgeInsets.only(right: AppPadding.p8,left: AppPadding.p8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

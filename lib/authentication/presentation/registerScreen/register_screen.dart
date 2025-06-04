@@ -2,6 +2,7 @@ import 'package:beauty_car/authentication/data/response/register/register.dart';
 import 'package:beauty_car/authentication/presentation/registerScreen/viewmodel/register_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/routeManager/routesManager.dart';
 import 'package:beauty_car/authentication/presentation/sharedViews/auth_title_and_subtitle.dart';
+import 'package:beauty_car/utils/Constants.dart';
 import 'package:beauty_car/utils/function.dart';
 import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -44,29 +45,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _bind() {
     _registerViewModel.start();
-  }
-
-  String _formatPhoneNumber(String phone, String countryCode) {
-    // Remove any spaces or special characters from phone
-    phone = phone.replaceAll(RegExp(r'[^\d]'), '');
-    // Remove any spaces or special characters from country code
-    countryCode = countryCode.replaceAll(RegExp(r'[^\d]'), '');
-    // Return formatted phone number
-    return "+$countryCode$phone";
+    _countryCodeController.text = Constants.defaultCountryCode;
   }
 
   void _navigateToVerifyScreen(String phone) {
-    print("Register Screen - Navigating to verify with phone: $phone");
-    
-    // Use pushReplacement instead of pushNamed to ensure clean navigation
-    Navigator.pushReplacementNamed(
-      context,
-      Routes.verifyCodeRoute,
-      arguments: phone,
-    ).then((_) {
-      // Debug print after navigation
-      print("Register Screen - Navigation completed");
-    });
+    if(_registerViewModel.isRegisterLoading == true) {
+      _registerViewModel.isRegisterLoading = false;
+      context.showSuccessToast(AppStrings.you_registered_successfully.tr());
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pushReplacementNamed(context, Routes.verifyCodeRoute, arguments: phone);
+      });
+    }
   }
 
   @override
@@ -104,26 +93,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       stream: _registerViewModel.outputRegisterData,
       builder: (context, snapshot) {
         if (snapshot.data != null && snapshot.data?.status == true) {
-          // Debug print
-          print("Register Screen - Got successful response: ${snapshot.data?.data?.toJson()}");
-          
-          // When registration is successful, navigate to verify screen
           WidgetsBinding.instance.addPostFrameCallback((_) {
             final phone = snapshot.data?.data?.phone;
-            print("Register Screen - Phone from response: $phone");
-            
             if (phone != null && phone.isNotEmpty) {
-              // Ensure we're passing a non-null string
-              final phoneToPass = phone.trim();
-              print("Register Screen - Passing phone: $phoneToPass");
-              _navigateToVerifyScreen(phoneToPass);
-            } else {
-              final formattedPhone = _formatPhoneNumber(
-                _phoneController.text,
-                _countryCodeController.text
-              );
-              print("Register Screen - Using formatted phone: $formattedPhone");
-              _navigateToVerifyScreen(formattedPhone);
+              _navigateToVerifyScreen(phone);
             }
           });
         }
@@ -197,19 +170,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       readOnly: false,
                       takeValue: (value) {
                         _phoneController.text = value;
-                        // Format phone number before sending to server
-                        final formattedPhone = _formatPhoneNumber(value, _countryCodeController.text);
-                        _registerViewModel.registerRequest.phone = formattedPhone;
+                        _registerViewModel.registerRequest.phone = "";
+                        _registerViewModel.registerRequest.phone = _countryCodeController.text + value;
                         print("PhoneCodeNumber ${_phoneController.text}");
                       },
                       takeCountryCode: (code) {
-                        print("PhoneCode ${code.toString()}");
                         _countryCodeController.text = "$code".replaceAll("+", "");
-                        // Update phone number in request when country code changes
-                        if (_phoneController.text.isNotEmpty) {
-                          final formattedPhone = _formatPhoneNumber(_phoneController.text, _countryCodeController.text);
-                          _registerViewModel.registerRequest.phone = formattedPhone;
-                        }
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -341,7 +307,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
         dismissLoadingDialog();
-        context.showSuccessToast("Register In Successfully");
       } else {
         dismissLoadingDialog();
       }

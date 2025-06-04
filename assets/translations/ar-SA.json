@@ -1,11 +1,11 @@
 {
   "sign_in": "تسجيل الدخول",
   "success": "تم النجاح",
-  "onboarding_title_1": "مرحبا بك فى تظبيق (Beauty car card)وسع نشاطك... ووصل خدمتك",
+  "onboarding_title_1": "مرحبا بك فى تطبيق (Beauty car card)وسع نشاطك... ووصل خدمتك",
   "onboarding_subtitle_1": "انضم للتطبيق واعرض خدمات مركزك لآلاف المستخدمين القريبين منك",
-  "onboarding_title_2": "فى تظبيق (Beauty car card)إدارة سهلة... وتحكم كامل",
+  "onboarding_title_2": "فى تطبيق (Beauty car card)إدارة سهلة... وتحكم كامل",
   "onboarding_subtitle_2": "تحكم في الحجوزات، حدّث أسعارك، تابع الأداء والتقييمات لحظة بلحظة.",
-  "onboarding_title_3": "فى تظبيق (Beauty car card) إدارتك الذكية تبدأ من هنا",
+  "onboarding_title_3": "فى تطبيق (Beauty car card) إدارتك الذكية تبدأ من هنا",
   "onboarding_subtitle_3": "تحكّم بكل تفاصيل خدماتك وسّع نشاطك، وخلّ تجربة عملاءك استثنائية.  كل الأدوات في متناولك… لتقود النجاح بثقة",
   "start": "ابدأ",
   "back": "رجوع",
@@ -96,7 +96,12 @@
   "enter_valid_email": "ادخل بريد إلكتروني صالح",
   "enter_valid_phone": "ادخل رقم هاتف صالح",
   "password_must_be_6_character": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
-  "confirm_password_must_at_the_same_password": "يجب أن يتطابق تأكيد كلمة المرور مع كلمة المرور"
+  "confirm_password_must_at_the_same_password": "يجب أن يتطابق تأكيد كلمة المرور مع كلمة المرور",
+  "you_registered_successfully": "تم تسجيلك بنجاح، يرجى تفعيل حسابك لتتمكن من تسجيل الدخول.",
+  "enter_full_code_with_6_digits": "أدخل الرمز الكامل المكون من 6 أرقام",
+  "account_activated_successfully": "تم تفعيل الحساب بنجاح. انتظر موافقة الأدمن على الحساب حتى تتمكن من تسجيل الدخول.",
+  "code_sent_success": "تم إرسال الرمز بنجاح",
+  "resend_code_after": "إعادة إرسال الرمز بعد"
 
 
 

@@ -31,7 +31,7 @@ class EmployeeItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p12),
+              padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p12,right: AppPadding.p12),
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [

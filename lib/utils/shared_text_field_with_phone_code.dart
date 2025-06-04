@@ -3,6 +3,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/colorManager.dart';
+import '../resources/languageManager.dart';
 import '../resources/styleManager.dart';
 import '../resources/valuesManager.dart';
 
@@ -35,14 +36,18 @@ class MyTextFieldWithPhoneCode extends StatefulWidget {
 }
 
 class _MyTextFieldWithPhoneCodeState extends State<MyTextFieldWithPhoneCode> {
+
   @override
   Widget build(BuildContext context) {
+
+    final isArabic = LanguageManager.getCurrentLanguage(context) == ARABIC;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: widget.paddingHorizontal),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Align(alignment: Alignment.topLeft,child: Text(widget.title,style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size16))),
+          Align(alignment: isArabic ? Alignment.topRight : Alignment.topLeft,child: Text(widget.title,style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size16))),
           const SizedBox(height: AppSize.s10),
           TextFormField(
             controller: widget.controller,

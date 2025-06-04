@@ -1,3 +1,4 @@
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/authentication/presentation/sharedViews/auth_title_and_subtitle.dart';
 import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,6 +15,8 @@ import '../../../../resources/fontManager.dart';
 import '../../../../resources/stringManager.dart';
 import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
+import '../../../../utils/Constants.dart';
+import '../../../../utils/function.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_button.dart';
 import '../../../../utils/shared_checkbox.dart';
@@ -30,21 +33,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  //final LoginViewModel _loginViewModel = instance<LoginViewModel>();
+  final LoginViewModel _loginViewModel = instance<LoginViewModel>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
+  final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _countryCodeController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isTermsAccepted = false;
 
   _bind() {
-    //_loginViewModel.start();
+    _loginViewModel.start();
+    _countryCodeController.text = Constants.defaultCountryCode;
   }
 
-  _intentToHomeScreen() {
-    // _appPreferences.setUserLoggedIn();
-    // _appPreferences.setUserData(data ?? ModelLoginResponseRemote());
-    // initAttendenceModule();
+  _intentToHomeScreen(ModelLoginResponseRemote? data) {
+      _appPreferences.setUserLoggedIn();
+     _appPreferences.setUserData(data ?? ModelLoginResponseRemote());
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -72,23 +77,33 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Scaffold(
               backgroundColor: ColorManager.white,
               body: SafeArea(
-                  child:
-                      // StreamBuilder<FlowState>(
-                      //   stream: _loginViewModel.outputState,
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.data != null) {
-                      //       _handleLoginStateChanged(snapshot.data!);
-                      //     }
-                      _getLoginScreenContent()
-                  // },
-                  // ),
-                  ),
+                child:
+                StreamBuilder<FlowState>(
+                  stream: _loginViewModel.outputState,
+                  builder: (context, snapshot) {
+                    if (snapshot.data != null) {
+                      _handleLoginStateChanged(snapshot.data!);
+                    }
+                    return _getLoginScreenContent();
+                  },
+                ),
+              ),
             )));
   }
 
   Widget _getLoginScreenContent() {
-    final _formKey = GlobalKey<FormState>();
-    return Form(
+    return  StreamBuilder<ModelLoginResponseRemote>(
+        stream: _loginViewModel.outputLoginData,
+        builder: (context, snapshot) {
+          if (snapshot.data != null && snapshot.data?.status == true) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (_loginViewModel.isLoginLoading == true) {
+                _loginViewModel.isLoginLoading = false;
+                _intentToHomeScreen(snapshot.data);
+              }
+            });
+          }
+          return Form(
       autovalidateMode: AutovalidateMode.onUnfocus,
       key: _formKey,
       child: SingleChildScrollView(
@@ -112,20 +127,25 @@ class _LoginScreenState extends State<LoginScreen> {
               hint: AppStrings.enter_phone_number.tr(),
               title: AppStrings.phone_number.tr(),
               readOnly: false,
-              takeValue: (value) {},
+              takeValue: (value) {
+                _phoneController.text = value;
+                _loginViewModel.loginObject.phone = "";
+                _loginViewModel.loginObject.phone = _countryCodeController.text + value;
+                print("PhoneCodeNumber ${_phoneController.text}");
+              },
               takeCountryCode: (code) {
-
+                _countryCodeController.text = "$code".replaceAll("+", "");
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "AppStrings.select_currency.tr()";
-                } else {
-                  null;
+                  return AppStrings.enter_phone_number.tr();
+                } else if (!isPhoneValid(_phoneController.text, _countryCodeController.text)) {
+                  return AppStrings.enter_valid_phone.tr();
                 }
                 return null;
               },
               paddingHorizontal: AppPadding.p16,
-              controller: _passwordController
+              controller: _phoneController
           ),
           const SizedBox(height: AppSize.s16),
           MyTextField(
@@ -135,9 +155,21 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
               inputType: TextInputType.visiblePassword,
               controller: _passwordController,
-              validator: null,
-              takeValue: (value) {}
-              ),
+              validator: (value){
+                if (value == null || value.isEmpty) {
+                  return AppStrings.enterPassword.tr();
+                } else if(_passwordController.text.length < 6){
+                  return AppStrings.password_must_be_6_character.tr();
+                } else {
+                  null;
+                }
+                return null;
+              },
+              takeValue: (value) {
+                _passwordController.text = value;
+                _loginViewModel.loginObject.password = value;
+              }
+          ),
           const SizedBox(height: AppSize.s10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
@@ -181,14 +213,15 @@ class _LoginScreenState extends State<LoginScreen> {
             buttonText: AppStrings.sign_in.tr(),
             paddingVertical: AppPadding.p0,
             fun: () {
-              _intentToHomeScreen();
-              // if (_formKey.currentState?.validate() ?? false) {
-              //   if (!_isTermsAccepted) {
-              //     //context.showErrorToast(AppStrings.please_accept_terms.tr());
-              //     return;
-              //   }
-              //   // Handle login
-              // }
+              if (_formKey.currentState?.validate() ?? false) {
+                if (!_isTermsAccepted) {
+                  context.showErrorToast(AppStrings.agree_terms_conditions.tr());
+                  return;
+                }else{
+                  _loginViewModel.login();
+                }
+                // Handle login
+              }
             },
           ),
           const SizedBox(height: AppSize.s20),
@@ -217,6 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       )),
     );
+        });
   }
 
   _handleLoginStateChanged(FlowState state) {
@@ -237,9 +271,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _userNameController.dispose();
+    _phoneController.dispose();
+    _countryCodeController.dispose();
     _passwordController.dispose();
-    //_loginViewModel.dispose();
+    _loginViewModel.dispose();
     super.dispose();
   }
 }

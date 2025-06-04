@@ -23,7 +23,7 @@ class ServiceRequestCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
          Padding(
-           padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p16),
+           padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p16,right: AppPadding.p16),
            child: SvgPicture.asset(ImageAssets.avatarIcon),
          ),
           Padding(
