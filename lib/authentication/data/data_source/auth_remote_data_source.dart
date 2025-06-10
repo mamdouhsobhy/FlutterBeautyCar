@@ -1,6 +1,8 @@
 
+import 'package:beauty_car/authentication/data/response/forgetPassword/forget_password.dart';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/authentication/data/response/register/register.dart';
+import 'package:beauty_car/authentication/data/response/resetPassword/reset_password.dart';
 import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
 import 'package:dio/dio.dart';
 
@@ -15,6 +17,10 @@ abstract class AuthRemoteDataSource {
   Future<ModelVerifyAccountResponseRemote> verifyAccount(FormData formData);
 
   Future<ModelSendVerifyCodeResponseRemote> sendVerifyCode(FormData formData);
+
+  Future<ModelForgetPasswordResponseRemote> forgetPassword(FormData formData);
+
+  Future<ModelResetPasswordResponseRemote> resetPassword(FormData formData);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -40,6 +46,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<ModelVerifyAccountResponseRemote> verifyAccount(FormData formData) async{
     return await _authServiceClient.verifyAccount(formData);
+  }
+
+  @override
+  Future<ModelForgetPasswordResponseRemote> forgetPassword(FormData formData) async{
+    return await _authServiceClient.forgetPassword(formData);
+  }
+
+  @override
+  Future<ModelResetPasswordResponseRemote> resetPassword(FormData formData) async{
+    return await _authServiceClient.resetPassword(formData);
   }
 
 }

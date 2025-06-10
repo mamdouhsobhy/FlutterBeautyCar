@@ -12,3 +12,8 @@ class UserTypes{
   static const owner = "1";
   static const employee = "2";
 }
+
+class ComeFrom{
+  static const register = "register";
+  static const forgetPassword = "forgetPassword";
+}

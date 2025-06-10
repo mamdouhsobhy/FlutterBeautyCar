@@ -1,8 +1,10 @@
+
 import 'dart:async';
 
 import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
 import 'package:beauty_car/authentication/data/response/verifyAccount/verify_account.dart';
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
+import 'package:beauty_car/utils/Constants.dart';
 import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   final VerifyViewModel _verifyViewModel = instance<VerifyViewModel>();
   String? _phoneNumber;
+  String? _type;
   final TextEditingController _otpController = TextEditingController();
 
   int _remainingTime = 60;
@@ -61,6 +64,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   @override
   void initState() {
+    print("bind data");
     _bind();
     _startCountdown();
     super.initState();
@@ -70,12 +74,19 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
       final args = ModalRoute.of(context)?.settings.arguments;
-      if (args != null && args is String) {
+      if (args is Map<String, dynamic>) {
         setState(() {
-          _phoneNumber = args;
+          _phoneNumber = args['phone'];
+          _type = args['type'];
           _verifyViewModel.verifyRequest.phone = _phoneNumber!;
         });
       }
+  }
+
+  _navigateToResetPasswordScreen() {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pushReplacementNamed(context, Routes.resetPasswordRoute, arguments: {'phone': _phoneNumber, 'otp': _verifyViewModel.verifyRequest.otp});
+      });
   }
 
   _navigateToLogin(){
@@ -99,11 +110,9 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
           body: SafeArea(
             child: StreamBuilder<FlowState>(
               stream: _verifyViewModel.outputState,
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _handleVerifyAccountStateChanged(snapshot.data!);
-                  });
+              builder: (mContext, snapshot) {
+                if (snapshot.data != null && _verifyViewModel.isOutStateLoading) {
+                    _handleVerifyAccountStateChanged(snapshot.data!,mContext);
                 }
                 return _getVerifyCodeScreenContent();
               },
@@ -208,7 +217,11 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
               paddingVertical: AppPadding.p0,
               fun: () {
                   if (_otpController.text.length == 5) {
-                    _verifyViewModel.verifyAccount();
+                    if(_type == ComeFrom.register) {
+                      _verifyViewModel.verifyAccount();
+                    }else{
+                      _navigateToResetPasswordScreen();
+                    }
                   } else {
                     context.showErrorToast(
                         AppStrings.enter_full_code_with_6_digits.tr());
@@ -263,18 +276,19 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             const SizedBox(height: AppSize.s40),
           ],
         ));
-      },
-    );
+      },);
   }
 
-  _handleVerifyAccountStateChanged(FlowState state) {
+  _handleVerifyAccountStateChanged(FlowState state, BuildContext mContext) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (state is LoadingState && !isLoadingDialogShowing()) {
         showLoadingDialog(context);
       } else if (state is ErrorState) {
+        _verifyViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
+        _verifyViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
       } else {
         dismissLoadingDialog();

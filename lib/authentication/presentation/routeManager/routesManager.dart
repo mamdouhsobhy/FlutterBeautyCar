@@ -1,11 +1,11 @@
-import 'package:beauty_car/authentication/presentation/forgetPasswordScreen/forget_password_screen.dart';
+import 'package:beauty_car/authentication/presentation/forgetPasswordScreen/view/forget_password_screen.dart';
 import 'package:beauty_car/authentication/presentation/registerScreen/register_screen.dart';
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/verify_code_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../app/di/di.dart';
 import '../loginScreen/view/login_screen.dart';
-import '../resetPasswordScreen/reset_password_screen.dart';
+import '../resetPasswordScreen/view/reset_password_screen.dart';
 
 class Routes {
   static const String loginRoute = "/login";
@@ -31,7 +31,7 @@ class RouteGenerator {
           settings: settings,
         );
       case Routes.forgetPasswordRoute:
-        initVerifyModule();
+        initForgetPasswordModule();
         return MaterialPageRoute(
           builder: (_) => const ForgetPasswordScreen(),
           settings: settings,
@@ -43,7 +43,7 @@ class RouteGenerator {
           settings: settings,
         );
       case Routes.resetPasswordRoute:
-        //initLoginModule();
+        initResetPasswordModule();
         return MaterialPageRoute(
           builder: (_) => const ResetPasswordScreen(),
           settings: settings,

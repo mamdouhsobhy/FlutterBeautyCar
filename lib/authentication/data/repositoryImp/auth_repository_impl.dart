@@ -1,6 +1,8 @@
 
+import 'package:beauty_car/authentication/data/response/forgetPassword/forget_password.dart';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/authentication/data/response/register/register.dart';
+import 'package:beauty_car/authentication/data/response/resetPassword/reset_password.dart';
 import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -96,6 +98,52 @@ class AuthRepositoryImpl implements AuthRepository{
 
       try{
         final response = await _authRemoteDataSource.sendVerifyCode(formData);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, ModelForgetPasswordResponseRemote>> forgetPassword(FormData formData) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _authRemoteDataSource.forgetPassword(formData);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, ModelResetPasswordResponseRemote>> resetPassword(FormData formData) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _authRemoteDataSource.resetPassword(formData);
 
         if(response.status == true){
           return Right(response);

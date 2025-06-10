@@ -81,7 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 StreamBuilder<FlowState>(
                   stream: _loginViewModel.outputState,
                   builder: (context, snapshot) {
-                    if (snapshot.data != null) {
+                    if (snapshot.data != null && _loginViewModel.isOutStateLoading) {
+                      _loginViewModel.isOutStateLoading = false;
                       _handleLoginStateChanged(snapshot.data!);
                     }
                     return _getLoginScreenContent();

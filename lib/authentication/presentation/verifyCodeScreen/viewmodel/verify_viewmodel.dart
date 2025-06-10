@@ -46,17 +46,18 @@ class VerifyViewModel extends BaseViewModel implements VerifyViewModelInputs,Ver
 
   var isVerifyLoading = false;
   var isSendOtpLoading = false;
+  var isOutStateLoading = false;
 
   Future<void> verifyAccount() async {
     isVerifyLoading = false;
-
+    isOutStateLoading = true;
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
     (await _verifyCodeUseCase.execute(await buildVerifyAccountFormData()))
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
-      }, (data) {
+          }, (data) {
       isVerifyLoading = true;
       verifyData.add(data);
       inputState.add(SuccessState(""));
@@ -66,7 +67,7 @@ class VerifyViewModel extends BaseViewModel implements VerifyViewModelInputs,Ver
 
   Future<void> sendOtp() async {
     isSendOtpLoading = false;
-
+    isOutStateLoading = true;
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
     (await _verifyCodeUseCase.executeSendVerifyCode(await buildSendOtpFormData()))

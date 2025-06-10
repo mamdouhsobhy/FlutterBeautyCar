@@ -53,7 +53,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _registerViewModel.isRegisterLoading = false;
       context.showSuccessToast(AppStrings.you_registered_successfully.tr());
       Future.delayed(const Duration(milliseconds: 500), () {
-        Navigator.pushReplacementNamed(context, Routes.verifyCodeRoute, arguments: phone);
+        Navigator.pushReplacementNamed(context, Routes.verifyCodeRoute,
+            arguments: {'phone': phone, 'type': ComeFrom.register});
       });
     }
   }

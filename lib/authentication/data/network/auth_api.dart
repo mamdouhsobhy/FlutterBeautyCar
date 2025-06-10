@@ -1,5 +1,7 @@
+import 'package:beauty_car/authentication/data/response/forgetPassword/forget_password.dart';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/authentication/data/response/register/register.dart';
+import 'package:beauty_car/authentication/data/response/resetPassword/reset_password.dart';
 import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/error_logger.dart';
@@ -28,5 +30,13 @@ abstract class AuthServiceClient{
   @MultiPart()
   @POST("guest/sendVerifiyCode")
   Future<ModelSendVerifyCodeResponseRemote> sendVerifyCode(@Body() FormData formData);
+
+  @MultiPart()
+  @POST("guest/forgetPassword")
+  Future<ModelForgetPasswordResponseRemote> forgetPassword(@Body() FormData formData);
+
+  @MultiPart()
+  @POST("guest/resetPassword")
+  Future<ModelResetPasswordResponseRemote> resetPassword(@Body() FormData formData);
 
 }

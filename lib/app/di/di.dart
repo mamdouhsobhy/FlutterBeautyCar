@@ -1,9 +1,13 @@
 
+import 'package:beauty_car/authentication/domain/usecase/forget_passsword_usecase.dart';
 import 'package:beauty_car/authentication/domain/usecase/login_usecase.dart';
 import 'package:beauty_car/authentication/domain/usecase/register_usecase.dart';
+import 'package:beauty_car/authentication/domain/usecase/reset_passsword_usecase.dart';
 import 'package:beauty_car/authentication/domain/usecase/verify_code_usecase.dart';
+import 'package:beauty_car/authentication/presentation/forgetPasswordScreen/viewmodel/forget_password_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/loginScreen/viewmodel/login_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/registerScreen/viewmodel/register_viewmodel.dart';
+import 'package:beauty_car/authentication/presentation/resetPasswordScreen/viewmodel/reset_password_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -70,6 +74,24 @@ initVerifyModule(){
   if(!GetIt.I.isRegistered<VerifyCodeUseCase>()) {
     instance.registerFactory<VerifyCodeUseCase>(() => VerifyCodeUseCase(instance()));
     instance.registerFactory<VerifyViewModel>(() => VerifyViewModel(instance()));
+  }
+
+}
+
+initForgetPasswordModule(){
+
+  if(!GetIt.I.isRegistered<ForgetPassswordUseCase>()) {
+    instance.registerFactory<ForgetPassswordUseCase>(() => ForgetPassswordUseCase(instance()));
+    instance.registerFactory<ForgetPasswordViewModel>(() => ForgetPasswordViewModel(instance()));
+  }
+
+}
+
+initResetPasswordModule(){
+
+  if(!GetIt.I.isRegistered<ResetPassswordUseCase>()) {
+    instance.registerFactory<ResetPassswordUseCase>(() => ResetPassswordUseCase(instance()));
+    instance.registerFactory<ResetPasswordViewModel>(() => ResetPasswordViewModel(instance()));
   }
 
 }

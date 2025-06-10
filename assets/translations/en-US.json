@@ -101,7 +101,6 @@
   "enter_full_code_with_6_digits": "Enter full code with 6 digits",
   "account_activated_successfully": "The account has been activated successfully. Wait for the admin's approval of the account so you can log in.",
   "code_sent_success": "Code sent successfully",
-  "resend_code_after": "Resend the code after"
-
-
+  "resend_code_after": "Resend the code after",
+  "reset_password_done": "Password reset successfully, you can now log in with the new password."
 }

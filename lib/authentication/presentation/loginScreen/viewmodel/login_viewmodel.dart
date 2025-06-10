@@ -36,17 +36,21 @@ class LoginViewModel extends BaseViewModel implements LoginViewModelInputs,Login
   Sink get loginData => _dataStreamController.sink;
 
    var isLoginLoading = false;
+   var isOutStateLoading = false;
 
   Future<void> login() async {
     isLoginLoading = false;
+    isOutStateLoading = false;
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
     (await _loginUseCase.execute(await buildLoginFormData()))
         .fold(
           (failure) {
+         isOutStateLoading = true;
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
       }, (data) {
+      isOutStateLoading = true;
       isLoginLoading = true;
       loginData.add(data);
       inputState.add(SuccessState(""));

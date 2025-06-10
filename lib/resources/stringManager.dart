@@ -104,5 +104,6 @@ class AppStrings {
   static const String accountActivatedSuccessfully = "account_activated_successfully";
   static const String code_sent_success = "code_sent_success";
   static const String resend_code_after = "resend_code_after";
+  static const String reset_password_done = "reset_password_done";
 
 }
