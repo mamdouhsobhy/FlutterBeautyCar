@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../app/sharedPrefs/app_prefs.dart';
 import '../app/di/di.dart';
+import '../home/home_screen.dart';
 import '../onboarding/view/onboarding_screen.dart';
 import '../resources/assetsManager.dart';
 import '../resources/colorManager.dart';
@@ -30,14 +31,11 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isUserLoggedIn = await _appPreferences.isUserLoggedIn();
     print("Routs $isUserLoggedIn");
     if (isUserLoggedIn) {
-      // initAttendenceModule();
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => HomeScreen()),
-      // );
+       initHomeModule();
+       initCentersModule();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else {
       Navigator.pushReplacement(

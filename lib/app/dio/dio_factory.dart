@@ -1,4 +1,5 @@
 
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -20,11 +21,12 @@ class DioFactory{
     Dio dio = Dio();
 
     String language = await _appPreferences.getAppLanguage();
+    ModelLoginResponseRemote? userData = await _appPreferences.getUserData();
 
     Map<String,String> headers = {
       CONTENT_TYPE:APPLICATION_JSON,
       ACCEPT:APPLICATION_JSON,
-      AUTHORIZATION:Constants.token,
+      AUTHORIZATION: "Bearer ${Constants.token.isEmpty ? userData?.token : Constants.token}",
       DEFAULT_LANGUAGE:language,
       Apipassword:"@#\$Beauty@#\$",
       "baseurl":"https://beauty.devxacademy.com/api/v1"

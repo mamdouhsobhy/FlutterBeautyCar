@@ -50,6 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
   _intentToHomeScreen(ModelLoginResponseRemote? data) {
       _appPreferences.setUserLoggedIn();
      _appPreferences.setUserData(data ?? ModelLoginResponseRemote());
+       Constants.token = "${data?.token}";
+      initHomeModule();
+      initCentersModule();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),

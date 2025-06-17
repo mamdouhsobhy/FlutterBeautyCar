@@ -1,6 +1,6 @@
-import 'package:beauty_car/home/presentation/centerPageScreen/center_page_screen.dart';
+import 'package:beauty_car/home/presentation/centerPageScreen/view/center_page_screen.dart';
 import 'package:beauty_car/home/presentation/employeePageScreen/employee_page_screen.dart';
-import 'package:beauty_car/home/presentation/homePageScreen/home_page_screen.dart';
+import 'package:beauty_car/home/presentation/homePageScreen/view/home_page_screen.dart';
 import 'package:beauty_car/home/presentation/orderPageScreen/order_page_screen.dart';
 import 'package:beauty_car/home/presentation/routeManager/home_routes_manager.dart';
 import 'package:beauty_car/resources/stringManager.dart';

@@ -32,7 +32,7 @@ class AppStrings {
   static const String enter_phone_to_send_code = "enter_phone_to_send_code";
   static const String sendVerificationCode = "send_verification_code";
   static const String remember_password = "remember_password";
-  static const String confirm = "Confirm";
+  static const String confirm = "confirm";
   static const String didNotReceiveCode = "did_not_receive_code";
   static const String resendCode = "resend_code";
   static const String enterVerificationCode = "enter_verification_code";
@@ -105,5 +105,12 @@ class AppStrings {
   static const String code_sent_success = "code_sent_success";
   static const String resend_code_after = "resend_code_after";
   static const String reset_password_done = "reset_password_done";
+  static const String search = "search";
+  static const String photo_From_Gallery = "photo_From_Gallery";
+  static const String photo_From_Camera = "photo_From_Camera";
+  static const String select_center_image = "select_center_image";
+  static const String center_created_successfully = "center_created_successfully";
+  static const String center_updated_successfully = "center_updated_successfully";
+
 
 }

@@ -102,5 +102,13 @@
   "account_activated_successfully": "The account has been activated successfully. Wait for the admin's approval of the account so you can log in.",
   "code_sent_success": "Code sent successfully",
   "resend_code_after": "Resend the code after",
-  "reset_password_done": "Password reset successfully, you can now log in with the new password."
+  "reset_password_done": "Password reset successfully, you can now log in with the new password.",
+  "search": "Search",
+  "photo_From_Gallery": "From Gallery",
+  "photo_From_Camera": "From Camera",
+  "select_center_image": "Select center image",
+  "center_created_successfully": "Center created successfully",
+  "center_updated_successfully": "Center updated successfully"
+
+
 }

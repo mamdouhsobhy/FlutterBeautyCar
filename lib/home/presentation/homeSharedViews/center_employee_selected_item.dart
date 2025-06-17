@@ -1,4 +1,4 @@
-import 'package:beauty_car/home/data/response/services/services.dart';
+import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/resources/assetsManager.dart';
 import 'package:beauty_car/resources/stringManager.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,37 +9,37 @@ import '../../../resources/valuesManager.dart';
 import '../../../utils/shared_button.dart';
 import '../../../utils/shared_text_field.dart';
 
-class CenterServiceSelectedItem extends StatefulWidget {
+class CenterEmployeeSelectedItem extends StatefulWidget {
   final String title;
-  final List<Services>? services;
-  final Function(List<Services>) selectedService;
+  final List<Data>? employee;
+  final Function(Data) selectedEmployee;
 
-  CenterServiceSelectedItem(
+  CenterEmployeeSelectedItem(
       this.title,
-      this.services,
-      {super.key, required this.selectedService});
+      this.employee,
+      {super.key, required this.selectedEmployee});
 
   @override
-  _CenterServiceSelectedItemState createState() =>
-      _CenterServiceSelectedItemState();
+  _CenterEmployeeSelectedItemState createState() =>
+      _CenterEmployeeSelectedItemState();
 }
 
-class _CenterServiceSelectedItemState
-    extends State<CenterServiceSelectedItem> {
+class _CenterEmployeeSelectedItemState
+    extends State<CenterEmployeeSelectedItem> {
 
   final TextEditingController _searchController = TextEditingController();
-  List<Services> _selectedServices = [];
-  List<Services> filteredServices = [];
+  Data? _selectedEmployee;
+  List<Data> filteredEmployee = [];
 
   @override
   void initState() {
     super.initState();
-    filteredServices = widget.services!;  // Initially show all places
+    filteredEmployee = widget.employee!;  // Initially show all places
   }
 
-  void _searchService(String query) {
+  void _searchEmployee(String query) {
     setState(() {
-      filteredServices = widget.services!.where((service) {
+      filteredEmployee = widget.employee!.where((service) {
         return service.name!.toLowerCase().contains(query.toLowerCase());
       }).toList();
     });
@@ -71,7 +71,7 @@ class _CenterServiceSelectedItemState
           ),
           const SizedBox(height: AppSize.s16),
           MyTextField(hint: AppStrings.search.tr(), obscureText: false,validator: null, inputType: TextInputType.text, takeValue: (value){
-            _searchService(value);
+            _searchEmployee(value);
           }, controller: _searchController, title: "", suffixIcon: ImageAssets.searchIcon),
           Flexible(
             child: Container(
@@ -82,42 +82,38 @@ class _CenterServiceSelectedItemState
               ),
               child: ListView.separated(
                 shrinkWrap: true,
-                itemCount: filteredServices.length,
+                itemCount: filteredEmployee.length,
                 separatorBuilder: (context, index) => Divider(
                   height: AppSize.s1,
                   color: ColorManager.colorGrayD2,
                 ),
                 itemBuilder: (context, index) {
-                  final item = filteredServices[index];
-                  return CheckboxListTile(
-                    value: _selectedServices.contains(item),
-                    onChanged: (isSelected) {
+                  final item = filteredEmployee[index];
+                  return RadioListTile<Data>(
+                    value: item,
+                    groupValue: _selectedEmployee,
+                    onChanged: (employee) {
                       setState(() {
-                        if (isSelected!) {
-                          _selectedServices.add(item);
-                        } else {
-                          _selectedServices.remove(item);
-                        }
+                        _selectedEmployee = employee!;
                       });
                     },
                     title: Text(
                       item.name ?? "",
                       style: getSemiBoldStyle(
                         fontSize: AppSize.s16,
-                        color: ColorManager.colorBlack_0D,
+                        color: ColorManager.colorBlack_0D
                       ),
                     ),
                     activeColor: ColorManager.colorRedB5,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+                    contentPadding:
+                    const EdgeInsets.symmetric(horizontal: AppPadding.p16),
                     shape: RoundedRectangleBorder(
                       borderRadius: index == 0
                           ? const BorderRadius.vertical(
-                        top: Radius.circular(AppSize.s16),
-                      )
-                          : index == widget.services!.length - 1
+                          top: Radius.circular(AppSize.s16))
+                          : index == widget.employee!.length - 1
                           ? const BorderRadius.vertical(
-                        bottom: Radius.circular(AppSize.s16),
-                      )
+                          bottom: Radius.circular(AppSize.s16))
                           : BorderRadius.zero,
                     ),
                   );
@@ -129,8 +125,8 @@ class _CenterServiceSelectedItemState
             color: ColorManager.colorRedB2,
             buttonText: AppStrings.confirm.tr(),
             fun: () {
-              if (_selectedServices.isNotEmpty) {
-                widget.selectedService(_selectedServices);
+              if (_selectedEmployee != null) {
+                widget.selectedEmployee(_selectedEmployee!);
               }
             }
           )

@@ -102,8 +102,13 @@
   "account_activated_successfully": "تم تفعيل الحساب بنجاح. انتظر موافقة الأدمن على الحساب حتى تتمكن من تسجيل الدخول.",
   "code_sent_success": "تم إرسال الرمز بنجاح",
   "resend_code_after": "إعادة إرسال الرمز بعد",
-  "reset_password_done": "تم إعادة تعيين كلمة المرور بنجاح، يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة."
-
+  "reset_password_done": "تم إعادة تعيين كلمة المرور بنجاح، يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة.",
+  "search": "بحث",
+  "photo_From_Gallery": "من المعرض",
+  "photo_From_Camera": "من الكاميرا",
+  "select_center_image": "اختر صورة المركز",
+  "center_created_successfully": "تم إنشاء المركز بنجاح",
+  "center_updated_successfully": "تم تحديث المركز بنجاح"
 
 
 }

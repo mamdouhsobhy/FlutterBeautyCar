@@ -9,14 +9,26 @@ import 'package:beauty_car/authentication/presentation/loginScreen/viewmodel/log
 import 'package:beauty_car/authentication/presentation/registerScreen/viewmodel/register_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/resetPasswordScreen/viewmodel/reset_password_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
+import 'package:beauty_car/home/domain/usecase/centers_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/create_center_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/home_usecase.dart';
+import 'package:beauty_car/home/presentation/centerPageScreen/viewmodel/centers_viewmodel.dart';
+import 'package:beauty_car/home/presentation/createCenterScreen/viewmodel/create_center_viewmodel.dart';
+import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
+import 'package:beauty_car/home/presentation/moreOrdersPageScreen/viewmodel/more_orders_viewmodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../authentication/data/data_source/auth_remote_data_source.dart';
 import '../../authentication/data/network/auth_api.dart';
 import '../../authentication/data/repositoryImp/auth_repository_impl.dart';
 import '../../authentication/domain/repository/auth_repository.dart';
+import '../../home/data/data_source/home_remote_data_source.dart';
+import '../../home/data/network/home_api.dart';
+import '../../home/data/repositoryImp/home_repository_impl.dart';
+import '../../home/domain/repository/home_repository.dart';
 import '../dio/dio_factory.dart';
 import '../networkInfo/network_info.dart';
 import '../sharedPrefs/app_prefs.dart';
@@ -44,11 +56,11 @@ Future<void> initAppModule() async{
   instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(instance(), instance()));
 
   //for home
-  // instance.registerLazySingleton<HomeServiceClient>(() => HomeServiceClient(dio));
+   instance.registerLazySingleton<HomeServiceClient>(() => HomeServiceClient(dio));
   //
-  // instance.registerLazySingleton<HomeRemoteDataSource>(() => HomeRemoteDataSourceImpl(instance()));
+   instance.registerLazySingleton<HomeRemoteDataSource>(() => HomeRemoteDataSourceImpl(instance()));
   //
-  // instance.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(instance(), instance()));
+   instance.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(instance(), instance()));
 }
 
 initLoginModule(){
@@ -95,4 +107,38 @@ initResetPasswordModule(){
   }
 
 }
+
+
+initHomeModule(){
+
+  if(!GetIt.I.isRegistered<HomeUseCase>()) {
+    instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
+    instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
+    instance.registerFactory<MoreOrdersViewModel>(() => MoreOrdersViewModel(instance()));
+  }
+
+}
+
+
+initCentersModule(){
+
+  if(!GetIt.I.isRegistered<CentersUseCase>()) {
+    instance.registerFactory<CentersUseCase>(() => CentersUseCase(instance()));
+    instance.registerFactory<CentersViewModel>(() => CentersViewModel(instance()));
+  }
+
+}
+
+initCreateCentersModule(){
+
+  if(!GetIt.I.isRegistered<CreateCenterUseCase>()) {
+    instance.registerFactory<CreateCenterUseCase>(() => CreateCenterUseCase(instance()));
+    instance.registerFactory<CreateCenterViewModel>(() => CreateCenterViewModel(instance()));
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
+
+  }
+
+}
+
+
 

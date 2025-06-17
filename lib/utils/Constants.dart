@@ -4,7 +4,7 @@ class Constants{
   static const String empty = "";
   static const int zero = 0;
   static const int apiTimeOut = 120000000;
-  static const String token = "";
+  static String token = "";
   static const String defaultCountryCode = "20";
 }
 
@@ -16,4 +16,9 @@ class UserTypes{
 class ComeFrom{
   static const register = "register";
   static const forgetPassword = "forgetPassword";
+}
+
+class CenterStatus{
+  static const open = "2";
+  static const closed = "1";
 }
