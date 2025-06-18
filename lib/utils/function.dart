@@ -6,35 +6,35 @@ bool isEmailValid(String email) {
       .hasMatch(email);
 }
 
-bool isPhoneValid(String phone, String isoCode) {
-  switch (isoCode.toUpperCase()) {
-    case 'EG': // مصر
+bool isPhoneValid(String phone, String countryCode) {
+  switch (countryCode) {
+    case '+20': // مصر
       return RegExp(r'^(01)[0-9]{9}$').hasMatch(phone);
-    case 'SA': // السعودية
+    case '+966': // السعودية
       return RegExp(r'^(05)[0-9]{8}$').hasMatch(phone);
-    case 'AE': // الإمارات
+    case '+971': // الإمارات
       return RegExp(r'^(05)[0-9]{8}$').hasMatch(phone);
-    case 'JO': // الأردن
+    case '+962': // الأردن
       return RegExp(r'^(07)[789][0-9]{7}$').hasMatch(phone);
-    case 'KW': // الكويت
+    case '+965': // الكويت
       return RegExp(r'^(5|6|9)[0-9]{7}$').hasMatch(phone);
-    case 'QA': // قطر
+    case '+974': // قطر
       return RegExp(r'^(3|5|6|7)[0-9]{7}$').hasMatch(phone);
-    case 'OM': // عمان
+    case '+968': // عمان
       return RegExp(r'^(9)[0-9]{7}$').hasMatch(phone);
-    case 'BH': // البحرين
+    case '+973': // البحرين
       return RegExp(r'^(3)[0-9]{7}$').hasMatch(phone);
-    case 'LB': // لبنان
+    case '+961': // لبنان
       return RegExp(r'^(03|70|71|76|78|79|81)[0-9]{6}$').hasMatch(phone);
-    case 'IQ': // العراق
+    case '+964': // العراق
       return RegExp(r'^(07)[0-9]{9}$').hasMatch(phone);
-    case 'MA': // المغرب
+    case '+212': // المغرب
       return RegExp(r'^(06|07)[0-9]{8}$').hasMatch(phone);
-    case 'TN': // تونس
+    case '+216': // تونس
       return RegExp(r'^[2459][0-9]{7}$').hasMatch(phone);
-    case 'DZ': // الجزائر
+    case '+213': // الجزائر
       return RegExp(r'^(05|06|07)[0-9]{8}$').hasMatch(phone);
-    case 'YE': // اليمن
+    case '+967': // اليمن
       return RegExp(r'^(7)[0-9]{8}$').hasMatch(phone);
     default:
       return phone.length >= 8;

@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             StreamBuilder<FlowState>(
               stream: _registerViewModel.outputState,
               builder: (context, snapshot) {
-                if (snapshot.data != null) {
+                if (snapshot.data != null && _registerViewModel.isOutStateLoading) {
                   _handleRegisterStateChanged(snapshot.data!);
                 }
                 return _getRegisterScreenContent();
@@ -172,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       takeValue: (value) {
                         _phoneController.text = value;
                         _registerViewModel.registerRequest.phone = "";
-                        _registerViewModel.registerRequest.phone = _countryCodeController.text + value;
+                        _registerViewModel.registerRequest.phone = value;
                         print("PhoneCodeNumber ${_phoneController.text}");
                       },
                       takeCountryCode: (code) {
@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppStrings.enter_phone_number.tr();
-                        } else if (!isPhoneValid(_phoneController.text, _countryCodeController.text)) {
+                        } else if (!isPhoneValid(_phoneController.text, "+${_countryCodeController.text}")) {
                           return AppStrings.enter_valid_phone.tr();
                         }
                         return null;
@@ -304,9 +304,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (state is LoadingState && !isLoadingDialogShowing()) {
         showLoadingDialog(context);
       } else if (state is ErrorState) {
+        _registerViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
+        _registerViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
       } else {
         dismissLoadingDialog();

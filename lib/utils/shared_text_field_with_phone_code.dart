@@ -101,7 +101,13 @@ class _MyTextFieldWithPhoneCodeState extends State<MyTextFieldWithPhoneCode> {
                 padding: const EdgeInsets.symmetric(horizontal: AppPadding.p10),
                 child: CountryCodePicker(
                   onChanged: (country) {
-                    widget.takeCountryCode(country.dialCode);
+                    final currentText = widget.controller.text;
+                    final newCountryCode = country.dialCode!;
+
+                    final updatedText = currentText.replaceFirst(RegExp(r'^\+\d+'), '');
+
+                    widget.controller.text = newCountryCode + updatedText;
+                    widget.takeCountryCode(newCountryCode);
                   },
                   initialSelection: 'EG',
                   // favorite: const ['EG', '+20'],

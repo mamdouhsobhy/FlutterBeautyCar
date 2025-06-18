@@ -9,6 +9,7 @@ import '../onboarding/view/onboarding_screen.dart';
 import '../resources/assetsManager.dart';
 import '../resources/colorManager.dart';
 import '../resources/constantsManager.dart';
+import '../utils/Constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -31,8 +32,14 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isUserLoggedIn = await _appPreferences.isUserLoggedIn();
     print("Routs $isUserLoggedIn");
     if (isUserLoggedIn) {
-       initHomeModule();
-       initCentersModule();
+      // Set token from stored user data
+      final userData = await _appPreferences.getUserData();
+      if (userData?.token != null) {
+        Constants.token = userData!.token!;
+      }
+      
+      initHomeModule();
+      initCentersModule();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),

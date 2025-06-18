@@ -37,10 +37,11 @@ class RegisterViewModel extends BaseViewModel implements LoginViewModelInputs,Lo
 
 
   var isRegisterLoading = false;
+  var isOutStateLoading = false;
 
   Future<void> register() async {
     isRegisterLoading = false;
-
+    isOutStateLoading = true;
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
     (await _registerUseCase.execute(await buildRegisterFormData()))

@@ -75,7 +75,7 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args is Map<String, dynamic>) {
-      _centerId = args['centerId'];
+      _centerId = args['centerId']?.toString().isEmpty == true ? null : args['centerId'];
       if (_centerId != null && _createCenterViewModel.isCenterFirstLoad == false) {
         _createCenterViewModel.isCenterFirstLoad = true;
         _createCenterViewModel.createOrUpdateCenter.centerId = _centerId!;
@@ -132,7 +132,7 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
   }
 
   _navigateToHome(){
-    if (_centerId?.isEmpty == true) {
+    if (_centerId == null) {
       context.showSuccessToast(
           AppStrings.center_created_successfully.tr());
     }else{
@@ -280,23 +280,16 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                               readOnly: false,
                               takeValue: (value) {
                                 _phoneController.text = value;
-                                _createCenterViewModel
-                                    .createOrUpdateCenter.phone = "";
-                                _createCenterViewModel
-                                        .createOrUpdateCenter.phone =
-                                    _countryCodeController.text + value;
-                                print(
-                                    "PhoneCodeNumber ${_phoneController.text}");
+                                _createCenterViewModel.createOrUpdateCenter.phone = "";
+                                _createCenterViewModel.createOrUpdateCenter.phone = value;
                               },
                               takeCountryCode: (code) {
-                                _countryCodeController.text =
-                                    "$code".replaceAll("+", "");
+                                _countryCodeController.text = "$code".replaceAll("+", "");
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return AppStrings.enter_phone_number.tr();
-                                } else if (!isPhoneValid(_phoneController.text,
-                                    _countryCodeController.text)) {
+                                } else if (!isPhoneValid(_phoneController.text, "+${_countryCodeController.text}")) {
                                   return AppStrings.enter_valid_phone.tr();
                                 }
                                 return null;
@@ -524,12 +517,12 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
               paddingVertical: AppPadding.p0,
               fun: () {
                 if (_formKey.currentState?.validate() ?? false) {
-                  if (_centerId?.isEmpty == true && _createCenterViewModel.createOrUpdateCenter.image == null) {
+                  if (_centerId == null && _createCenterViewModel.createOrUpdateCenter.image == null) {
                     context.showErrorToast(AppStrings.select_center_image.tr());
                     return;
                   }
 
-                  if (_centerId?.isEmpty == true) {
+                  if (_centerId == null) {
                     _createCenterViewModel.createCenter();
                   } else {
                     _createCenterViewModel.updateCenter();

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:beauty_car/home/data/request/centers_request.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
@@ -32,6 +31,13 @@ class CentersViewModel extends BaseViewModel implements CentersViewModelInputs,C
   void start() {
     inputState.add(ContentState());
     getCenters();
+  }
+
+  @override
+  void resetPage() {
+    page = 1;
+    centerRequest.page = 1;
+    centersList.clear();
   }
 
   @override
@@ -70,6 +76,7 @@ class CentersViewModel extends BaseViewModel implements CentersViewModelInputs,C
 
 abstract class CentersViewModelInputs{
    Sink get centersData;
+   void resetPage();
 }
 
 abstract class CentersViewModelOutputs{

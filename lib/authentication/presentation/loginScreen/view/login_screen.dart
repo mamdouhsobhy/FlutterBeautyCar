@@ -24,6 +24,7 @@ import '../../../../utils/shared_text_field.dart';
 import '../../../../utils/shared_text_field_with_phone_code.dart';
 import '../../routeManager/routesManager.dart';
 import '../viewmodel/login_viewmodel.dart';
+import '../../../../app/dio/dio_factory.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,10 +48,15 @@ class _LoginScreenState extends State<LoginScreen> {
     _countryCodeController.text = Constants.defaultCountryCode;
   }
 
-  _intentToHomeScreen(ModelLoginResponseRemote? data) {
+  _intentToHomeScreen(ModelLoginResponseRemote? data) async {
       _appPreferences.setUserLoggedIn();
      _appPreferences.setUserData(data ?? ModelLoginResponseRemote());
        Constants.token = "${data?.token}";
+      
+      // Update Dio instance with new token
+      final dioFactory = instance<DioFactory>();
+      await dioFactory.updateToken(Constants.token);
+      
       initHomeModule();
       initCentersModule();
     Navigator.pushReplacement(
@@ -85,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   stream: _loginViewModel.outputState,
                   builder: (context, snapshot) {
                     if (snapshot.data != null && _loginViewModel.isOutStateLoading) {
-                      _loginViewModel.isOutStateLoading = false;
                       _handleLoginStateChanged(snapshot.data!);
                     }
                     return _getLoginScreenContent();
@@ -100,10 +105,10 @@ class _LoginScreenState extends State<LoginScreen> {
         stream: _loginViewModel.outputLoginData,
         builder: (context, snapshot) {
           if (snapshot.data != null && snapshot.data?.status == true) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
               if (_loginViewModel.isLoginLoading == true) {
                 _loginViewModel.isLoginLoading = false;
-                _intentToHomeScreen(snapshot.data);
+                await _intentToHomeScreen(snapshot.data);
               }
             });
           }
@@ -134,8 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
               takeValue: (value) {
                 _phoneController.text = value;
                 _loginViewModel.loginObject.phone = "";
-                _loginViewModel.loginObject.phone = _countryCodeController.text + value;
-                print("PhoneCodeNumber ${_phoneController.text}");
+                _loginViewModel.loginObject.phone = value;
               },
               takeCountryCode: (code) {
                 _countryCodeController.text = "$code".replaceAll("+", "");
@@ -143,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return AppStrings.enter_phone_number.tr();
-                } else if (!isPhoneValid(_phoneController.text, _countryCodeController.text)) {
+                } else if (!isPhoneValid(_phoneController.text, "+${_countryCodeController.text}")) {
                   return AppStrings.enter_valid_phone.tr();
                 }
                 return null;
@@ -262,11 +266,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (state is LoadingState && !isLoadingDialogShowing()) {
         showLoadingDialog(context);
       } else if (state is ErrorState) {
+        _loginViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
+        _loginViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
-        context.showSuccessToast("Logged In Successfully");
       } else {
         dismissLoadingDialog();
       }

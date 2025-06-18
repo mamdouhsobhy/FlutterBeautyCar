@@ -65,51 +65,55 @@ class _MoreOrdersPageScreenState extends State<MoreOrdersPageScreen> {
   }
 
   Widget _getMoreOrdersScreenContent() {
-    return Expanded(
-      child: RefreshIndicator(
-          color: ColorManager.colorRedB2,
-          onRefresh: () async {
-        await _moreOrdersViewModel.getRecentOrders(); // Assuming a method to refresh data exists
-      },
-      child: StreamBuilder<ModelOrdersResponseRemote>(
-        stream: _moreOrdersViewModel.outputOrdersData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
-            return ListView.builder(
-              itemCount: snapshot.data?.data?.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppPadding.p8, horizontal: AppPadding.p16),
-                  child: ServiceRequestCard(orders: snapshot.data!.data![index]),
+    return Column(
+      children: [
+        Expanded(
+          child: RefreshIndicator(
+              color: ColorManager.colorRedB2,
+              onRefresh: () async {
+             _moreOrdersViewModel.getRecentOrders(); // Assuming a method to refresh data exists
+          },
+          child: StreamBuilder<ModelOrdersResponseRemote>(
+            stream: _moreOrdersViewModel.outputOrdersData,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
+                return ListView.builder(
+                  itemCount: snapshot.data?.data?.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: AppPadding.p8, horizontal: AppPadding.p16),
+                      child: ServiceRequestCard(orders: snapshot.data!.data![index]),
+                    );
+                  },
                 );
-              },
-            );
-          }
-          // else if (snapshot.connectionState == ConnectionState.waiting) {
-          //   return const Center(child: CircularProgressIndicator());
-          // }
-          else {
-            return Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p100),
-              child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(ImageAssets.ordersIcon),
-                      Text(
-                        "No Orders Found",
-                        style: getRegularStyle(
-                            color: ColorManager.black, fontSize: FontSize.size16),
-                      ),
-                    ],
-                  )
-              ),
-            );
-          }
-        },
-      ),
-      ),
+              }
+              // else if (snapshot.connectionState == ConnectionState.waiting) {
+              //   return const Center(child: CircularProgressIndicator());
+              // }
+              else {
+                return Padding(
+                  padding: const EdgeInsets.only(top: AppPadding.p100),
+                  child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(ImageAssets.ordersIcon),
+                          Text(
+                            "No Orders Found",
+                            style: getRegularStyle(
+                                color: ColorManager.black, fontSize: FontSize.size16),
+                          ),
+                        ],
+                      )
+                  ),
+                );
+              }
+            },
+          ),
+          ),
+        ),
+      ],
     );
   }
 

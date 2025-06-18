@@ -118,9 +118,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   takeValue: (value) {
                     _phoneController.text = value;
                     _forgetPasswordViewModel.sendOtpRequest.phone = "";
-                    _forgetPasswordViewModel.sendOtpRequest.phone =
-                        _countryCodeController.text + value;
-                    print("PhoneCodeNumber ${_phoneController.text}");
+                    _forgetPasswordViewModel.sendOtpRequest.phone = value;
                   },
                   takeCountryCode: (code) {
                     _countryCodeController.text = "$code".replaceAll("+", "");
@@ -129,7 +127,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     if (value == null || value.isEmpty) {
                       return AppStrings.enter_phone_number.tr();
                     } else if (!isPhoneValid(
-                        _phoneController.text, _countryCodeController.text)) {
+                        _phoneController.text,"+${_countryCodeController.text}")) {
                       return AppStrings.enter_valid_phone.tr();
                     }
                     return null;
@@ -186,8 +184,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
         _forgetPasswordViewModel.isOutStateLoading = false;
-        dismissLoadingDialog();
         _intentToResetPasswordScreen();
+        dismissLoadingDialog();
       } else {
         dismissLoadingDialog();
       }

@@ -40,17 +40,15 @@ class LoginViewModel extends BaseViewModel implements LoginViewModelInputs,Login
 
   Future<void> login() async {
     isLoginLoading = false;
-    isOutStateLoading = false;
+    isOutStateLoading = true;
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
     (await _loginUseCase.execute(await buildLoginFormData()))
         .fold(
           (failure) {
-         isOutStateLoading = true;
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
       }, (data) {
-      isOutStateLoading = true;
       isLoginLoading = true;
       loginData.add(data);
       inputState.add(SuccessState(""));

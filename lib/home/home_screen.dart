@@ -44,9 +44,19 @@ class _HomeScreenState extends State<HomeScreen> {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: HomeRouteGenerator.getRoute,
       initialRoute: "/",
-      home: Scaffold(
-        body: _tabsScreens[_selectedScreenIndex],
-        bottomNavigationBar: BottomNavigationBar(
+      home: WillPopScope(
+        onWillPop: () async {
+          if (_selectedScreenIndex != 0) {
+            setState(() {
+              _selectedScreenIndex = 0;
+            });
+            return false;
+          }
+          return true; // Allow the app to exit
+        },
+        child: Scaffold(
+          body: _tabsScreens[_selectedScreenIndex],
+          bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: (index) {
               _onItemTapped(index);
@@ -67,41 +77,43 @@ class _HomeScreenState extends State<HomeScreen> {
             items: [
               BottomNavigationBarItem(
                   icon: Padding(
-                padding: const EdgeInsets.only(
-                    top: AppPadding.p8, bottom: AppPadding.p8),
-                child: SvgPicture.asset(ImageAssets.homeIcon,
-                    color: _selectedScreenIndex == 0
-                        ? ColorManager.colorRedB2
-                        : ColorManager.colorGray72),
-              ),label: AppStrings.home.tr()),
+                    padding: const EdgeInsets.only(
+                        top: AppPadding.p8, bottom: AppPadding.p8),
+                    child: SvgPicture.asset(ImageAssets.homeIcon,
+                        color: _selectedScreenIndex == 0
+                            ? ColorManager.colorRedB2
+                            : ColorManager.colorGray72),
+                  ), label: AppStrings.home.tr()),
               BottomNavigationBarItem(
                   icon: Padding(
-                padding: const EdgeInsets.only(
-                    top: AppPadding.p8, bottom: AppPadding.p8),
-                child: SvgPicture.asset(ImageAssets.centerIcon,
-                    color: _selectedScreenIndex == 1
-                        ? ColorManager.colorRedB2
-                        : ColorManager.colorGray72),
-              ),label: AppStrings.centers.tr()),
+                    padding: const EdgeInsets.only(
+                        top: AppPadding.p8, bottom: AppPadding.p8),
+                    child: SvgPicture.asset(ImageAssets.centerIcon,
+                        color: _selectedScreenIndex == 1
+                            ? ColorManager.colorRedB2
+                            : ColorManager.colorGray72),
+                  ), label: AppStrings.centers.tr()),
               BottomNavigationBarItem(
                   icon: Padding(
-                padding: const EdgeInsets.only(
-                    top: AppPadding.p8, bottom: AppPadding.p8),
-                child: SvgPicture.asset(ImageAssets.ordersIcon,
-                    color: _selectedScreenIndex == 2
-                        ? ColorManager.colorRedB2
-                        : ColorManager.colorGray72),
-              ),label: AppStrings.orders.tr()),
+                    padding: const EdgeInsets.only(
+                        top: AppPadding.p8, bottom: AppPadding.p8),
+                    child: SvgPicture.asset(ImageAssets.ordersIcon,
+                        color: _selectedScreenIndex == 2
+                            ? ColorManager.colorRedB2
+                            : ColorManager.colorGray72),
+                  ), label: AppStrings.orders.tr()),
               BottomNavigationBarItem(
                   icon: Padding(
-                padding: const EdgeInsets.only(
-                    top: AppPadding.p8, bottom: AppPadding.p8),
-                child: SvgPicture.asset(ImageAssets.usersIcon,
-                    color: _selectedScreenIndex == 3
-                        ? ColorManager.colorRedB2
-                        : ColorManager.colorGray72),
-              ),label: AppStrings.employees.tr()),
-            ]),
+                    padding: const EdgeInsets.only(
+                        top: AppPadding.p8, bottom: AppPadding.p8),
+                    child: SvgPicture.asset(ImageAssets.usersIcon,
+                        color: _selectedScreenIndex == 3
+                            ? ColorManager.colorRedB2
+                            : ColorManager.colorGray72),
+                  ), label: AppStrings.employees.tr()),
+            ],
+          ),
+        ),
       ),
     );
   }

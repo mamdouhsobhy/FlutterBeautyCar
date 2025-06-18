@@ -133,94 +133,118 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
         const SizedBox(height: AppSize.s10,),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: () async{
+            onRefresh: () async {
               _centersViewModel.page = 1;
               _centersViewModel.centerRequest.page = 1;
+              _centersViewModel.centersList = [];
               _centersViewModel.centersList.clear();
               filteredCenters.clear();
+              _centersViewModel.resetPage();
               _centersViewModel.getCenters();
             },
-            child: Stack(
-              children: [
-                StreamBuilder<ModelCentersResponseRemote>(
-                  stream: _centersViewModel.outputCentersData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
-                      for (var center in snapshot.data!.data!) {
-                        if (!_centersViewModel.centersList.contains(center)) {
-                          _centersViewModel.centersList.add(center);
-                        }
-                      }
-                    }
-                    if(_centersViewModel.centersList.isEmpty){
-                      return Padding(
-                        padding: const EdgeInsets.only(top: AppPadding.p70),
-                        child: Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(ImageAssets.ordersIcon),
-                                Text(
-                                  "No Centers Found",
-                                  style: getRegularStyle(
-                                      color: ColorManager.black, fontSize: FontSize.size16),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Stack(
+                  children: [
+                    Container(
+                      height: constraints.maxHeight,
+                      child: StreamBuilder<ModelCentersResponseRemote>(
+                        stream: _centersViewModel.outputCentersData,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
+                            for (var center in snapshot.data!.data!) {
+                              if (!_centersViewModel.centersList.contains(center)) {
+                                _centersViewModel.centersList.add(center);
+                              }
+                            }
+                          }
+
+                          if (_centersViewModel.centersList.isEmpty) {
+                            return SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: SizedBox(
+                                height: constraints.maxHeight,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(ImageAssets.ordersIcon),
+                                      const SizedBox(height: AppSize.s10),
+                                      Text(
+                                        "No Centers Found",
+                                        style: getRegularStyle(
+                                          color: ColorManager.black,
+                                          fontSize: FontSize.size16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            )
-                        ),
-                      );
-                    }else{
-                      if(_searchController.text.isEmpty) {
-                        filteredCenters = _centersViewModel.centersList;
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p14,vertical: AppPadding.p5),
-                        child: GridView.builder(
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemCount: filteredCenters.length,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Two items per row
-                            mainAxisSpacing: AppPadding.p8,
-                            crossAxisSpacing: AppPadding.p8,
-                            childAspectRatio:1 / 1.33, // Adjust based on your card's height/width
-                          ),
-                          itemBuilder: (context, index) {
-                            return CentersItemCard(centers: filteredCenters[index],fun: (centerId){
-                              Future.delayed(const Duration(milliseconds: 500), () {
-                                Navigator.pushNamed(context, HomeRoutes.createCenterRoute,
-                                    arguments:{'centerId': "$centerId"} );
-                              });
-                            });
-                          },
-                        ),
-                      );
-                    }
-                  }
-                ),
-                Positioned(
-                  bottom: AppPadding.p50,
-                    right: AppPadding.p16,
-                    child: InkWell(
-                      onTap: (){
-                        Navigator.pushNamed(context, HomeRoutes.createCenterRoute);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(AppPadding.p10),
-                        decoration: BoxDecoration(
-                          color: ColorManager.colorRedB2, // Light gray background
-                          borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
-                          border:
-                          Border.all(color: ColorManager.colorRedB2), // Optional: visible border
-                        ),
-                        child: SvgPicture.asset(ImageAssets.plusIcon),
+                              ),
+                            );
+
+                          } else {
+                            if (_searchController.text.isEmpty) {
+                              filteredCenters = _centersViewModel.centersList;
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: AppPadding.p14, vertical: AppPadding.p5),
+                              child: GridView.builder(
+                                controller: _scrollController,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: filteredCenters.length,
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: AppPadding.p8,
+                                  crossAxisSpacing: AppPadding.p8,
+                                  childAspectRatio: 1 / 1.33,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return CentersItemCard(
+                                    centers: filteredCenters[index],
+                                    fun: (centerId) {
+                                      Future.delayed(const Duration(milliseconds: 500), () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          HomeRoutes.createCenterRoute,
+                                          arguments: {'centerId': "$centerId"},
+                                        );
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        },
                       ),
-                    )
-                )
-              ],
+                    ),
+                    Positioned(
+                      bottom: AppPadding.p50,
+                      right: AppPadding.p16,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, HomeRoutes.createCenterRoute);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(AppPadding.p10),
+                          decoration: BoxDecoration(
+                            color: ColorManager.colorRedB2,
+                            borderRadius: BorderRadius.circular(AppSize.s15),
+                            border: Border.all(color: ColorManager.colorRedB2),
+                          ),
+                          child: SvgPicture.asset(ImageAssets.plusIcon),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -244,6 +268,8 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
     _centersViewModel.dispose();
     super.dispose();
   }

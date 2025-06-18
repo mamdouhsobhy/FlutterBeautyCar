@@ -26,13 +26,15 @@ class AuthRepositoryImpl implements AuthRepository{
     if(await _networkInfo.isConnected){
 
       try{
+
         final response = await _authRemoteDataSource.login(formData);
 
         if(response.status == true){
           return Right(response);
         }else{
-          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ""));
         }
+
       }catch(error){
         return Left(ErrorHandler.handle(error).failure);
       }
