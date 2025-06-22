@@ -93,6 +93,7 @@
   "experience": "خبرة",
   "identity_card_number": "رقم بطاقة الهوية",
   "active": "نشط",
+  "un_active": "غير نشط",
   "enter_valid_email": "ادخل بريد إلكتروني صالح",
   "enter_valid_phone": "ادخل رقم هاتف صالح",
   "password_must_be_6_character": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
@@ -108,7 +109,14 @@
   "photo_From_Camera": "من الكاميرا",
   "select_center_image": "اختر صورة المركز",
   "center_created_successfully": "تم إنشاء المركز بنجاح",
-  "center_updated_successfully": "تم تحديث المركز بنجاح"
+  "center_updated_successfully": "تم تحديث المركز بنجاح",
+  "order_accepted_successfully": "تم قبول الطلب بنجاح",
+  "order_cancelled_successfully": "تم إلغاء الطلب بنجاح",
+  "pending": "قيد الانتظار",
+  "accepted": "مقبول",
+  "completed": "مكتمل",
+  "cancelled": "ملغي"
+
 
 
 }

@@ -40,6 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
       
       initHomeModule();
       initCentersModule();
+      initOrdersModule();
+      initEmployeeModule();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),

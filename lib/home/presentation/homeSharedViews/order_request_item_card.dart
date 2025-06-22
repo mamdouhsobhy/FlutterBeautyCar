@@ -1,7 +1,9 @@
+import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/resources/assetsManager.dart';
 import 'package:beauty_car/resources/fontManager.dart';
 import 'package:beauty_car/resources/stringManager.dart';
 import 'package:beauty_car/resources/styleManager.dart';
+import 'package:beauty_car/utils/Constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,15 +12,16 @@ import '../../../resources/colorManager.dart';
 import '../../../resources/valuesManager.dart';
 
 class OrderRequestItemCard extends StatelessWidget {
-  const OrderRequestItemCard({super.key,required this.fun});
+  OrderRequestItemCard({super.key,required this.orders,required this.fun});
 
-  final Function fun;
+  final Data orders;
+  late Function(String , String) fun;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        fun();
+        fun("${orders.id}","details");
       },
       child: Card(
         color: ColorManager.white,
@@ -46,9 +49,9 @@ class OrderRequestItemCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Mamdouh",style: getBoldStyle(color: ColorManager.colorGray72,fontSize: FontSize.size16)),
+                          Text("${orders.clientName}",style: getBoldStyle(color: ColorManager.colorGray72,fontSize: FontSize.size16)),
                           const SizedBox(height: AppSize.s4),
-                          Text("مغاسل السيارات",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))
+                          Text(orders.serviceName ?? "------",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))
                         ],
                       ),
                     )
@@ -62,9 +65,9 @@ class OrderRequestItemCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("67fd9ba3b",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16)),
+                          Text("${orders.id}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16)),
                           const SizedBox(height: AppSize.s4),
-                          Text("4/9/2025",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size12))
+                          Text("${orders.date}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size12))
                         ],
                       ),
                     ),
@@ -73,7 +76,7 @@ class OrderRequestItemCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSize.s16),
-            Padding(
+            if (orders.status == OrderStatus.pending) Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -81,7 +84,7 @@ class OrderRequestItemCard extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        // Handle accept
+                        fun("${orders.id}","accept");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.colorGreen34,
@@ -101,7 +104,7 @@ class OrderRequestItemCard extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {
-                        // Handle reject
+                        fun("${orders.id}","reject");
                       },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: ColorManager.colorRedB2),
@@ -119,8 +122,8 @@ class OrderRequestItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: AppSize.s20),
+            ) else SizedBox(),
+            SizedBox(height: orders.status == OrderStatus.pending ? AppSize.s20 : 0),
           ],
         ),
       ),

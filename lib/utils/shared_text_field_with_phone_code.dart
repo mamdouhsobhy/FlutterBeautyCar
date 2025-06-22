@@ -106,7 +106,7 @@ class _MyTextFieldWithPhoneCodeState extends State<MyTextFieldWithPhoneCode> {
 
                     final updatedText = currentText.replaceFirst(RegExp(r'^\+\d+'), '');
 
-                    widget.controller.text = newCountryCode + updatedText;
+                    // widget.controller.text = newCountryCode + updatedText;
                     widget.takeCountryCode(newCountryCode);
                   },
                   initialSelection: 'EG',

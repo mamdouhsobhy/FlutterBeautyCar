@@ -6,6 +6,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
+import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
 import 'package:beauty_car/home/domain/repository/home_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -164,6 +165,98 @@ class HomeRepositoryImpl implements HomeRepository{
 
       try{
         final response = await _homeRemoteDataSource.updateCenter(id,formData,method);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, ModelOrdersResponseRemote>> getOrdersWithStatus(bool pagination,int limit,int page,int status) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.getOrdersWithStatus(pagination , limit , page,status);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, ModelUpdateOrderStatusResponseRemote>> updateOrderStatus(String id,int status) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.updateOrderStatus(id ,status);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, ModelOrdersResponseRemote>> getOrderDetails(String id) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.getOrderDetails(id);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, ModelEmployeesResponseRemote>> getEmployeeDetails(String empId) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.getEmployeeDetails(empId);
 
         if(response.status == true){
           return Right(response);

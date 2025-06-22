@@ -93,6 +93,7 @@
   "experience": "Experience",
   "identity_card_number": "Identity Card Number",
   "active": "Active",
+  "un_active": "Inactive",
   "enter_valid_email": "Enter a valid email address",
   "enter_valid_phone": "Enter a valid phone number",
   "password_must_be_6_character": "Password must be at least 6 characters long",
@@ -108,7 +109,13 @@
   "photo_From_Camera": "From Camera",
   "select_center_image": "Select center image",
   "center_created_successfully": "Center created successfully",
-  "center_updated_successfully": "Center updated successfully"
+  "center_updated_successfully": "Center updated successfully",
+  "order_accepted_successfully": "Order accepted successfully",
+  "order_cancelled_successfully": "Order cancelled successfully",
+  "pending": "Pending",
+  "accepted": "Accepted",
+  "completed": "Completed",
+  "cancelled": "Cancelled"
 
 
 }

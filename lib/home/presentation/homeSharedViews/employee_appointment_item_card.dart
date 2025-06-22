@@ -17,14 +17,16 @@ class EmployeeAppointmentItemCard extends StatelessWidget {
       color: ColorManager.white,
       elevation: 1,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSize.s18)
-      ),
+          borderRadius: BorderRadius.circular(AppSize.s18)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p12),
+            padding: const EdgeInsets.only(
+                top: AppPadding.p24,
+                bottom: AppPadding.p24,
+                left: AppPadding.p12),
             child: Stack(
               alignment: Alignment.bottomRight,
               children: [
@@ -39,20 +41,44 @@ class EmployeeAppointmentItemCard extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p28,bottom: AppPadding.p28,right: AppPadding.p8,left: AppPadding.p4),
+              padding: const EdgeInsets.only(
+                  top: AppPadding.p28,
+                  bottom: AppPadding.p28,
+                  right: AppPadding.p8,
+                  left: AppPadding.p4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Mamdouh",style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size16)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Mamdouh",
+                          style: getBoldStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.size16)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                        child: Text("Status : Completed",
+                            style: getRegularStyle(
+                                color: ColorManager.colorGray60,
+                                fontSize: FontSize.size12)),
+                      )
+                    ],
+                  ),
                   const SizedBox(height: AppSize.s4),
-                  Text("67fd9ba3b",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
+                  Text("67fd9ba3b",
+                      style: getRegularStyle(
+                          color: ColorManager.colorGray72,
+                          fontSize: FontSize.size14)),
                   const SizedBox(height: AppSize.s4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Service Place : outside",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
-                      Text("Status : Completed",style: getRegularStyle(color: ColorManager.colorGray60,fontSize: FontSize.size12)),
+                      Text("Service Place : outside",
+                          style: getRegularStyle(
+                              color: ColorManager.colorGray72,
+                              fontSize: FontSize.size14)),
                     ],
                   )
                 ],

@@ -11,11 +11,19 @@ import 'package:beauty_car/authentication/presentation/resetPasswordScreen/viewm
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
 import 'package:beauty_car/home/domain/usecase/centers_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/create_center_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/employee_details_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/employee_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/home_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/order_details_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
 import 'package:beauty_car/home/presentation/centerPageScreen/viewmodel/centers_viewmodel.dart';
 import 'package:beauty_car/home/presentation/createCenterScreen/viewmodel/create_center_viewmodel.dart';
+import 'package:beauty_car/home/presentation/employeeDetailsPageScreen/viewmodel/employee_details_viewmodel.dart';
+import 'package:beauty_car/home/presentation/employeePageScreen/viewmodel/employee_viewmodel.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/viewmodel/more_orders_viewmodel.dart';
+import 'package:beauty_car/home/presentation/orderPageScreen/viewmodel/orders_viewmodel.dart';
+import 'package:beauty_car/home/presentation/reserveDetailsPageScreen/viewmodel/order_details_viewmodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -139,6 +147,43 @@ initCreateCentersModule(){
   }
 
 }
+
+initOrdersModule(){
+
+  if(!GetIt.I.isRegistered<OrdersUseCase>()) {
+    instance.registerFactory<OrdersUseCase>(() => OrdersUseCase(instance()));
+    instance.registerFactory<OrdersViewModel>(() => OrdersViewModel(instance()));
+  }
+
+}
+
+initOrderDetailsModule(){
+
+  if(!GetIt.I.isRegistered<OrderDetailsUseCase>()) {
+    instance.registerFactory<OrderDetailsUseCase>(() => OrderDetailsUseCase(instance()));
+    instance.registerFactory<OrderDetailsViewModel>(() => OrderDetailsViewModel(instance()));
+  }
+
+}
+
+initEmployeeModule(){
+
+  if(!GetIt.I.isRegistered<EmployeeUseCase>()) {
+    instance.registerFactory<EmployeeUseCase>(() => EmployeeUseCase(instance()));
+    instance.registerFactory<EmployeeViewModel>(() => EmployeeViewModel(instance()));
+  }
+
+}
+
+initEmployeeDetailsModule(){
+
+  if(!GetIt.I.isRegistered<EmployeeDetailsUseCase>()) {
+    instance.registerFactory<EmployeeDetailsUseCase>(() => EmployeeDetailsUseCase(instance()));
+    instance.registerFactory<EmployeeDetailsViewModel>(() => EmployeeDetailsViewModel(instance()));
+  }
+
+}
+
 
 
 

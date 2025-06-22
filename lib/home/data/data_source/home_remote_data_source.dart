@@ -5,6 +5,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
+import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
 import 'package:dio/dio.dart';
 
 abstract class HomeRemoteDataSource {
@@ -21,6 +22,14 @@ abstract class HomeRemoteDataSource {
   Future<ModelCentersResponseRemote> getCenterDetails(String id);
 
   Future<ModelCreateOrUpdateCenterResponseRemote> updateCenter(String id , FormData formData ,String method);
+
+  Future<ModelOrdersResponseRemote> getOrdersWithStatus(bool pagination , int limit , int page , int status);
+
+  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id , int status);
+
+  Future<ModelOrdersResponseRemote> getOrderDetails(String id);
+
+  Future<ModelEmployeesResponseRemote> getEmployeeDetails(String empId);
 
 }
 
@@ -62,6 +71,26 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<ModelCreateOrUpdateCenterResponseRemote> updateCenter(String id, FormData formData, String method) async{
     return await _homeServiceClient.updateCenter(id,formData,method);
+  }
+
+  @override
+  Future<ModelOrdersResponseRemote> getOrdersWithStatus(bool pagination , int limit , int page , int status) async {
+    return await _homeServiceClient.getOrdersWithStatus(pagination , limit , page , status);
+  }
+
+  @override
+  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id, int status) async{
+    return await _homeServiceClient.updateOrderStatus(id , status);
+  }
+
+  @override
+  Future<ModelOrdersResponseRemote> getOrderDetails(String id) async{
+    return await _homeServiceClient.getOrderDetails(id);
+  }
+
+  @override
+  Future<ModelEmployeesResponseRemote> getEmployeeDetails(String empId) async{
+    return await _homeServiceClient.getEmployeeDetails(empId);
   }
 
 }

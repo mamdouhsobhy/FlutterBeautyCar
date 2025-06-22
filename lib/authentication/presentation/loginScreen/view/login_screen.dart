@@ -59,6 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
       
       initHomeModule();
       initCentersModule();
+      initOrdersModule();
+      initEmployeeModule();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),

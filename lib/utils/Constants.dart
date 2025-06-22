@@ -22,3 +22,10 @@ class CenterStatus{
   static const open = "2";
   static const closed = "1";
 }
+
+class OrderStatus{
+  static const pending = 1;
+  static const accepted = 2;
+  static const completed = 3;
+  static const cancelled = 4;
+}

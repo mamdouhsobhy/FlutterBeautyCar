@@ -1,48 +1,43 @@
 import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'orders.g.dart';
+part 'update_order_status.g.dart';
 
 @JsonSerializable()
-class ModelOrdersResponseRemote extends BaseResponse{
+class ModelUpdateOrderStatusResponseRemote extends BaseResponse{
   @JsonKey(name: "data")
-  final List<Data>? data;
-  @JsonKey(name: "pagination")
-  final Pagination? pagination;
+  final UpdatedOrderData? data;
 
-  ModelOrdersResponseRemote ({
+  ModelUpdateOrderStatusResponseRemote ({
     this.data,
-    this.pagination,
     super.status,
     super.code,
     super.message
   });
 
-  factory ModelOrdersResponseRemote.fromJson(Map<String, dynamic> json) {
-    return _$ModelOrdersResponseRemoteFromJson(json);
+  factory ModelUpdateOrderStatusResponseRemote.fromJson(Map<String, dynamic> json) {
+    return _$ModelUpdateOrderStatusResponseRemoteFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$ModelOrdersResponseRemoteToJson(this);
+    return _$ModelUpdateOrderStatusResponseRemoteToJson(this);
   }
 }
 
 @JsonSerializable()
-class Data {
+class UpdatedOrderData {
   @JsonKey(name: "id")
   final int? id;
+  @JsonKey(name: "created_at")
+  final String? createdAt;
+  @JsonKey(name: "updated_at")
+  final String? updatedAt;
   @JsonKey(name: "client_id")
   final int? clientId;
   @JsonKey(name: "client_name")
   final String? clientName;
   @JsonKey(name: "client_phone")
   final String? clientPhone;
-  @JsonKey(name: "shop_id")
-  final int? shopId;
-  @JsonKey(name: "shop_name")
-  final String? shopName;
-  @JsonKey(name: "shop_address")
-  final String? shopAddress;
   @JsonKey(name: "vendor_id")
   final int? vendorId;
   @JsonKey(name: "vendor_name")
@@ -58,7 +53,13 @@ class Data {
   @JsonKey(name: "service_id")
   final int? serviceId;
   @JsonKey(name: "service_name")
-  final String? serviceName;
+  final dynamic? serviceName;
+  @JsonKey(name: "shop_id")
+  final int? shopId;
+  @JsonKey(name: "shop_name")
+  final String? shopName;
+  @JsonKey(name: "shop_address")
+  final String? shopAddress;
   @JsonKey(name: "address_id")
   final int? addressId;
   @JsonKey(name: "address_name")
@@ -82,18 +83,15 @@ class Data {
   @JsonKey(name: "place_type")
   final String? placeType;
   @JsonKey(name: "status")
-  final int? status;
-  @JsonKey(name: "date_added")
-  final String? dateAdded;
+  final String? status;
 
-  Data ({
+  UpdatedOrderData ({
     this.id,
+    this.createdAt,
+    this.updatedAt,
     this.clientId,
     this.clientName,
     this.clientPhone,
-    this.shopId,
-    this.shopName,
-    this.shopAddress,
     this.vendorId,
     this.vendorName,
     this.vendorPhone,
@@ -102,6 +100,9 @@ class Data {
     this.employeePhone,
     this.serviceId,
     this.serviceName,
+    this.shopId,
+    this.shopName,
+    this.shopAddress,
     this.addressId,
     this.addressName,
     this.addressCity,
@@ -114,56 +115,14 @@ class Data {
     this.time,
     this.placeType,
     this.status,
-    this.dateAdded,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return _$DataFromJson(json);
+  factory UpdatedOrderData.fromJson(Map<String, dynamic> json) {
+    return _$UpdatedOrderDataFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$DataToJson(this);
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is Data && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
-}
-
-@JsonSerializable()
-class Pagination {
-  @JsonKey(name: "total")
-  final int? total;
-  @JsonKey(name: "per_page")
-  final int? perPage;
-  @JsonKey(name: "current_page")
-  final int? currentPage;
-  @JsonKey(name: "last_page")
-  final int? lastPage;
-  @JsonKey(name: "from")
-  final int? from;
-  @JsonKey(name: "to")
-  final int? to;
-
-  Pagination ({
-    this.total,
-    this.perPage,
-    this.currentPage,
-    this.lastPage,
-    this.from,
-    this.to,
-  });
-
-  factory Pagination.fromJson(Map<String, dynamic> json) {
-    return _$PaginationFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$PaginationToJson(this);
+    return _$UpdatedOrderDataToJson(this);
   }
 }
 

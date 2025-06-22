@@ -4,6 +4,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
+import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import '../../../../app/errorHandler/failure.dart';
@@ -23,5 +24,13 @@ abstract class HomeRepository {
   Future<Either<Failure,ModelCentersResponseRemote>> getCenterDetails(String id);
 
   Future<Either<Failure,ModelCreateOrUpdateCenterResponseRemote>> updateCenter(String id , FormData formData ,String method);
+
+  Future<Either<Failure,ModelOrdersResponseRemote>> getOrdersWithStatus(bool pagination , int limit , int page , int status);
+
+  Future<Either<Failure,ModelUpdateOrderStatusResponseRemote>> updateOrderStatus(String id , int status);
+
+  Future<Either<Failure,ModelOrdersResponseRemote>> getOrderDetails(String id);
+
+  Future<Either<Failure,ModelEmployeesResponseRemote>> getEmployeeDetails(String empId);
 
 }

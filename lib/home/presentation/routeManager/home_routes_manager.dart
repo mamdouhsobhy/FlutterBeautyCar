@@ -2,8 +2,8 @@ import 'package:beauty_car/home/presentation/moreOrdersPageScreen/view/more_orde
 import 'package:flutter/material.dart';
 import '../../../app/di/di.dart';
 import '../createCenterScreen/view/create_center_screen.dart';
-import '../employeeDetailsPageScreen/employee_details_page_screen.dart';
-import '../reserveDetailsPageScreen/reserve_details_page_screen.dart';
+import '../employeeDetailsPageScreen/view/employee_details_page_screen.dart';
+import '../reserveDetailsPageScreen/view/reserve_details_page_screen.dart';
 
 class HomeRoutes {
   static const String createCenterRoute = "/createCenter";
@@ -21,11 +21,15 @@ class HomeRouteGenerator {
             builder: (_) => const CreateCenterScreen(),
             settings: settings);
       case HomeRoutes.reserveDetailsRoute:
+        initOrderDetailsModule();
         return MaterialPageRoute(
-            builder: (_) => const ReserveDetailsPageScreen());
+            builder: (_) => const ReserveDetailsPageScreen(),
+            settings: settings);
       case HomeRoutes.employeeDetailsRoute:
+        initEmployeeDetailsModule();
         return MaterialPageRoute(
-            builder: (_) => const EmployeeDetailsPageScreen());
+            builder: (_) => const EmployeeDetailsPageScreen(),
+            settings: settings);
       case HomeRoutes.moreOrdersRoute:
         return MaterialPageRoute(
             builder: (_) => const MoreOrdersPageScreen());

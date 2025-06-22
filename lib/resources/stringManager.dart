@@ -95,6 +95,7 @@ class AppStrings {
   static const String experience = "experience";
   static const String identity_card_number = "identity_card_number";
   static const String active = "active";
+  static const String un_active = "un_active";
   static const String enter_valid_email = "enter_valid_email";
   static const String enter_valid_phone = "enter_valid_phone";
   static const String password_must_be_6_character = "password_must_be_6_character";
@@ -111,6 +112,11 @@ class AppStrings {
   static const String select_center_image = "select_center_image";
   static const String center_created_successfully = "center_created_successfully";
   static const String center_updated_successfully = "center_updated_successfully";
-
+  static const String order_accepted_successfully = "order_accepted_successfully";
+  static const String order_cancelled_successfully = "order_cancelled_successfully";
+  static const String pending = "pending";
+  static const String accepted = "accepted";
+  static const String completed = "completed";
+  static const String cancelled = "cancelled";
 
 }

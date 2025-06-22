@@ -1,8 +1,6 @@
+import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../../../authentication/presentation/sharedViews/auth_title_and_subtitle.dart';
 import '../../../resources/assetsManager.dart';
 import '../../../resources/stringManager.dart';
 import '../../../resources/valuesManager.dart';
@@ -10,7 +8,8 @@ import '../../../utils/shared_text_field.dart';
 import '../../../utils/shared_text_field_with_phone_code.dart';
 
 class EmployeeInfoPageScreen extends StatefulWidget {
-  const EmployeeInfoPageScreen({super.key});
+  late Data? employee;
+  EmployeeInfoPageScreen({super.key,required this.employee});
 
   @override
   State<EmployeeInfoPageScreen> createState() => _EmployeeInfoPageScreenState();
@@ -18,12 +17,29 @@ class EmployeeInfoPageScreen extends StatefulWidget {
 
 class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
   final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _experienceController = TextEditingController();
+  final TextEditingController _identifyCardNumberController = TextEditingController();
+  final TextEditingController _startTimeController = TextEditingController();
+  final TextEditingController _endTimeController = TextEditingController();
+  final TextEditingController _activeController = TextEditingController();
 
   @override
   void initState() {
-    _userNameController.text = "123Mamdouh456";
+    _userNameController.text = "${widget.employee?.name}";
+    _emailController.text = "${widget.employee?.email}";
+    _phoneController.text = "${widget.employee?.phone}";
+    _experienceController.text = "${widget.employee?.experiance}";
+    _identifyCardNumberController.text = "${widget.employee?.ssdNum}";
+    _startTimeController.text = "${widget.employee?.startTime}";
+    _endTimeController.text = "${widget.employee?.endTime}";
+    _activeController.text = widget.employee?.status == 1 ? AppStrings.un_active.tr() : AppStrings.active.tr();
+    setState(() {
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -52,7 +68,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 readOnly: true,
                 inputType: TextInputType.emailAddress,
                 validator: null,
-                controller: _userNameController,
+                controller: _emailController,
                 takeValue: (value) {}
             ),
             const SizedBox(height: AppSize.s16),
@@ -64,16 +80,8 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 takeCountryCode: (code) {
 
                 },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "AppStrings.select_currency.tr()";
-                  } else {
-                    null;
-                  }
-                  return null;
-                },
                 paddingHorizontal: AppPadding.p16,
-                controller: _userNameController
+                controller: _phoneController
             ),
             const SizedBox(height: AppSize.s16),
             MyTextField(
@@ -84,7 +92,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 obscureText: false,
                 inputType: TextInputType.visiblePassword,
                 validator: null,
-                controller: _userNameController,
+                controller: _experienceController,
                 takeValue: (value) {}
             ),
             const SizedBox(height: AppSize.s16),
@@ -96,7 +104,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 obscureText: false,
                 inputType: TextInputType.visiblePassword,
                 validator: null,
-                controller: _userNameController,
+                controller: _identifyCardNumberController,
                 takeValue: (value) {}
             ),
             const SizedBox(height: AppSize.s16),
@@ -108,7 +116,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 obscureText: false,
                 inputType: TextInputType.text,
                 validator: null,
-                controller: _userNameController,
+                controller: _startTimeController,
                 takeValue: (value) {}),
             const SizedBox(height: AppSize.s16),
             MyTextField(
@@ -119,7 +127,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 obscureText: false,
                 inputType: TextInputType.text,
                 validator: null,
-                controller: _userNameController,
+                controller: _endTimeController,
                 takeValue: (value) {}),
             const SizedBox(height: AppSize.s16),
             MyTextField(
@@ -130,7 +138,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 obscureText: false,
                 inputType: TextInputType.text,
                 validator: null,
-                controller: _userNameController,
+                controller: _activeController,
                 takeValue: (value) {}),
             const SizedBox(height: AppSize.s30),
           ],
