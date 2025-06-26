@@ -16,32 +16,23 @@ import '../../../../resources/valuesManager.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_appbar.dart';
 import '../../../data/response/employees/employees.dart';
-import '../../employeeAppointmentPageScreen/employee_appointment_page_screen.dart';
+import '../../employeeAppointmentPageScreen/view/employee_appointment_page_screen.dart';
 import '../../employeeInfoPageScreen/employee_info_page_screen.dart';
-import '../../employee_review_page_screen/employee_review_page_screen.dart';
+import '../../employee_review_page_screen/view/employee_review_page_screen.dart';
+import '../../routeManager/home_routes_manager.dart';
 
 class EmployeeDetailsPageScreen extends StatefulWidget {
   const EmployeeDetailsPageScreen({super.key});
 
   @override
-  State<EmployeeDetailsPageScreen> createState() =>
-      _EmployeeDetailsPageScreenState();
+  State<EmployeeDetailsPageScreen> createState() => _EmployeeDetailsPageScreenState();
 }
 
 class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
-
   final EmployeeDetailsViewModel _employeeDetailsViewModel = instance<EmployeeDetailsViewModel>();
   Data? employee;
   final PageController _pageController = PageController();
-
-  final List<String> pageList = [
-    AppStrings.profile.tr(),
-    AppStrings.appointment.tr(),
-    AppStrings.review.tr(),
-  ];
-
   int selectedIndex = 0;
-
   String? _employeeId;
 
   _bind() {
@@ -60,126 +51,139 @@ class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args is Map<String, dynamic>) {
       _employeeId = args['employeeId']?.toString().isEmpty == true ? null : args['employeeId'];
-      if (_employeeId != null && _employeeDetailsViewModel.isCenterFirstLoad == false) {
+      if (_employeeId != null && !_employeeDetailsViewModel.isCenterFirstLoad) {
         _employeeDetailsViewModel.isCenterFirstLoad = true;
         _employeeDetailsViewModel.getEmployeeDetails("$_employeeId");
       }
-    } else {
-      debugPrint("Arguments are not a Map<String, dynamic>");
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<String> pageList = [
+      AppStrings.profile.tr(),
+      AppStrings.appointment.tr(),
+      AppStrings.review.tr(),
+    ];
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: ColorManager.white,
-          statusBarIconBrightness: Brightness.dark,
+      value: SystemUiOverlayStyle(
+        statusBarColor: ColorManager.white,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        backgroundColor: ColorManager.white,
+        appBar: MyAppBar(title: ""),
+        body: SafeArea(
+          child: StreamBuilder<FlowState>(
+            stream: _employeeDetailsViewModel.outputState,
+            builder: (context, snapshot) {
+              if (snapshot.data != null && _employeeDetailsViewModel.isOutStateLoading) {
+                _handleEmployeesStateChanged(snapshot.data!);
+              }
+              return _getEmployeeDetailsScreenContent(pageList);
+            },
+          ),
         ),
-        child: Scaffold(
-          backgroundColor: ColorManager.white,
-          appBar: MyAppBar(title: ""),
-          body: SafeArea(
-              child: StreamBuilder<FlowState>(
-                stream: _employeeDetailsViewModel.outputState,
-                builder: (context, snapshot) {
-                  if (snapshot.data != null && _employeeDetailsViewModel.isOutStateLoading) {
-                    _handleEmployeesStateChanged(snapshot.data!);
-                  }
-                  return _getEmployeeDetailsScreenContent();
-                },
-              ),
-              ),
-        ));
+      ),
+    );
   }
 
-  Widget _getEmployeeDetailsScreenContent() {
+  Widget _getEmployeeDetailsScreenContent(List<String> pageList) {
     return StreamBuilder<ModelEmployeesResponseRemote>(
-        stream: _employeeDetailsViewModel.outputEmployeeData,
-        builder: (context, snapshot)
-    {
-      if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
-        if(_employeeDetailsViewModel.isEmployeeLoading){
-          employee = snapshot.data!.data![0];
-          _employeeDetailsViewModel.isEmployeeLoading = false;
+      stream: _employeeDetailsViewModel.outputEmployeeData,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
+          if (_employeeDetailsViewModel.isEmployeeLoading) {
+            employee = snapshot.data!.data![0];
+            _employeeDetailsViewModel.isEmployeeLoading = false;
+          }
         }
-      }
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          const SizedBox(height: AppSize.s10),
-          Center(
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
+        if (employee == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: AppSize.s10),
+            Center(
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Container(
                     width: AppSize.s80,
                     height: AppSize.s80,
                     decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: SvgPicture.asset(ImageAssets.avatarIcon,
-                        fit: BoxFit.cover)),
-                GestureDetector(
-                  onTap: () {
-                    // Handle image edit action
-                  },
-                  child: Card(
-                    color: ColorManager.white,
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSize.s30)),
-                    child: Container(
-                      width: AppSize.s30,
-                      height: AppSize.s30,
-                      decoration: const BoxDecoration(
-                          color: Colors.white, shape: BoxShape.circle),
-                      child: Icon(Icons.edit,
-                          size: AppSize.s18, color: ColorManager.colorRedB2),
+                    child: SvgPicture.asset(ImageAssets.avatarIcon, fit: BoxFit.cover),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        Navigator.pushNamed(
+                          context,
+                          HomeRoutes.createEmployeeRoute,
+                          arguments: {'employeeId': "${employee?.id}"},
+                        ).then((result) {
+                          if (result == true && _employeeId != null) {
+                            _employeeDetailsViewModel.getEmployeeDetails("$_employeeId");
+                          }
+                        });
+                      });
+                    },
+                    child: Card(
+                      color: ColorManager.white,
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppSize.s30)),
+                      child: Container(
+                        width: AppSize.s30,
+                        height: AppSize.s30,
+                        decoration: const BoxDecoration(
+                            color: Colors.white, shape: BoxShape.circle),
+                        child: Icon(Icons.edit,
+                            size: AppSize.s18, color: ColorManager.colorRedB2),
+                      ),
                     ),
                   ),
-                ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSize.s6),
+            Column(
+              children: [
+                Text("${employee?.name}",
+                    style: getBoldStyle(
+                        color: ColorManager.black, fontSize: FontSize.size16)),
+                Text("${employee?.email}",
+                    style: getRegularStyle(
+                        color: ColorManager.colorGray72, fontSize: FontSize.size12))
               ],
             ),
-          ),
-          const SizedBox(height: AppSize.s6),
-          Column(
-            children: [
-              Text("${employee?.name}",
-                  style: getBoldStyle(
-                      color: ColorManager.black, fontSize: FontSize.size16)),
-              Text("${employee?.email}",
-                  style: getRegularStyle(
-                      color: ColorManager.colorGray72,
-                      fontSize: FontSize.size12))
-            ],
-          ),
-          const SizedBox(height: AppSize.s10),
-          Row(
+            const SizedBox(height: AppSize.s10),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(pageList.length, (index) {
                 final isSelected = index == selectedIndex;
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.p4),
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.p4),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(AppSize.s20),
                     onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                      _goToNextOrBackPage();
-                      print('Selected: ${pageList[index]}');
+                      setState(() => selectedIndex = index);
+                      _pageController.animateToPage(
+                        selectedIndex,
+                        duration: const Duration(milliseconds: AppConstants.sliderAnimationTime),
+                        curve: Curves.easeInOut,
+                      );
                     },
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
                           horizontal: AppPadding.p16, vertical: AppPadding.p12),
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? ColorManager.colorRedB2 // Selected: Red
-                            : ColorManager.colorRedFA, // Unselected: Light Red
+                        color: isSelected ? ColorManager.colorRedB2 : ColorManager.colorRedFA,
                         borderRadius: BorderRadius.circular(AppSize.s8),
                       ),
                       child: Text(
@@ -191,44 +195,50 @@ class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
                     ),
                   ),
                 );
-              })
-          ),
-          const SizedBox(height: AppSize.s10)
-          ,
-          employee != null ? Expanded(
-            child: PageView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              itemCount: 3,
-              onPageChanged: (index) {},
-              itemBuilder: (ctx, index) {
-                if (index == 0) {
-                  return EmployeeInfoPageScreen(employee: employee);
-                }
-                if (index == 1) {
-                  return EmployeeAppointmentPageScreen();
-                }
-                if (index == 2) {
-                  return EmployeeReviewPageScreen();
-                }
-              },
+              }),
             ),
-          ) : SizedBox()
-        ],
-      );
-    });
+            const SizedBox(height: AppSize.s10),
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: pageList.length,
+                itemBuilder: (ctx, index) {
+                  switch (index) {
+                    case 0:
+                      return KeyedSubtree(
+                        key: ValueKey("info_${employee?.id}"),
+                        child: EmployeeInfoPageScreen(employee: employee),
+                      );
+                    case 1:
+                      return KeyedSubtree(
+                        key: ValueKey("appointments_${employee?.id}"),
+                        child: EmployeeAppointmentPageScreen(
+                          key: ValueKey("appointment_${employee?.id}"),
+                          employeeId: "$_employeeId",
+                        ),
+                      );
+                    case 2:
+                      return KeyedSubtree(
+                        key: ValueKey("reviews_${employee?.id}"),
+                        child: EmployeeReviewPageScreen(
+                          key: ValueKey("review_page_${employee?.id}"),
+                          employeeId: "$_employeeId",
+                        ),
+                      );
+                    default:
+                      return const SizedBox();
+                  }
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  _goToNextOrBackPage(){
-    _pageController.animateToPage(
-        selectedIndex,
-        duration:
-        const Duration(milliseconds: AppConstants
-            .sliderAnimationTime),
-        curve: Curves.bounceInOut);
-  }
-
-  _handleEmployeesStateChanged(FlowState state) {
+  void _handleEmployeesStateChanged(FlowState state) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (state is LoadingState && !isLoadingDialogShowing()) {
         showLoadingDialog(context);
@@ -236,10 +246,8 @@ class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
         _employeeDetailsViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
         showErrorDialog(context, message: state.getMessage());
-      } else if (state is SuccessState) {
-        _employeeDetailsViewModel.isOutStateLoading = false;
-        dismissLoadingDialog();
       } else {
+        _employeeDetailsViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
       }
     });
@@ -247,8 +255,8 @@ class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     _employeeDetailsViewModel.dispose();
     super.dispose();
   }
-
 }

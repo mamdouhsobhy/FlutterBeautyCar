@@ -15,6 +15,7 @@ class MyTextFieldWithPhoneCode extends StatefulWidget {
   final TextEditingController controller;
   final double paddingHorizontal;
   final Function takeValue;
+  final String? defaultCountryCode;
   final Function takeCountryCode;
   final String? Function(String?)? validator;
   const MyTextFieldWithPhoneCode({
@@ -26,6 +27,7 @@ class MyTextFieldWithPhoneCode extends StatefulWidget {
     required this.controller,
     this.paddingHorizontal = AppPadding.p16,
     required this.takeValue,
+    this.defaultCountryCode = "SA",
     required this.takeCountryCode,
     this.validator,
   });
@@ -109,12 +111,12 @@ class _MyTextFieldWithPhoneCodeState extends State<MyTextFieldWithPhoneCode> {
                     // widget.controller.text = newCountryCode + updatedText;
                     widget.takeCountryCode(newCountryCode);
                   },
-                  initialSelection: 'EG',
+                  initialSelection: widget.defaultCountryCode,
                   // favorite: const ['EG', '+20'],
                   // countryFilter: const ['EG'],
                   showCountryOnly: false,
-                  showDropDownButton: false,
-                  showOnlyCountryWhenClosed: true,
+                  showDropDownButton: true,
+                  showOnlyCountryWhenClosed: false,
                   hideMainText: false,
                   alignLeft: false,
                   showFlag: true,
@@ -123,15 +125,15 @@ class _MyTextFieldWithPhoneCodeState extends State<MyTextFieldWithPhoneCode> {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (countryCode?.flagUri != null)
+                        Text('${countryCode!.dialCode!}',textDirection: TextDirection.ltr),
+                        const SizedBox(width: 4),
+                        if (countryCode.flagUri != null)
                           Image.asset(
-                            countryCode!.flagUri!,
+                            countryCode.flagUri!,
                             package: 'country_code_picker',
                             width: 24,
                             height: 16,
                           ),
-                        const SizedBox(width: 4),
-                        Text(countryCode!.code!),
                         const SizedBox(width: 4),
                         const Icon(Icons.arrow_drop_down, size: 20),
                       ],

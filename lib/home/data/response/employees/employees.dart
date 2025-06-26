@@ -48,6 +48,10 @@ class Data {
   final int? vendorId;
   @JsonKey(name: "status")
   final int? status;
+  @JsonKey(name: "rate_employee_num")
+  final int? rateNumbers;
+  @JsonKey(name: "rate_employee_start_num")
+  final double? rateAverage;
 
   Data ({
     this.id,
@@ -61,6 +65,8 @@ class Data {
     this.endTime,
     this.vendorId,
     this.status,
+    this.rateNumbers,
+    this.rateAverage,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {
@@ -70,6 +76,13 @@ class Data {
   Map<String, dynamic> toJson() {
     return _$DataToJson(this);
   }
+
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Data && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 

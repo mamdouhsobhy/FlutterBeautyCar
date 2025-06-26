@@ -32,6 +32,8 @@ class Services {
   final String? name;
   @JsonKey(name: "image")
   final String? image;
+  @JsonKey(includeFromJson: false, includeToJson: true)
+  bool selected = false;
 
   Services ({
     this.id,
@@ -46,6 +48,13 @@ class Services {
   Map<String, dynamic> toJson() {
     return _$ServicesToJson(this);
   }
+
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Services && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 

@@ -38,6 +38,8 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       endTime: json['end_time'] as String?,
       vendorId: (json['vendor_id'] as num?)?.toInt(),
       status: (json['status'] as num?)?.toInt(),
+      rateNumbers: (json['rate_employee_num'] as num?)?.toInt(),
+      rateAverage: (json['rate_employee_start_num'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -52,4 +54,6 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'end_time': instance.endTime,
       'vendor_id': instance.vendorId,
       'status': instance.status,
+      'rate_employee_num': instance.rateNumbers,
+      'rate_employee_start_num': instance.rateAverage,
     };

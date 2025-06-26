@@ -1,3 +1,4 @@
+import 'package:beauty_car/home/presentation/createEmployeeScreen/view/create_employee_screen.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/view/more_orders_page_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../app/di/di.dart';
@@ -10,6 +11,7 @@ class HomeRoutes {
   static const String reserveDetailsRoute = "/reserveDetails";
   static const String employeeDetailsRoute = "/employeeDetails";
   static const String moreOrdersRoute = "/moreOrders";
+  static const String createEmployeeRoute = "/createEmployee";
 }
 
 class HomeRouteGenerator {
@@ -27,12 +29,19 @@ class HomeRouteGenerator {
             settings: settings);
       case HomeRoutes.employeeDetailsRoute:
         initEmployeeDetailsModule();
+        initEmployeeReviewModule();
+        initEmployeeAppointmentOrderModule();
         return MaterialPageRoute(
             builder: (_) => const EmployeeDetailsPageScreen(),
             settings: settings);
       case HomeRoutes.moreOrdersRoute:
         return MaterialPageRoute(
             builder: (_) => const MoreOrdersPageScreen());
+      case HomeRoutes.createEmployeeRoute:
+        initCreateEmployeeModule();
+        return MaterialPageRoute(
+            builder: (_) => const CreateEmployeeScreen(),
+            settings: settings);
       default:
         return unDefinedRoute();
     }

@@ -36,4 +36,5 @@ Map<String, dynamic> _$ServicesToJson(Services instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'image': instance.image,
+      'selected': instance.selected,
     };

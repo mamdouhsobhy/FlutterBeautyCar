@@ -46,35 +46,17 @@ class EmployeeItemCard extends StatelessWidget {
                         width: AppSize.s80,
                         height: AppSize.s80,
                         decoration: const BoxDecoration(shape: BoxShape.circle),
-                        child: Image.network(
-                          "${employee.image}",
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return SvgPicture.asset(ImageAssets.avatarIcon, fit: BoxFit.cover);
-                          }
+                        child: ClipOval(
+                          child: Image.network(
+                            "${employee.image}",
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return SvgPicture.asset(ImageAssets.avatarIcon, fit: BoxFit.cover);
+                            }
+                          ),
                         ),
                     )
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      fun("${employee.id}","edit");
-                    },
-                    child: Card(
-                      color: ColorManager.white,
-                      elevation: 1,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSize.s30)
-                      ),
-                      child: Container(
-                        width: AppSize.s30,
-                        height: AppSize.s30,
-                        decoration: const BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: Icon(Icons.edit,
-                            size: AppSize.s18, color: ColorManager.colorRedB2),
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -88,8 +70,8 @@ class EmployeeItemCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppStrings.identifier.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size16)),
-                        Text("${employee.ssdNum}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16)),
+                        Expanded(child: Text(AppStrings.identifier.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size16))),
+                        Expanded(child: Text("${employee.ssdNum}",overflow: TextOverflow.ellipsis,maxLines: 1,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))),
                       ],
                     ),
                     const SizedBox(height: AppSize.s4),
@@ -101,10 +83,10 @@ class EmployeeItemCard extends StatelessWidget {
                         Text("${employee.experiance} ${AppStrings.assignmentsCount.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
                         Row(
                           children: [
-                            Text("45 ${AppStrings.reviews.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
+                            Text("${employee.rateNumbers} ${AppStrings.reviews.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
                             Text(" "),
                             SvgPicture.asset(ImageAssets.starIcon),
-                            Text(" 4.5",style: getRegularStyle(color: ColorManager.colorGray60,fontSize: FontSize.size12)),
+                            Text(" ${employee.rateAverage}",style: getRegularStyle(color: ColorManager.colorGray60,fontSize: FontSize.size12)),
                           ],
                         )
                       ],

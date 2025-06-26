@@ -49,6 +49,9 @@
   "orders": "الطلبات",
   "employees": "الموظف",
   "create_center": "إنشاء مركز",
+  "update_center": "تحديث المركز",
+  "create_employee": "إنشاء موظف",
+  "update_employee": "تحديث الموظف",
   "enter_center_name": "ادخل اسم المركز",
   "center_name": "اسم المركز",
   "enter_address": "ادخل العنوان",
@@ -96,7 +99,7 @@
   "un_active": "غير نشط",
   "enter_valid_email": "ادخل بريد إلكتروني صالح",
   "enter_valid_phone": "ادخل رقم هاتف صالح",
-  "password_must_be_6_character": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "password_must_be_6_character": "يجب أن تتكون كلمة المرور من 5 أحرف على الأقل",
   "confirm_password_must_at_the_same_password": "يجب أن يتطابق تأكيد كلمة المرور مع كلمة المرور",
   "you_registered_successfully": "تم تسجيلك بنجاح، يرجى تفعيل حسابك لتتمكن من تسجيل الدخول.",
   "enter_full_code_with_6_digits": "أدخل الرمز الكامل المكون من 6 أرقام",
@@ -108,15 +111,16 @@
   "photo_From_Gallery": "من المعرض",
   "photo_From_Camera": "من الكاميرا",
   "select_center_image": "اختر صورة المركز",
+  "select_employee_image": "اختر صورة الموظف",
   "center_created_successfully": "تم إنشاء المركز بنجاح",
   "center_updated_successfully": "تم تحديث المركز بنجاح",
+  "employee_updated_successfully": "تم تحديث الموظف بنجاح",
+  "employee_created_successfully": "تم إنشاء الموظف بنجاح",
   "order_accepted_successfully": "تم قبول الطلب بنجاح",
   "order_cancelled_successfully": "تم إلغاء الطلب بنجاح",
   "pending": "قيد الانتظار",
   "accepted": "مقبول",
   "completed": "مكتمل",
-  "cancelled": "ملغي"
-
-
-
+  "cancelled": "ملغي",
+  "enter_valid_code": "أدخل رمزًا صالحًا"
 }

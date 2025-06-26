@@ -5,7 +5,7 @@ class Constants{
   static const int zero = 0;
   static const int apiTimeOut = 120000000;
   static String token = "";
-  static const String defaultCountryCode = "20";
+  static const String defaultCountryCode = "+966";
 }
 
 class UserTypes{

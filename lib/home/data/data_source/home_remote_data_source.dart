@@ -2,14 +2,17 @@
 import 'package:beauty_car/home/data/network/home_api.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
+import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
+import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
 import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
 import 'package:dio/dio.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<ModelOrdersResponseRemote> getHomeOrders(int limit);
+  Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit , int status);
 
   Future<ModelCentersResponseRemote> getCenters(bool pagination , int limit , int page);
 
@@ -31,6 +34,16 @@ abstract class HomeRemoteDataSource {
 
   Future<ModelEmployeesResponseRemote> getEmployeeDetails(String empId);
 
+  Future<ModelCreateOrUpdateEmployeeResponseRemote> createEmployee(FormData formData);
+
+  Future<ModelCreateOrUpdateEmployeeResponseRemote> updateEmployee(String id , FormData formData ,String method);
+
+  Future<ModelGetRatedOrdersResponseRemote> getRatedOrders(bool pagination , int limit , String empId , int page);
+
+  Future<ModelOrdersResponseRemote> getAppointmentOrders(bool pagination , int limit , String empId , int page);
+
+  Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics();
+
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -39,8 +52,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   HomeRemoteDataSourceImpl(this._homeServiceClient);
 
   @override
-  Future<ModelOrdersResponseRemote> getHomeOrders(int limit) async {
-    return await _homeServiceClient.getHomeOrders(limit);
+  Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit , int status) async {
+    return await _homeServiceClient.getHomeOrders(pagination,limit,status);
   }
 
   @override
@@ -92,5 +105,31 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   Future<ModelEmployeesResponseRemote> getEmployeeDetails(String empId) async{
     return await _homeServiceClient.getEmployeeDetails(empId);
   }
+
+  @override
+  Future<ModelCreateOrUpdateEmployeeResponseRemote> createEmployee(FormData formData) async{
+    return await _homeServiceClient.createEmployee(formData);
+  }
+
+  @override
+  Future<ModelCreateOrUpdateEmployeeResponseRemote> updateEmployee(String id, FormData formData, String method) async{
+    return await _homeServiceClient.updateEmployee(id,formData,method);
+  }
+
+  @override
+  Future<ModelGetRatedOrdersResponseRemote> getRatedOrders(bool pagination, int limit, String empId, int page) async{
+    return await _homeServiceClient.getRatedOrders(pagination , limit , empId , page);
+  }
+
+  @override
+  Future<ModelOrdersResponseRemote> getAppointmentOrders(bool pagination, int limit, String empId, int page) async{
+    return await _homeServiceClient.getAppointmentOrders(pagination , limit , empId , page);
+  }
+
+  @override
+  Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics() async{
+    return await _homeServiceClient.getHomeStatistics();
+  }
+
 
 }

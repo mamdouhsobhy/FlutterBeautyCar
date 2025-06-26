@@ -255,7 +255,7 @@ void showSuccessDialog(BuildContext context,
 }
 
 void dismissLoadingDialog() {
-  if (_dialogContext != null) {
+  if (_dialogContext != null && _dialogContext!.mounted && Navigator.canPop(_dialogContext!)) {
     Navigator.of(_dialogContext!, rootNavigator: true).pop();
     _dialogContext = null;
   }

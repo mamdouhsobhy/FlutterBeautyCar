@@ -138,18 +138,21 @@ class _LoginScreenState extends State<LoginScreen> {
               hint: AppStrings.enter_phone_number.tr(),
               title: AppStrings.phone_number.tr(),
               readOnly: false,
+              defaultCountryCode: getIsoCode(_countryCodeController.text) ?? "SA",
               takeValue: (value) {
                 _phoneController.text = value;
                 _loginViewModel.loginObject.phone = "";
-                _loginViewModel.loginObject.phone = value;
+                _loginViewModel.loginObject.phone = _countryCodeController.text + value;
               },
               takeCountryCode: (code) {
-                _countryCodeController.text = "$code".replaceAll("+", "");
+                _countryCodeController.text = code;
+                _loginViewModel.loginObject.phone = "";
+                _loginViewModel.loginObject.phone = code + _phoneController.text;
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return AppStrings.enter_phone_number.tr();
-                } else if (!isPhoneValid(_phoneController.text, "+${_countryCodeController.text}")) {
+                } else if (!isPhoneValid(_phoneController.text, _countryCodeController.text)) {
                   return AppStrings.enter_valid_phone.tr();
                 }
                 return null;

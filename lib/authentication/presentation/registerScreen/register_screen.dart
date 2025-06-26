@@ -169,19 +169,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hint: AppStrings.enter_phone_number.tr(),
                       title: AppStrings.phone_number.tr(),
                       readOnly: false,
+                      defaultCountryCode: getIsoCode(_countryCodeController.text) ?? "SA",
                       takeValue: (value) {
                         _phoneController.text = value;
                         _registerViewModel.registerRequest.phone = "";
-                        _registerViewModel.registerRequest.phone = value;
+                        _registerViewModel.registerRequest.phone = _countryCodeController.text + value;
                         print("PhoneCodeNumber ${_phoneController.text}");
                       },
                       takeCountryCode: (code) {
-                        _countryCodeController.text = "$code".replaceAll("+", "");
+                        _countryCodeController.text = code;
+                        _registerViewModel.registerRequest.phone = "";
+                        _registerViewModel.registerRequest.phone = code + _phoneController.text;
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppStrings.enter_phone_number.tr();
-                        } else if (!isPhoneValid(_phoneController.text, "+${_countryCodeController.text}")) {
+                        } else if (!isPhoneValid(_phoneController.text, _countryCodeController.text)) {
                           return AppStrings.enter_valid_phone.tr();
                         }
                         return null;

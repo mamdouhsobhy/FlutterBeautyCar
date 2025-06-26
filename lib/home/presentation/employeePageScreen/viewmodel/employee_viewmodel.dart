@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,6 +14,8 @@ class EmployeeViewModel extends BaseViewModel implements EmployeeViewModelInputs
 
   EmployeeViewModel(this._employeeUseCase);
 
+  List<Data> employeesList = [];
+
   //inputs
   @override
   void dispose() {
@@ -26,6 +27,11 @@ class EmployeeViewModel extends BaseViewModel implements EmployeeViewModelInputs
   void start() {
     inputState.add(ContentState());
     getEmployees();
+  }
+
+  @override
+  void resetPage() {
+    employeesList.clear();
   }
 
   @override

@@ -36,6 +36,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   final VerifyViewModel _verifyViewModel = instance<VerifyViewModel>();
   String? _phoneNumber;
   String? _type;
+  String? _code;
   final TextEditingController _otpController = TextEditingController();
 
   int _remainingTime = 60;
@@ -78,6 +79,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
         setState(() {
           _phoneNumber = args['phone'];
           _type = args['type'];
+          _code = args['code'];
           _verifyViewModel.verifyRequest.phone = _phoneNumber!;
         });
       }
@@ -220,7 +222,12 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     if(_type == ComeFrom.register) {
                       _verifyViewModel.verifyAccount();
                     }else{
-                      _navigateToResetPasswordScreen();
+                      if(_otpController.text == _code) {
+                        _navigateToResetPasswordScreen();
+                      }else{
+                        context.showErrorToast(
+                            AppStrings.enter_valid_code.tr());
+                      }
                     }
                   } else {
                     context.showErrorToast(
@@ -242,6 +249,9 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                 if (snapshot.data != null && snapshot.data?.status == true) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     if (_verifyViewModel.isSendOtpLoading == true) {
+                      if (_type == ComeFrom.forgetPassword) {
+                        _code = "${snapshot.data?.data?.otp}";
+                      }
                       _startCountdown();
                       _verifyViewModel.isSendOtpLoading = false;
                       context.showSuccessToast(AppStrings.code_sent_success.tr());

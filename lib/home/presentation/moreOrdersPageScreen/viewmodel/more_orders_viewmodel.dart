@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../app/baseViewModel/baseViewModel.dart';
 import '../../../../app/state_renderer/state_renderer.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
+import '../../../data/request/home_order_request.dart';
 
 class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelInputs,MoreOrdersViewModelOutputs{
 
@@ -40,7 +41,7 @@ class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelIn
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _homeUseCase.execute(10)) // 10 is limit for recent orders in home
+    (await _homeUseCase.execute(HomeOrderRequest(true, 10, 3))) // 10 is limit for recent orders in home
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));

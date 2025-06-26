@@ -49,6 +49,9 @@
   "orders": "Orders",
   "employees": "Employees",
   "create_center": "Create Center",
+  "update_center": "Update Center",
+  "create_employee": "Create Employee",
+  "update_employee": "Update Employee",
   "enter_center_name": "Enter center name",
   "center_name": "Center name",
   "enter_address": "Enter address",
@@ -96,7 +99,7 @@
   "un_active": "Inactive",
   "enter_valid_email": "Enter a valid email address",
   "enter_valid_phone": "Enter a valid phone number",
-  "password_must_be_6_character": "Password must be at least 6 characters long",
+  "password_must_be_6_character": "Password must be at least 5 characters long",
   "confirm_password_must_at_the_same_password": "Confirm password must match the password",
   "you_registered_successfully": "You registered successfully, please activate your account to be able to login.",
   "enter_full_code_with_6_digits": "Enter full code with 6 digits",
@@ -108,14 +111,18 @@
   "photo_From_Gallery": "From Gallery",
   "photo_From_Camera": "From Camera",
   "select_center_image": "Select center image",
+  "select_employee_image": "Select employee image",
   "center_created_successfully": "Center created successfully",
   "center_updated_successfully": "Center updated successfully",
+  "employee_updated_successfully": "Employee updated successfully",
+  "employee_created_successfully": "Employee created successfully",
   "order_accepted_successfully": "Order accepted successfully",
   "order_cancelled_successfully": "Order cancelled successfully",
   "pending": "Pending",
   "accepted": "Accepted",
   "completed": "Completed",
-  "cancelled": "Cancelled"
+  "cancelled": "Cancelled",
+  "enter_valid_code": "Please enter a valid code"
 
 
 }

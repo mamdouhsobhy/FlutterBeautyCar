@@ -1,6 +1,9 @@
 import 'package:beauty_car/home/data/response/centers/centers.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
+import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
+import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
 import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
@@ -18,7 +21,10 @@ abstract class HomeServiceClient {
 
   @GET("vendor/orders")
   Future<ModelOrdersResponseRemote> getHomeOrders(
-      @Query("limit") int pagination);
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("status") int status,
+      );
 
   @GET("vendor/shops")
   Future<ModelCentersResponseRemote> getCenters(
@@ -66,5 +72,36 @@ abstract class HomeServiceClient {
 
   @GET("vendor/employees")
   Future<ModelEmployeesResponseRemote> getEmployeeDetails(@Query("id") String empId);
+
+  @MultiPart()
+  @POST("vendor/employees")
+  Future<ModelCreateOrUpdateEmployeeResponseRemote> createEmployee(
+      @Body() FormData formData);
+
+  @MultiPart()
+  @POST("vendor/employees/{id}")
+  Future<ModelCreateOrUpdateEmployeeResponseRemote> updateEmployee(
+      @Path("id") String id,
+      @Body() FormData formData,
+      @Query("_method") String method);
+
+  @GET("vendor/rateorders")
+  Future<ModelGetRatedOrdersResponseRemote> getRatedOrders(
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("employee_id") String empId,
+      @Query("page") int page,
+      );
+
+  @GET("vendor/orders")
+  Future<ModelOrdersResponseRemote> getAppointmentOrders(
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("employee_id") String empId,
+      @Query("page") int page,
+      );
+
+  @GET("vendor/getStatistics")
+  Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics();
 
 }

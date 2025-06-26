@@ -40,10 +40,18 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
 
   void _searchEmployees(String query) {
     setState(() {
-      filteredEmployees = filteredEmployees.where((employee) {
+      filteredEmployees = _employeeViewModel.employeesList.where((employee) {
         return employee.name!.toLowerCase().contains(query.toLowerCase());
       }).toList();
     });
+  }
+
+  void _refreshEmployees() {
+    _employeeViewModel.resetPage();
+    _employeeViewModel.employeesList.clear();
+    filteredEmployees.clear();
+    _searchController.clear();
+    _employeeViewModel.getEmployees();
   }
 
   @override
@@ -122,7 +130,7 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () async {
-              _employeeViewModel.getEmployees();
+              _refreshEmployees();
             },
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -134,10 +142,14 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
                         stream: _employeeViewModel.outputEmployeesData,
                         builder: (context, snapshot) {
                           if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
-                            filteredEmployees = snapshot.data!.data!;
+                            for (var employee in snapshot.data!.data!) {
+                              if (!_employeeViewModel.employeesList.contains(employee)) {
+                                _employeeViewModel.employeesList.add(employee);
+                              }
+                            }
                           }
 
-                          if (filteredEmployees.isEmpty) {
+                          if (_employeeViewModel.employeesList.isEmpty) {
                             return SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
                               child: SizedBox(
@@ -163,7 +175,7 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
 
                           } else {
                             if (_searchController.text.isEmpty) {
-                              filteredEmployees = snapshot.data!.data!;
+                              filteredEmployees = _employeeViewModel.employeesList;
                             }
 
                             return Padding(
@@ -176,23 +188,18 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
                                   return EmployeeItemCard(
                                     employee: filteredEmployees[index],
                                     fun: (employeeId,actionType) {
-                                      if(actionType == "edit"){
-                                        Future.delayed(const Duration(milliseconds: 500), () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            HomeRoutes.createCenterRoute,
-                                            arguments: {'employeeId': "$employeeId"},
-                                          );
-                                        });
-                                      }else{
                                         Future.delayed(const Duration(milliseconds: 500), () {
                                           Navigator.pushNamed(
                                             context,
                                             HomeRoutes.employeeDetailsRoute,
                                             arguments: {'employeeId': "$employeeId"},
-                                          );
+                                          ).then((result) {
+                                            // Refresh employees when returning from details screen
+                                            if (result == true) {
+                                              _refreshEmployees();
+                                            }
+                                          });
                                         });
-                                      }
                                     },
                                   );
                                 },
@@ -207,7 +214,13 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
                       right: AppPadding.p16,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, HomeRoutes.createCenterRoute);
+                          Navigator.pushNamed(context, HomeRoutes.createEmployeeRoute)
+                              .then((result) {
+                            // Refresh employees when returning from create screen
+                            if (result == true) {
+                              _refreshEmployees();
+                            }
+                          });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(AppPadding.p10),

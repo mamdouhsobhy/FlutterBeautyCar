@@ -35,6 +35,7 @@ class _CenterServiceSelectedItemState
   void initState() {
     super.initState();
     filteredServices = widget.services!;  // Initially show all places
+    _selectedServices = widget.services!.where((service) => service.selected == true).toList();
   }
 
   void _searchService(String query) {

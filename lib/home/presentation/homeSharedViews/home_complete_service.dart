@@ -8,7 +8,9 @@ import '../../../resources/styleManager.dart';
 import '../../../resources/valuesManager.dart';
 
 class HomeCompleteService extends StatelessWidget {
-  const HomeCompleteService({super.key});
+  HomeCompleteService({super.key, required this.completedService});
+
+  String completedService;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class HomeCompleteService extends StatelessWidget {
               padding: const EdgeInsets.only(top: AppPadding.p20,bottom: AppPadding.p20,left: AppPadding.p16,right: AppPadding.p16),
               child: Row(
                 children: [
-                  Text("20",style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.size16)),
+                  Text(completedService,style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.size16)),
                   Text(" "),
                   Text(AppStrings.order.tr(),style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.size16)),
                 ],

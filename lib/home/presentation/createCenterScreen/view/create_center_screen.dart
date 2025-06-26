@@ -40,6 +40,8 @@ class CreateCenterScreen extends StatefulWidget {
 class _CreateCenterScreenState extends State<CreateCenterScreen> {
 
   final CreateCenterViewModel _createCenterViewModel = instance<CreateCenterViewModel>();
+  ModelServicesResponseRemote? services;
+  ModelEmployeesResponseRemote? employees;
   final ImagePicker _imagePicker = instance<ImagePicker>();
 
   final TextEditingController _centerNameController = TextEditingController();
@@ -94,11 +96,23 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
     _addressController.text = "${center?.address}";
     _createCenterViewModel.createOrUpdateCenter.address = "${center?.address}";
 
-    _phoneController.text = "${center?.phone}";
-    _createCenterViewModel.createOrUpdateCenter.phone = "${center?.phone}";
+    _countryCodeController.text = getCountryCode("${center?.phone}")!;
+    _phoneController.text = center!.phone!.replaceAll(_countryCodeController.text, "");
+    _createCenterViewModel.createOrUpdateCenter.phone = _countryCodeController.text + _phoneController.text;
 
-    if(center!=null && center.serviceIds?.isNotEmpty == true){
-      _servicesController.text = center.serviceIds!.map((service) => service).join(' , ');
+    if (center != null && center.serviceIds?.isNotEmpty == true) {
+      if (services?.data?.isNotEmpty == true) {
+        services!.data!.forEach((item) {
+          if (center.serviceIds!.contains(item.id.toString())) {
+            item.selected = true;
+          }
+        });
+        final selectedServices = services!.data!
+            .where((item) => center.serviceIds!.contains(item.id.toString()))
+            .toList();
+        _servicesController.text =
+            selectedServices.map((service) => service.name).join(' , ');
+      }
     }
 
     if(center!=null && center.serviceIds?.isNotEmpty == true) {
@@ -140,7 +154,9 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
           AppStrings.center_updated_successfully.tr());
     }
     Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.maybePop(context);
+      if (context.mounted && Navigator.canPop(context)) {
+        Navigator.pop(context, true);
+      }
     });
   }
 
@@ -153,7 +169,7 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
         ),
         child: Scaffold(
           backgroundColor: ColorManager.white,
-          appBar: MyAppBar(title: AppStrings.createCenter.tr()),
+          appBar: MyAppBar(title: _centerId == null ? AppStrings.createCenter.tr() : AppStrings.update_center.tr()),
           body: SafeArea(
             child: StreamBuilder<FlowState>(
               stream: _createCenterViewModel.outputState,
@@ -180,12 +196,13 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
           child: StreamBuilder<ModelCentersResponseRemote>(
               stream: _createCenterViewModel.outputCenterData,
               builder: (context, snapshot) {
-                if (snapshot.hasData &&
-                    snapshot.data?.data?.isNotEmpty == true) {
+                if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     if(_createCenterViewModel.isCenterLoading) {
-                      _createCenterViewModel.isCenterLoading = false;
-                      _setCenterData(snapshot);
+                      if(services!=null) {
+                        _createCenterViewModel.isCenterLoading = false;
+                        _setCenterData(snapshot);
+                      }
                     }
                   });
                 }
@@ -203,10 +220,12 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                               child: _createCenterViewModel
                                           .createOrUpdateCenter.image ==
                                       null
-                                  ? _centerId != null ? Image.network("${snapshot.data?.data![0].image}") : SvgPicture.asset(ImageAssets.avatarIcon,
+                                  ? _centerId != null ? ClipOval(child: Image.network("${snapshot.data?.data![0].image}",fit: BoxFit.cover)) : SvgPicture.asset(ImageAssets.avatarIcon,
                                       fit: BoxFit.cover)
-                                  : Image.file(_createCenterViewModel
-                                      .createOrUpdateCenter.image!)),
+                                  : ClipOval(
+                                    child: Image.file(_createCenterViewModel
+                                        .createOrUpdateCenter.image!,fit: BoxFit.cover),
+                                  )),
                           GestureDetector(
                             onTap: () {
                               _showImagePicker(context);
@@ -278,18 +297,21 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                               hint: AppStrings.enter_phone_number.tr(),
                               title: AppStrings.phone_number.tr(),
                               readOnly: false,
+                              defaultCountryCode: getIsoCode(_countryCodeController.text) ?? "SA",
                               takeValue: (value) {
                                 _phoneController.text = value;
                                 _createCenterViewModel.createOrUpdateCenter.phone = "";
-                                _createCenterViewModel.createOrUpdateCenter.phone = value;
+                                _createCenterViewModel.createOrUpdateCenter.phone = _countryCodeController.text + value;
                               },
                               takeCountryCode: (code) {
-                                _countryCodeController.text = "$code".replaceAll("+", "");
+                                _countryCodeController.text = code;
+                                _createCenterViewModel.createOrUpdateCenter.phone = "";
+                                _createCenterViewModel.createOrUpdateCenter.phone = code + _phoneController.text;
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return AppStrings.enter_phone_number.tr();
-                                } else if (!isPhoneValid(_phoneController.text, "+${_countryCodeController.text}")) {
+                                } else if (!isPhoneValid(_phoneController.text, _countryCodeController.text)) {
                                   return AppStrings.enter_valid_phone.tr();
                                 }
                                 return null;
@@ -299,14 +321,12 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                           const SizedBox(height: AppSize.s16),
                           StreamBuilder<ModelServicesResponseRemote>(
                             stream: _createCenterViewModel.outputServicesData,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData &&
-                                  snapshot.data?.data?.isNotEmpty == true) {
+                            builder: (context, serviceSnapshot) {
+                              if (serviceSnapshot.hasData &&
+                                  serviceSnapshot.data?.data?.isNotEmpty == true) {
                                 if (_createCenterViewModel.isServicesLoading) {
-                                  _createCenterViewModel.isServicesLoading =
-                                      false;
-                                  _openBottomSheetServices(
-                                      context, snapshot.data);
+                                  _createCenterViewModel.isServicesLoading = false;
+                                  services = serviceSnapshot.data;
                                 }
                               }
                               return MyTextField(
@@ -327,7 +347,9 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                                 controller: _servicesController,
                                 takeValue: (value) {},
                                 action: () {
-                                  _createCenterViewModel.getServices();
+                                  if(services!=null) {
+                                    _openBottomSheetServices(context, services);
+                                  }
                                 },
                               );
                             },
@@ -335,14 +357,13 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                           const SizedBox(height: AppSize.s16),
                           StreamBuilder<ModelEmployeesResponseRemote>(
                             stream: _createCenterViewModel.outputEmployeesData,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData &&
-                                  snapshot.data?.data?.isNotEmpty == true) {
+                            builder: (context, employeesSnapshot) {
+                              if (employeesSnapshot.hasData &&
+                                  employeesSnapshot.data?.data?.isNotEmpty == true) {
                                 if (_createCenterViewModel.isEmployeesLoading) {
-                                  _createCenterViewModel.isEmployeesLoading =
-                                      false;
-                                  _openBottomSheetEmployee(
-                                      context, snapshot.data);
+                                  _createCenterViewModel.isEmployeesLoading = false;
+                                  employees = employeesSnapshot.data;
+                                  print("EmployeeLog ${employees?.data?.length}");
                                 }
                               }
                               return MyTextField(
@@ -363,7 +384,9 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                                   controller: _employeeNameController,
                                   takeValue: (value) {},
                                   action: () {
-                                    _createCenterViewModel.getEmployees();
+                                    if(employees!=null){
+                                      _openBottomSheetEmployee(context, employees);
+                                    }
                                   });
                             },
                           ),
@@ -505,8 +528,8 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
         const SizedBox(height: AppSize.s20),
         StreamBuilder<ModelCreateOrUpdateCenterResponseRemote>(
           stream: _createCenterViewModel.outputCreateOrUpdateCenterData,
-          builder: (ctx, snapshot) {
-            if (snapshot.data != null && snapshot.data?.status == true) {
+          builder: (ctx, createCenterSnapshot) {
+            if (createCenterSnapshot.data != null && createCenterSnapshot.data?.status == true) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 _navigateToHome();
               });
@@ -594,6 +617,9 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
           return CenterServiceSelectedItem(AppStrings.selectServices.tr(), services?.data, selectedService: (mServices){
             _servicesController.text = mServices.map((service) => service.name).join(' , ');
             _createCenterViewModel.services = mServices;
+            services!.data!.forEach((item) {
+              item.selected = mServices.contains(item); // Update the selected state directly
+            });
             Navigator.of(ctx).pop();
           });
         },

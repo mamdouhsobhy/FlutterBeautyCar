@@ -9,17 +9,23 @@ import 'package:beauty_car/authentication/presentation/loginScreen/viewmodel/log
 import 'package:beauty_car/authentication/presentation/registerScreen/viewmodel/register_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/resetPasswordScreen/viewmodel/reset_password_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
+import 'package:beauty_car/home/domain/usecase/appointment_orders_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/centers_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/create_center_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/create_employee_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/employee_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/employee_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/home_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/order_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/rated_orders_usecase.dart';
 import 'package:beauty_car/home/presentation/centerPageScreen/viewmodel/centers_viewmodel.dart';
 import 'package:beauty_car/home/presentation/createCenterScreen/viewmodel/create_center_viewmodel.dart';
+import 'package:beauty_car/home/presentation/createEmployeeScreen/viewmodel/create_employee_viewmodel.dart';
+import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/viewmodel/appointment_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeeDetailsPageScreen/viewmodel/employee_details_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeePageScreen/viewmodel/employee_viewmodel.dart';
+import 'package:beauty_car/home/presentation/employee_review_page_screen/viewmodel/review_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/viewmodel/more_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/orderPageScreen/viewmodel/orders_viewmodel.dart';
@@ -180,6 +186,34 @@ initEmployeeDetailsModule(){
   if(!GetIt.I.isRegistered<EmployeeDetailsUseCase>()) {
     instance.registerFactory<EmployeeDetailsUseCase>(() => EmployeeDetailsUseCase(instance()));
     instance.registerFactory<EmployeeDetailsViewModel>(() => EmployeeDetailsViewModel(instance()));
+  }
+
+}
+
+initCreateEmployeeModule(){
+
+  if(!GetIt.I.isRegistered<CreateEmployeeUseCase>()) {
+    instance.registerFactory<CreateEmployeeUseCase>(() => CreateEmployeeUseCase(instance()));
+    instance.registerFactory<CreateEmployeeViewModel>(() => CreateEmployeeViewModel(instance()));
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
+  }
+
+}
+
+initEmployeeReviewModule(){
+
+  if(!GetIt.I.isRegistered<RatedOrdersUseCase>()) {
+    instance.registerFactory<RatedOrdersUseCase>(() => RatedOrdersUseCase(instance()));
+    instance.registerFactory<ReviewOrdersViewModel>(() => ReviewOrdersViewModel(instance()));
+  }
+
+}
+
+initEmployeeAppointmentOrderModule(){
+
+  if(!GetIt.I.isRegistered<AppointmentOrdersUseCase>()) {
+    instance.registerFactory<AppointmentOrdersUseCase>(() => AppointmentOrdersUseCase(instance()));
+    instance.registerFactory<AppointmentOrdersViewModel>(() => AppointmentOrdersViewModel(instance()));
   }
 
 }

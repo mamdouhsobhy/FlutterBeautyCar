@@ -1,3 +1,5 @@
+import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/presentation/homePageScreen/view/side_menu.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
 import 'package:beauty_car/home/presentation/routeManager/home_routes_manager.dart';
 import 'package:beauty_car/resources/assetsManager.dart';
@@ -30,6 +32,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   final HomeViewModel _homeViewModel = instance<HomeViewModel>();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   _bind() {
     _homeViewModel.start();
   }
@@ -48,7 +52,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
           statusBarIconBrightness: Brightness.dark,
         ),
         child: Scaffold(
+          key: _scaffoldKey,
           backgroundColor: ColorManager.white,
+          drawer: SafeArea(child: Drawer(child: SideMenu())),
           body: SafeArea(
               child:
               StreamBuilder<FlowState>(
@@ -70,7 +76,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        HomePageAppBar(),
+        HomePageAppBar(scafoldKey: _scaffoldKey,),
         Expanded(
           child: RefreshIndicator(
             color: ColorManager.colorRedB2,
@@ -80,11 +86,23 @@ class _HomePageScreenState extends State<HomePageScreen> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                  HomeCompleteService(),
-                  const SizedBox(height: AppSize.s13),
-                  HomeCenterOutsideServices(),
-                  const SizedBox(height: AppSize.s13),
-                  Padding(
+                StreamBuilder<ModelGetHomeStatisticsResponseRemote>(
+                    stream: _homeViewModel.outputStatisticsData,
+                    builder: (context, snapshot) {
+                      return Column(
+                        children: [
+                          HomeCompleteService(
+                              completedService:
+                                  "${(snapshot.data?.data?.outdoorOrders ?? 0) + (snapshot.data?.data?.shopOrders ?? 0)}"),
+                          const SizedBox(height: AppSize.s13),
+                          const SizedBox(height: AppSize.s13),
+                          HomeCenterOutsideServices(outDoorService: "${(snapshot.data?.data?.outdoorOrders ?? 0)}",
+                          shopService: "${(snapshot.data?.data?.shopOrders ?? 0)}"),
+                        ],
+                      );
+                    }),
+                const SizedBox(height: AppSize.s13),
+                Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

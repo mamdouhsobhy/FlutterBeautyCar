@@ -10,8 +10,10 @@ import '../../../resources/styleManager.dart';
 import '../../../resources/valuesManager.dart';
 
 class HomeCenterOutsideServices extends StatelessWidget {
-  const HomeCenterOutsideServices({super.key});
+  HomeCenterOutsideServices({super.key,required this.outDoorService,required this.shopService});
 
+  String outDoorService;
+  String shopService;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,7 +48,7 @@ class HomeCenterOutsideServices extends StatelessWidget {
                       children: [
                         Text(AppStrings.serviceInCenter.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size12)),
                         SizedBox(height: AppSize.s4,),
-                        Text("18 "+AppStrings.order.tr(),style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size12)),
+                        Text("$shopService ${AppStrings.order.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size12)),
                       ],
                     ),
                   )
@@ -80,7 +82,7 @@ class HomeCenterOutsideServices extends StatelessWidget {
                       children: [
                         Text(AppStrings.serviceOutside.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size12)),
                         SizedBox(height: AppSize.s4,),
-                        Text("2 "+AppStrings.order.tr(),style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size12)),
+                        Text("$outDoorService ${AppStrings.order.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size12)),
                       ],
                     ),
                   )

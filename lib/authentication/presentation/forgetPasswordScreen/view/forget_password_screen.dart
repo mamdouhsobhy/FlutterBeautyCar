@@ -1,3 +1,4 @@
+import 'package:beauty_car/authentication/data/response/forgetPassword/forget_password.dart';
 import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
 import 'package:beauty_car/authentication/presentation/forgetPasswordScreen/viewmodel/forget_password_viewmodel.dart';
 import 'package:beauty_car/authentication/presentation/routeManager/routesManager.dart';
@@ -43,15 +44,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     _countryCodeController.text = Constants.defaultCountryCode;
   }
 
-  _intentToResetPasswordScreen() {
-    if(_forgetPasswordViewModel.isSendOtpLoading == true) {
-      _forgetPasswordViewModel.isSendOtpLoading = false;
+  _intentToResetPasswordScreen(String? code) {
       context.showSuccessToast(AppStrings.code_sent_success.tr());
       Future.delayed(const Duration(milliseconds: 500), () {
         Navigator.pushReplacementNamed(context, Routes.verifyCodeRoute,
-            arguments:{'phone': _forgetPasswordViewModel.sendOtpRequest.phone, 'type': ComeFrom.forgetPassword} );
+            arguments:{'code':code,'phone': _forgetPasswordViewModel.sendOtpRequest.phone, 'type': ComeFrom.forgetPassword} );
       });
-    }
   }
 
   @override
@@ -115,19 +113,22 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   hint: AppStrings.enter_phone_number.tr(),
                   title: AppStrings.phone_number.tr(),
                   readOnly: false,
+                  defaultCountryCode: getIsoCode(_countryCodeController.text) ?? "SA",
                   takeValue: (value) {
                     _phoneController.text = value;
                     _forgetPasswordViewModel.sendOtpRequest.phone = "";
-                    _forgetPasswordViewModel.sendOtpRequest.phone = value;
+                    _forgetPasswordViewModel.sendOtpRequest.phone = _countryCodeController.text + value;
                   },
                   takeCountryCode: (code) {
-                    _countryCodeController.text = "$code".replaceAll("+", "");
+                    _countryCodeController.text = code;
+                    _forgetPasswordViewModel.sendOtpRequest.phone = "";
+                    _forgetPasswordViewModel.sendOtpRequest.phone = code + _phoneController.text;
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return AppStrings.enter_phone_number.tr();
                     } else if (!isPhoneValid(
-                        _phoneController.text,"+${_countryCodeController.text}")) {
+                        _phoneController.text,_countryCodeController.text)) {
                       return AppStrings.enter_valid_phone.tr();
                     }
                     return null;
@@ -135,16 +136,29 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   paddingHorizontal: AppPadding.p16,
                   controller: _phoneController),
               const SizedBox(height: AppSize.s50),
-              MyButton(
-                color: ColorManager.colorRedB2,
-                buttonText: AppStrings.sendVerificationCode.tr(),
-                paddingVertical: AppPadding.p0,
-                fun: () {
-                   if (_formKey.currentState?.validate() ?? false) {
-                     _forgetPasswordViewModel.forgetPassword();
-                   }
-                },
-              ),
+              StreamBuilder<ModelForgetPasswordResponseRemote>(
+                  stream: _forgetPasswordViewModel.outputSendOtpData,
+                  builder: (context, snapshot) {
+                    if (snapshot.data != null &&
+                        snapshot.data?.status == true) {
+                      WidgetsBinding.instance.addPostFrameCallback((_)  {
+                        if (_forgetPasswordViewModel.isSendOtpLoading == true) {
+                          _forgetPasswordViewModel.isSendOtpLoading = false;
+                          _intentToResetPasswordScreen("${snapshot.data?.data?.otp.toString()}");
+                        }
+                      });
+                    }
+                    return MyButton(
+                      color: ColorManager.colorRedB2,
+                      buttonText: AppStrings.sendVerificationCode.tr(),
+                      paddingVertical: AppPadding.p0,
+                      fun: () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          _forgetPasswordViewModel.forgetPassword();
+                        }
+                      },
+                    );
+                  }),
               const SizedBox(height: AppSize.s20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +198,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
         _forgetPasswordViewModel.isOutStateLoading = false;
-        _intentToResetPasswordScreen();
         dismissLoadingDialog();
       } else {
         dismissLoadingDialog();

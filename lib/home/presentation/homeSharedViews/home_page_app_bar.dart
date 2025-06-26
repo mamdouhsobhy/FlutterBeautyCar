@@ -7,8 +7,8 @@ import '../../../resources/fontManager.dart';
 import '../../../resources/valuesManager.dart';
 
 class HomePageAppBar extends StatelessWidget {
-  const HomePageAppBar({super.key});
-
+   HomePageAppBar({super.key,required this.scafoldKey});
+  GlobalKey<ScaffoldState> scafoldKey;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,7 +18,7 @@ class HomePageAppBar extends StatelessWidget {
         children: [
           InkWell(
               onTap: () {
-                Navigator.pushNamed(context, "");
+                scafoldKey.currentState!.openDrawer();
               },
               child: SvgPicture.asset(ImageAssets.menuIcon)
           ),

@@ -41,6 +41,8 @@ class CreateCenterViewModel extends BaseViewModel implements CreateCenterViewMod
   @override
   void start() {
     inputState.add(ContentState());
+    getServices();
+    getEmployees();
   }
 
   @override

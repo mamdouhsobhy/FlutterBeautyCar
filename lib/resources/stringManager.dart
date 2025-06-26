@@ -51,6 +51,9 @@ class AppStrings {
   static const String orders = "orders";
   static const String employees = "employees";
   static const String createCenter = "create_center";
+  static const String update_center = "update_center";
+  static const String create_employee = "create_employee";
+  static const String update_employee = "update_employee";
   static const String enterCenterName = "enter_center_name";
   static const String centerName = "center_name";
   static const String enterAddress = "enter_address";
@@ -102,6 +105,7 @@ class AppStrings {
   static const String confirm_password_must_at_the_same_password = "confirm_password_must_at_the_same_password";
   static const String you_registered_successfully = 'you_registered_successfully';
   static const String enter_full_code_with_6_digits = 'enter_full_code_with_6_digits';
+  static const String enter_valid_code = 'enter_valid_code';
   static const String accountActivatedSuccessfully = "account_activated_successfully";
   static const String code_sent_success = "code_sent_success";
   static const String resend_code_after = "resend_code_after";
@@ -110,10 +114,13 @@ class AppStrings {
   static const String photo_From_Gallery = "photo_From_Gallery";
   static const String photo_From_Camera = "photo_From_Camera";
   static const String select_center_image = "select_center_image";
+  static const String select_employee_image = "select_employee_image";
   static const String center_created_successfully = "center_created_successfully";
   static const String center_updated_successfully = "center_updated_successfully";
   static const String order_accepted_successfully = "order_accepted_successfully";
   static const String order_cancelled_successfully = "order_cancelled_successfully";
+  static const String employee_updated_successfully = "employee_updated_successfully";
+  static const String employee_created_successfully = "employee_created_successfully";
   static const String pending = "pending";
   static const String accepted = "accepted";
   static const String completed = "completed";

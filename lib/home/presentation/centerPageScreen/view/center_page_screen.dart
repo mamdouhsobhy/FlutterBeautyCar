@@ -26,7 +26,7 @@ class CenterPageScreen extends StatefulWidget {
   State<CenterPageScreen> createState() => _CenterPageScreenState();
 }
 
-class _CenterPageScreenState extends State<CenterPageScreen> {
+class _CenterPageScreenState extends State<CenterPageScreen> with WidgetsBindingObserver {
 
   final CentersViewModel _centersViewModel = instance<CentersViewModel>();
 
@@ -48,8 +48,18 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
     });
   }
 
+  void _refreshCenters() {
+    _centersViewModel.resetPage();
+    _centersViewModel.centersList.clear();
+    filteredCenters.clear();
+    _searchController.clear();
+    _centersViewModel.getCenters();
+  }
+
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _bind();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
@@ -58,7 +68,15 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
         _centersViewModel.getCenters();
       }
     });
-    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      // Refresh centers when app becomes active
+      _refreshCenters();
+    }
   }
 
   @override
@@ -68,21 +86,28 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
           statusBarColor: ColorManager.white,
           statusBarIconBrightness: Brightness.dark,
         ),
-        child: Scaffold(
-          backgroundColor: ColorManager.white,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: MyAppBar(title: AppStrings.centers.tr()),
-          ),
-          body: SafeArea(
-            child: StreamBuilder<FlowState>(
-              stream: _centersViewModel.outputState,
-              builder: (context, snapshot) {
-                if (snapshot.data != null && _centersViewModel.isOutStateLoading) {
-                  _handleCentersStateChanged(snapshot.data!);
-                }
-                return _getCentersScreenContent();
-              },
+        child: WillPopScope(
+          onWillPop: () async {
+            // Refresh centers when manually navigating back
+            _refreshCenters();
+            return true;
+          },
+          child: Scaffold(
+            backgroundColor: ColorManager.white,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: MyAppBar(title: AppStrings.centers.tr()),
+            ),
+            body: SafeArea(
+              child: StreamBuilder<FlowState>(
+                stream: _centersViewModel.outputState,
+                builder: (context, snapshot) {
+                  if (snapshot.data != null && _centersViewModel.isOutStateLoading) {
+                    _handleCentersStateChanged(snapshot.data!);
+                  }
+                  return _getCentersScreenContent();
+                },
+              ),
             ),
           ),
         ));
@@ -134,13 +159,14 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () async {
-              _centersViewModel.page = 1;
-              _centersViewModel.centerRequest.page = 1;
-              _centersViewModel.centersList = [];
+              // Reset pagination and clear lists
+              _centersViewModel.resetPage();
               _centersViewModel.centersList.clear();
               filteredCenters.clear();
-              _centersViewModel.resetPage();
-              _centersViewModel.getCenters();
+              _searchController.clear();
+              
+              // Fetch fresh data
+              await _centersViewModel.getCenters();
             },
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -210,7 +236,12 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
                                           context,
                                           HomeRoutes.createCenterRoute,
                                           arguments: {'centerId': "$centerId"},
-                                        );
+                                        ).then((result) {
+                                          // Refresh centers when returning from edit screen
+                                          if (result == true) {
+                                            _refreshCenters();
+                                          }
+                                        });
                                       });
                                     },
                                   );
@@ -226,7 +257,13 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
                       right: AppPadding.p16,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, HomeRoutes.createCenterRoute);
+                          Navigator.pushNamed(context, HomeRoutes.createCenterRoute)
+                              .then((result) {
+                            // Refresh centers when returning from create screen
+                            if (result == true) {
+                              _refreshCenters();
+                            }
+                          });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(AppPadding.p10),
@@ -268,6 +305,7 @@ class _CenterPageScreenState extends State<CenterPageScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _scrollController.dispose();
     _searchController.dispose();
     _centersViewModel.dispose();

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../resources/assetsManager.dart';
 import '../../../resources/stringManager.dart';
 import '../../../resources/valuesManager.dart';
+import '../../../utils/function.dart';
 import '../../../utils/shared_text_field.dart';
 import '../../../utils/shared_text_field_with_phone_code.dart';
 
@@ -19,6 +20,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _countryCodeController = TextEditingController();
   final TextEditingController _experienceController = TextEditingController();
   final TextEditingController _identifyCardNumberController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
@@ -27,17 +29,43 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.employee != null) {
+        _updateEmployeeData();
+      }
+    });
+    super.initState();
+  }
+
+  // @override
+  // void didUpdateWidget(EmployeeInfoPageScreen oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (oldWidget.employee?.id != widget.employee?.id) {
+  //     _updateEmployeeData();
+  //   }
+  // }
+
+  void _updateEmployeeData() {
     _userNameController.text = "${widget.employee?.name}";
     _emailController.text = "${widget.employee?.email}";
     _phoneController.text = "${widget.employee?.phone}";
+
+    if(widget.employee?.phone!=null) {
+      _countryCodeController.text =
+      getCountryCode("${widget.employee?.phone}")!;
+      _phoneController.text =
+          widget.employee!.phone!.replaceAll(_countryCodeController.text, "");
+    }
+
     _experienceController.text = "${widget.employee?.experiance}";
     _identifyCardNumberController.text = "${widget.employee?.ssdNum}";
     _startTimeController.text = "${widget.employee?.startTime}";
     _endTimeController.text = "${widget.employee?.endTime}";
     _activeController.text = widget.employee?.status == 1 ? AppStrings.un_active.tr() : AppStrings.active.tr();
+
     setState(() {
+
     });
-    super.initState();
   }
 
   @override
@@ -76,6 +104,7 @@ class _EmployeeInfoPageScreenState extends State<EmployeeInfoPageScreen> {
                 hint: AppStrings.enter_phone_number.tr(),
                 title: AppStrings.phone_number.tr(),
                 readOnly: true,
+                defaultCountryCode: getIsoCode(_countryCodeController.text) ?? "SA",
                 takeValue: (value) {},
                 takeCountryCode: (code) {
 
