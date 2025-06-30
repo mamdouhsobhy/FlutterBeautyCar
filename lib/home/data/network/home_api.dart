@@ -1,3 +1,4 @@
+import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
@@ -12,6 +13,7 @@ import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
 import '../../../../utils/Constants.dart';
+import '../../../authentication/data/response/login/login.dart';
 
 part 'home_api.g.dart';
 
@@ -103,5 +105,13 @@ abstract class HomeServiceClient {
 
   @GET("vendor/getStatistics")
   Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics();
+
+  @MultiPart()
+  @POST("guest/updateProfile")
+  Future<ModelLoginResponseRemote> updateProfile(@Body() FormData formData);
+
+  @MultiPart()
+  @POST("guest/changePassword")
+  Future<BaseResponse> changePassword(@Body() FormData formData);
 
 }

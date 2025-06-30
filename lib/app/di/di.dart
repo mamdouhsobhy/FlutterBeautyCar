@@ -18,10 +18,13 @@ import 'package:beauty_car/home/domain/usecase/employee_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/home_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/order_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/profile_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/rated_orders_usecase.dart';
 import 'package:beauty_car/home/presentation/centerPageScreen/viewmodel/centers_viewmodel.dart';
+import 'package:beauty_car/home/presentation/changePasswordScreen/viewmodel/change_password_viewmodel.dart';
 import 'package:beauty_car/home/presentation/createCenterScreen/viewmodel/create_center_viewmodel.dart';
 import 'package:beauty_car/home/presentation/createEmployeeScreen/viewmodel/create_employee_viewmodel.dart';
+import 'package:beauty_car/home/presentation/editProfileScreen/viewmodel/profile_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/viewmodel/appointment_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeeDetailsPageScreen/viewmodel/employee_details_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeePageScreen/viewmodel/employee_viewmodel.dart';
@@ -220,11 +223,31 @@ initEmployeeAppointmentOrderModule(){
 
 initEditProfileModule(){
 
+  if(!GetIt.I.isRegistered<ProfileUseCase>()) {
+    instance.registerFactory<ProfileUseCase>(() => ProfileUseCase(instance()));
+    instance.registerFactory<ProfileViewModel>(() => ProfileViewModel(instance()));
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
+  }
+
+}
+
+initChangePasswordModule(){
+
+  if(!GetIt.I.isRegistered<ProfileUseCase>()) {
+    instance.registerFactory<ProfileUseCase>(() => ProfileUseCase(instance()));
+    instance.registerFactory<ChangePasswordViewModel>(() => ChangePasswordViewModel(instance()));
+  }
+
+}
+
+initSettingModule(){
+
   if(!GetIt.I.isRegistered<ImagePicker>()) {
     instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 
 }
+
 
 
 

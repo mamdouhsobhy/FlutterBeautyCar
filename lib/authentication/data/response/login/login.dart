@@ -32,13 +32,13 @@ class Data {
   @JsonKey(name: "id")
   final int? id;
   @JsonKey(name: "name")
-  final String? name;
+  String? name;
   @JsonKey(name: "email")
   final String? email;
   @JsonKey(name: "phone")
   final String? phone;
   @JsonKey(name: "image")
-  final String? image;
+  String? image;
 
   Data ({
     this.id,

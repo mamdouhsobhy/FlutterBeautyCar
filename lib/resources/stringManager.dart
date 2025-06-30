@@ -135,5 +135,10 @@ class AppStrings {
   static const String current_password = "current_password";
   static const String enter_new_password = "enter_new_password";
   static const String new_password = "new_password";
+  static const String english = "english";
+  static const String arabic = "arabic";
+  static const String profile_update_successully = "profile_update_successully";
+  static const String password_update_successully = "password_update_successully";
+
 
 }

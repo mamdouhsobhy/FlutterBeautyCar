@@ -1,5 +1,7 @@
 
 
+import 'package:beauty_car/app/baseResponse/base_response.dart';
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/data_source/home_remote_data_source.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
@@ -390,5 +392,48 @@ class HomeRepositoryImpl implements HomeRepository{
 
   }
 
+  @override
+  Future<Either<Failure, ModelLoginResponseRemote>> updateProfile(FormData data) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.updateProfile(data);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> changePassword(FormData data) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.changePassword(data);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
 
 }

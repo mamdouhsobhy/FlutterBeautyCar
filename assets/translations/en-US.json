@@ -132,5 +132,9 @@
   "enter_current_password": "Enter current password",
   "current_password": "Current Password",
   "enter_new_password": "Enter new password",
-  "new_password": "New Password"
+  "new_password": "New Password",
+  "english": "English",
+  "arabic": "Arabic",
+  "profile_update_successully": "Profile updated successfully",
+  "password_update_successully": "Password updated successfully"
 }

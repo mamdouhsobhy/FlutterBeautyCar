@@ -1,6 +1,6 @@
-import 'package:beauty_car/home/presentation/changePasswordScreen/change_password_screen.dart';
+import 'package:beauty_car/home/presentation/changePasswordScreen/view/change_password_screen.dart';
 import 'package:beauty_car/home/presentation/createEmployeeScreen/view/create_employee_screen.dart';
-import 'package:beauty_car/home/presentation/editProfileScreen/edit_profile_screen.dart';
+import 'package:beauty_car/home/presentation/editProfileScreen/view/edit_profile_screen.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/view/more_orders_page_screen.dart';
 import 'package:beauty_car/home/presentation/settingPageScreen/setting_page_screen.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +58,7 @@ class HomeRouteGenerator {
             builder: (_) => const EditProfileScreen(),
             settings: settings);
       case HomeRoutes.changePasswordRoute:
+        initChangePasswordModule();
         return MaterialPageRoute(
             builder: (_) => const ChangePasswordScreen(),
             settings: settings);

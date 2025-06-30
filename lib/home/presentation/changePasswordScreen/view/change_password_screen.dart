@@ -1,16 +1,20 @@
+import 'package:beauty_car/app/baseResponse/base_response.dart';
+import 'package:beauty_car/home/presentation/changePasswordScreen/viewmodel/change_password_viewmodel.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../app/state_renderer/state_renderer_impl.dart';
-import '../../../resources/colorManager.dart';
-import '../../../resources/stringManager.dart';
-import '../../../resources/valuesManager.dart';
-import '../../../utils/loading_page.dart';
-import '../../../utils/shared_appbar.dart';
-import '../../../utils/shared_button.dart';
-import '../../../utils/shared_text_field.dart';
+import '../../../../app/di/di.dart';
+import '../../../../app/state_renderer/state_renderer_impl.dart';
+import '../../../../resources/colorManager.dart';
+import '../../../../resources/stringManager.dart';
+import '../../../../resources/valuesManager.dart';
+import '../../../../utils/loading_page.dart';
+import '../../../../utils/shared_appbar.dart';
+import '../../../../utils/shared_button.dart';
+import '../../../../utils/shared_text_field.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -20,12 +24,23 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final ChangePasswordViewModel _changePasswordViewModel = instance<ChangePasswordViewModel>();
 
   final TextEditingController _currentPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  _bind(){
+    _changePasswordViewModel.start();
+  }
+
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +54,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           appBar: MyAppBar(title: AppStrings.change_password.tr()),
           body: SafeArea(
               child:
-              // StreamBuilder<FlowState>(
-              //   stream: _createEmployeeViewModel.outputState,
-              //   builder: (context, snapshot) {
-              //     if (snapshot.data != null && _createEmployeeViewModel.isOutStateLoading) {
-              //       _handleCreateOrUpdateStateChanged(snapshot.data!);
-              //     }
-              _getChangePasswordScreenContent()
-            // },
-            // ),
+              StreamBuilder<FlowState>(
+                stream: _changePasswordViewModel.outputState,
+                builder: (context, snapshot) {
+                  if (snapshot.data != null && _changePasswordViewModel.isOutStateLoading) {
+                    _handleChangePasswordStateChanged(snapshot.data!);
+                  }
+             return _getChangePasswordScreenContent();
+            },
+            ),
           ),
         ));
   }
@@ -80,7 +95,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           controller: _currentPasswordController,
                           validator: (value){
                             if (value == null || value.isEmpty) {
-                              return AppStrings.enterPassword.tr();
+                              return AppStrings.enter_current_password.tr();
                             } else if(_currentPasswordController.text.length < 6){
                               return AppStrings.password_must_be_6_character.tr();
                             } else {
@@ -103,7 +118,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           controller: _newPasswordController,
                           validator: (value){
                             if (value == null || value.isEmpty) {
-                              return AppStrings.confirmPassword.tr();
+                              return AppStrings.enter_new_password.tr();
                             }else if(_newPasswordController.text.length < 6){
                               return AppStrings.password_must_be_6_character.tr();
                             }
@@ -147,31 +162,48 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
           ),
         ),
-        MyButton(
-          color: ColorManager.colorRedB2,
-          buttonText: AppStrings.change_password.tr(),
-          paddingVertical: AppPadding.p0,
-          fun: () {
-            if (_formKey.currentState?.validate() ?? false) {
-              // _resetPasswordViewModel.resetPassword();
-            }
-          },
-        ),
+        StreamBuilder<BaseResponse>(
+            stream: _changePasswordViewModel.outputChangePasswordData,
+            builder: (ctx, snapshot) {
+              if (snapshot.data != null && snapshot.data?.status == true) {
+                if(_changePasswordViewModel.isUpdateLoading){
+                  _changePasswordViewModel.isUpdateLoading = false;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _navigateToSettingScreen();
+                  });
+                }
+              }
+              return MyButton(
+                color: ColorManager.colorRedB2,
+                buttonText: AppStrings.save.tr(),
+                paddingVertical: AppPadding.p0,
+                fun: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    _changePasswordViewModel.updatePassword(_currentPasswordController.text,_newPasswordController.text,_confirmPasswordController.text);
+                  }
+                },
+              );
+            }),
         const SizedBox(height: AppSize.s16)
       ],
     );
   }
 
-  _handleEditProfileStateChanged(FlowState state) {
+  _navigateToSettingScreen(){
+    context.showSuccessToast(AppStrings.password_update_successully.tr());
+    Navigator.pop(context);
+  }
+
+  _handleChangePasswordStateChanged(FlowState state) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (state is LoadingState && !isLoadingDialogShowing()) {
         showLoadingDialog(context);
       } else if (state is ErrorState) {
-        // _createEmployeeViewModel.isOutStateLoading = false;
+        _changePasswordViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
         showErrorDialog(context, message: state.getMessage());
       } else if (state is SuccessState) {
-        // _createEmployeeViewModel.isOutStateLoading = false;
+        _changePasswordViewModel.isOutStateLoading = false;
         dismissLoadingDialog();
       } else {
         dismissLoadingDialog();

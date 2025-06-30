@@ -1,11 +1,15 @@
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/resources/assetsManager.dart';
+import 'package:beauty_car/resources/languageManager.dart';
 import 'package:beauty_car/resources/styleManager.dart';
 import 'package:beauty_car/resources/valuesManager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../app/di/di.dart';
 import '../../../resources/colorManager.dart';
 import '../../../resources/stringManager.dart';
 import '../../../utils/shared_appbar.dart';
@@ -19,8 +23,28 @@ class SettingPageScreen extends StatefulWidget {
 }
 
 class _SettingPageScreenState extends State<SettingPageScreen> {
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   bool _isNotifyChecked = false;
+  bool _isEnglishChecked = false;
+  bool _isArabicChecked = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeLanguagePreference();
+  }
+
+  void _initializeLanguagePreference() async {
+    final appLanguage = await _appPreferences.getAppLanguage();
+    setState(() {
+      if (appLanguage == ENGLISH) {
+        _isEnglishChecked = true;
+      } else {
+        _isArabicChecked = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +129,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
           const SizedBox(height: 10),
           InkWell(
             onTap: (){
-              Navigator.pushNamed(context, HomeRoutes.editProfileRoute);
+              _showLanguageBottomSheet(context);
             },
             child: Card(
                 color: ColorManager.white,
@@ -155,6 +179,44 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
         ],
       ),
     );
+  }
+
+  _showLanguageBottomSheet(BuildContext context){
+    showModalBottomSheet(context: context, builder: (BuildContext ctx){
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Checkbox(
+                value: _isEnglishChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isEnglishChecked = value ?? false;
+                    _appPreferences.changeAppLanguage(ENGLISH);
+                    Phoenix.rebirth(context);
+                  });
+                },
+              ),
+              title: Text(AppStrings.english.tr()),
+            ),
+            ListTile(
+              leading: Checkbox(
+                value: _isArabicChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isArabicChecked = value ?? false;
+                    _appPreferences.changeAppLanguage(ARABIC);
+                    Phoenix.rebirth(context);
+                  });
+                },
+              ),
+              title: Text(AppStrings.arabic.tr()),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
 }

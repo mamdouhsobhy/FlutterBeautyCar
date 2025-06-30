@@ -132,5 +132,9 @@
   "enter_current_password": "ادخل كلمة المرور الحالية",
   "current_password": "كلمة المرور الحالية",
   "enter_new_password": "ادخل كلمة مرور جديدة",
-  "new_password": "كلمة مرور جديدة"
+  "new_password": "كلمة مرور جديدة",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "profile_update_successully": "تم تحديث الملف الشخصى بنجاح",
+  "password_update_successully": "تم تحديث كلمة المرور بنجاح"
 }

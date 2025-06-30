@@ -1,4 +1,6 @@
 
+import 'package:beauty_car/app/baseResponse/base_response.dart';
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
@@ -45,6 +47,10 @@ abstract class HomeRepository {
   Future<Either<Failure,ModelOrdersResponseRemote>> getAppointmentOrders(bool pagination , int limit , String empId , int page );
 
   Future<Either<Failure,ModelGetHomeStatisticsResponseRemote>> getHomeStatistics();
+
+  Future<Either<Failure,ModelLoginResponseRemote>> updateProfile(FormData data);
+
+  Future<Either<Failure,BaseResponse>> changePassword(FormData data);
 
 
 }

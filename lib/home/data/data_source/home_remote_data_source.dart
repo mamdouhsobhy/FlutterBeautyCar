@@ -1,4 +1,6 @@
 
+import 'package:beauty_car/app/baseResponse/base_response.dart';
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/network/home_api.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
@@ -43,6 +45,10 @@ abstract class HomeRemoteDataSource {
   Future<ModelOrdersResponseRemote> getAppointmentOrders(bool pagination , int limit , String empId , int page);
 
   Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics();
+
+  Future<ModelLoginResponseRemote> updateProfile(FormData data);
+
+  Future<BaseResponse> changePassword(FormData data);
 
 }
 
@@ -129,6 +135,16 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics() async{
     return await _homeServiceClient.getHomeStatistics();
+  }
+
+  @override
+  Future<ModelLoginResponseRemote> updateProfile(FormData data) async{
+    return await _homeServiceClient.updateProfile(data);
+  }
+
+  @override
+  Future<BaseResponse> changePassword(FormData data) async{
+    return await _homeServiceClient.changePassword(data);
   }
 
 
