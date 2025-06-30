@@ -35,8 +35,6 @@
   "resend_code": "Resend code",
   "enter_verification_code": "Enter verification code",
   "verification_code_sent_to": "The verification code sent to the number",
-  "new_password": "New Password",
-  "enter_new_password": "Enter a new password",
   "today_services": "Today's Services",
   "completed_services": "Completed Services",
   "order": "Order",
@@ -122,7 +120,17 @@
   "accepted": "Accepted",
   "completed": "Completed",
   "cancelled": "Cancelled",
-  "enter_valid_code": "Please enter a valid code"
-
-
+  "enter_valid_code": "Please enter a valid code",
+  "wait_appointment": "Wait Appointments",
+  "notification": "Notifications",
+  "settings": "Settings",
+  "logout": "Logout",
+  "delete_account": "Delete Account",
+  "edit_profile": "Edit Profile",
+  "lang_setting": "Language Settings",
+  "change_password": "Change Password",
+  "enter_current_password": "Enter current password",
+  "current_password": "Current Password",
+  "enter_new_password": "Enter new password",
+  "new_password": "New Password"
 }

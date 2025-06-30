@@ -35,8 +35,6 @@
   "resend_code": "اعادة ارسال",
   "enter_verification_code": "ادخل رمز التحقق",
   "verification_code_sent_to": "لقد تم إرسال رمز التحقق إلى الرقم",
-  "new_password": "كلمة مرور جديدة",
-  "enter_new_password": "قم بادخال كلمة مرور جديدة",
   "today_services": "خدمات اليوم",
   "completed_services": "الخدمات المكتملة",
   "order": "طلب",
@@ -122,5 +120,17 @@
   "accepted": "مقبول",
   "completed": "مكتمل",
   "cancelled": "ملغي",
-  "enter_valid_code": "أدخل رمزًا صالحًا"
+  "enter_valid_code": "أدخل رمزًا صالحًا",
+  "wait_appointment": "مواعيد الإنتظار",
+  "notification": "الإشعارات",
+  "settings": "الإعدادت",
+  "logout": "تسجيل خروج",
+  "delete_account": "حذف الحساب",
+  "edit_profile": "تعديل الملف الشخصى",
+  "lang_setting": "إعدادات اللغة",
+  "change_password": "تغيير كلمة المرور",
+  "enter_current_password": "ادخل كلمة المرور الحالية",
+  "current_password": "كلمة المرور الحالية",
+  "enter_new_password": "ادخل كلمة مرور جديدة",
+  "new_password": "كلمة مرور جديدة"
 }

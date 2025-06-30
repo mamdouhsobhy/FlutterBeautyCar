@@ -218,6 +218,14 @@ initEmployeeAppointmentOrderModule(){
 
 }
 
+initEditProfileModule(){
+
+  if(!GetIt.I.isRegistered<ImagePicker>()) {
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
+  }
+
+}
+
 
 
 

@@ -1,3 +1,4 @@
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/view/side_menu.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
@@ -22,7 +23,8 @@ import '../../homeSharedViews/home_page_app_bar.dart';
 import '../../homeSharedViews/service_request_card.dart';
 
 class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+  final Function(int) sideMenuTabsPressed;
+  const HomePageScreen({super.key,required this.sideMenuTabsPressed});
 
   @override
   State<HomePageScreen> createState() => _HomePageScreenState();
@@ -31,6 +33,7 @@ class HomePageScreen extends StatefulWidget {
 class _HomePageScreenState extends State<HomePageScreen> {
 
   final HomeViewModel _homeViewModel = instance<HomeViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -54,7 +57,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         child: Scaffold(
           key: _scaffoldKey,
           backgroundColor: ColorManager.white,
-          drawer: SafeArea(child: Drawer(child: SideMenu())),
+          drawer: SafeArea(child: Drawer(child: SideMenu(appPreferences: _appPreferences,fun: widget.sideMenuTabsPressed))),
           body: SafeArea(
               child:
               StreamBuilder<FlowState>(

@@ -37,8 +37,6 @@ class AppStrings {
   static const String resendCode = "resend_code";
   static const String enterVerificationCode = "enter_verification_code";
   static const String verificationCodeSentTo = "verification_code_sent_to";
-  static const String newPassword = "new_password";
-  static const String enterNewPassword = "enter_new_password";
   static const String todayServices = "today_services";
   static const String completedServices = "completed_services";
   static const String order = "order";
@@ -125,5 +123,17 @@ class AppStrings {
   static const String accepted = "accepted";
   static const String completed = "completed";
   static const String cancelled = "cancelled";
+  static const String wait_appointment = "wait_appointment";
+  static const String notification = "notification";
+  static const String settings = "settings";
+  static const String logout = "logout";
+  static const String delete_account = "delete_account";
+  static const String edit_profile = "edit_profile";
+  static const String lang_setting = "lang_setting";
+  static const String change_password = "change_password";
+  static const String enter_current_password = "enter_current_password";
+  static const String current_password = "current_password";
+  static const String enter_new_password = "enter_new_password";
+  static const String new_password = "new_password";
 
 }

@@ -21,18 +21,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedScreenIndex = 0;
-
-  final List<Widget> _tabsScreens = const [
-    HomePageScreen(),
-    CenterPageScreen(),
-    OrderPageScreen(),
-    EmployeePageScreen(),
-  ];
+  late final List<Widget> _tabsScreens;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedScreenIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tabsScreens = [
+      HomePageScreen(sideMenuTabsPressed: (index) => _onItemTapped(index)),
+      const CenterPageScreen(),
+      const OrderPageScreen(),
+      const EmployeePageScreen(),
+    ];
   }
 
   @override

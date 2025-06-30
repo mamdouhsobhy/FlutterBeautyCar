@@ -110,7 +110,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           const SizedBox(height: AppSize.s30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-            child: AuthTitleAndSubTitle(title: AppStrings.newPassword.tr(), subTitle: AppStrings.enterNewPassword.tr()),
+            child: AuthTitleAndSubTitle(title: AppStrings.new_password.tr(), subTitle: AppStrings.enter_new_password.tr()),
           ),
           const SizedBox(height: AppSize.s15),
           MyTextField(

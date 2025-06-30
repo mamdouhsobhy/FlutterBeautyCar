@@ -37,6 +37,7 @@ class _MoreOrdersPageScreenState extends State<MoreOrdersPageScreen> {
     _bind();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(

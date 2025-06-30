@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _intentToHomeScreen(ModelLoginResponseRemote? data) async {
-      _appPreferences.setUserLoggedIn();
+      _appPreferences.setUserLoggedIn(true);
      _appPreferences.setUserData(data ?? ModelLoginResponseRemote());
        Constants.token = "${data?.token}";
       

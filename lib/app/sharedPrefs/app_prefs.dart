@@ -51,9 +51,9 @@ class AppPreferences{
     return _sharedPreferences.getBool(PREFS_KEY_ONBOARDING_SCREEN_VIEWED)?? false;
   }
 
-  Future<void> setUserLoggedIn() async {
+  Future<void> setUserLoggedIn(bool isLoggedIn) async {
     print("🟢 Checking isUserLoggedIn(): CALLED");
-     _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
+     _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, isLoggedIn);
   }
 
   Future<bool> isUserLoggedIn() async {

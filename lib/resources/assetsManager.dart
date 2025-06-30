@@ -36,6 +36,13 @@ class ImageAssets {
   static const String editIcon = "$imagePath/ic_edit.svg";
   static const String arrowDownIcon = "$imagePath/ic_arrow_down.svg";
   static const String handIcon = "$imagePath/ic_hand.svg";
+  static const String logoutIcon = "$imagePath/ic_log_out.svg";
+  static const String waitIcon = "$imagePath/ic_wait.svg";
+  static const String settingIcon = "$imagePath/setting.svg";
+  static const String deleteIcon = "$imagePath/ic_delete.svg";
+  static const String arrowRightIcon = "$imagePath/ic_arrow_right.svg";
+  static const String langIcon = "$imagePath/ic_lang.svg";
+  static const String lockIcon = "$imagePath/ic_unlock.svg";
 
 }
 
