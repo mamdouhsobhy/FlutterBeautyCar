@@ -14,7 +14,7 @@ import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_sta
 import 'package:dio/dio.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit , int status);
+  Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit ,int page, int status);
 
   Future<ModelCentersResponseRemote> getCenters(bool pagination , int limit , int page);
 
@@ -58,8 +58,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   HomeRemoteDataSourceImpl(this._homeServiceClient);
 
   @override
-  Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit , int status) async {
-    return await _homeServiceClient.getHomeOrders(pagination,limit,status);
+  Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit , int page , int status) async {
+    return await _homeServiceClient.getHomeOrders(pagination,limit,page,status);
   }
 
   @override

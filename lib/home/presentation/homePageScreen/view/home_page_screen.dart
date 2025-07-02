@@ -49,6 +49,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
     super.initState();
   }
 
+  _navigateToOrderDetails(String orderId){
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.pushNamed(
+        context,
+        HomeRoutes.reserveDetailsRoute,
+        arguments: {'orderId': "$orderId"},
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -144,7 +154,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: AppPadding.p8, horizontal: AppPadding.p16),
-                              child: ServiceRequestCard(orders: snapshot.data!.data![index]),
+                              child: ServiceRequestCard(orders: snapshot.data!.data![index],fun: (orderId){
+                                _navigateToOrderDetails("$orderId");
+                              }),
                             );
                           },
                         );

@@ -3,6 +3,7 @@ import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/presentation/employee_review_page_screen/viewmodel/review_orders_viewmodel.dart';
 import 'package:beauty_car/utils/Constants.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ import '../../../../resources/valuesManager.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_appbar.dart';
 import '../../homeSharedViews/employee_review_item_card.dart';
+import '../../routeManager/home_routes_manager.dart';
 
 class EmployeeReviewPageScreen extends StatefulWidget {
   String employeeId;
@@ -153,7 +155,7 @@ class _EmployeeReviewPageScreenState extends State<EmployeeReviewPageScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: AppPadding.p8, horizontal: AppPadding.p16),
                             child: EmployeeReviewItemCard(ratedOrders: filteredOrders[index],fun: (orderId){
-
+                              _navigateToOrderDetails("$orderId");
                             }),
                           );
                         },
@@ -168,6 +170,17 @@ class _EmployeeReviewPageScreenState extends State<EmployeeReviewPageScreen> {
       ),
     );
   }
+
+  _navigateToOrderDetails(String orderId){
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.pushNamed(
+        context,
+        HomeRoutes.reserveDetailsRoute,
+        arguments: {'orderId': "$orderId"},
+      );
+    });
+  }
+
 
   _handleOrdersStateChanged(FlowState state) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

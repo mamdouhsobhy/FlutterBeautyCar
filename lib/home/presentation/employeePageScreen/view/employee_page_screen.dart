@@ -47,6 +47,7 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
   }
 
   void _refreshEmployees() {
+    _employeeViewModel.employeesData.add(ModelEmployeesResponseRemote());
     _employeeViewModel.resetPage();
     _employeeViewModel.employeesList.clear();
     filteredEmployees.clear();
@@ -96,17 +97,17 @@ class _EmployeePageScreenState extends State<EmployeePageScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(AppPadding.p10),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
-                  border:
-                  Border.all(color: Colors.grey), // Optional: visible border
-                ),
-                child: SvgPicture.asset(ImageAssets.filterIcon),
-              ),
-              const SizedBox(width: AppSize.s10), // Optional: spacing between icon and text field
+              // Container(
+              //   padding: const EdgeInsets.all(AppPadding.p10),
+              //   alignment: Alignment.center,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
+              //     border:
+              //     Border.all(color: Colors.grey), // Optional: visible border
+              //   ),
+              //   child: SvgPicture.asset(ImageAssets.filterIcon),
+              // ),
+              // const SizedBox(width: AppSize.s10), // Optional: spacing between icon and text field
               Expanded(
                 child: MyTextField(
                   hint: "",

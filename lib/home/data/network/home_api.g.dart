@@ -27,12 +27,14 @@ class _HomeServiceClient implements HomeServiceClient {
   Future<ModelOrdersResponseRemote> getHomeOrders(
     bool pagination,
     int limit,
+    int page,
     int status,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'pagination': pagination,
       r'limit': limit,
+      r'page': page,
       r'status': status,
     };
     final _headers = <String, dynamic>{};

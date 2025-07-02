@@ -18,79 +18,84 @@ class EmployeeAppointmentItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: ColorManager.white,
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSize.s18)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-                top: AppPadding.p24,
-                bottom: AppPadding.p24,
-                left: AppPadding.p12),
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
-                    width: AppSize.s60,
-                    height: AppSize.s60,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: SvgPicture.asset(ImageAssets.avatarIcon)
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
+    return InkWell(
+      onTap: (){
+        fun(order.id);
+      },
+      child: Card(
+        color: ColorManager.white,
+        elevation: 1,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSize.s18)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
               padding: const EdgeInsets.only(
-                  top: AppPadding.p28,
-                  bottom: AppPadding.p28,
-                  right: AppPadding.p8,
-                  left: AppPadding.p4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  top: AppPadding.p24,
+                  bottom: AppPadding.p24,
+                  left: AppPadding.p12),
+              child: Stack(
+                alignment: Alignment.bottomRight,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("${order.clientName}",
-                          style: getBoldStyle(
-                              color: ColorManager.black,
-                              fontSize: FontSize.size16)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-                        child: Text("${AppStrings.status.tr()} : ${getStatus(order.status?.toInt() ?? 1)}",
-                            style: getRegularStyle(
-                                color: ColorManager.colorGray60,
-                                fontSize: FontSize.size12)),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: AppSize.s4),
-                  Text("${order.id}",
-                      style: getRegularStyle(
-                          color: ColorManager.colorGray72,
-                          fontSize: FontSize.size14)),
-                  const SizedBox(height: AppSize.s4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("${AppStrings.serviceLocation.tr()} : ${order.placeType}",
-                          style: getRegularStyle(
-                              color: ColorManager.colorGray72,
-                              fontSize: FontSize.size14)),
-                    ],
+                  Container(
+                      width: AppSize.s60,
+                      height: AppSize.s60,
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: SvgPicture.asset(ImageAssets.avatarIcon)
                   )
                 ],
               ),
             ),
-          )
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: AppPadding.p28,
+                    bottom: AppPadding.p28,
+                    right: AppPadding.p8,
+                    left: AppPadding.p4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("${order.clientName}",
+                            style: getBoldStyle(
+                                color: ColorManager.black,
+                                fontSize: FontSize.size16)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                          child: Text("${AppStrings.status.tr()} : ${getStatus(order.status?.toInt() ?? 1)}",
+                              style: getRegularStyle(
+                                  color: ColorManager.colorGray60,
+                                  fontSize: FontSize.size12)),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: AppSize.s4),
+                    Text("${order.id}",
+                        style: getRegularStyle(
+                            color: ColorManager.colorGray72,
+                            fontSize: FontSize.size14)),
+                    const SizedBox(height: AppSize.s4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("${AppStrings.serviceLocation.tr()} : ${order.placeType}",
+                            style: getRegularStyle(
+                                color: ColorManager.colorGray72,
+                                fontSize: FontSize.size14)),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

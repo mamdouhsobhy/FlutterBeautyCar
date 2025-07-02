@@ -49,7 +49,9 @@ class _CenterPageScreenState extends State<CenterPageScreen> with WidgetsBinding
   }
 
   void _refreshCenters() {
+    _centersViewModel.centersData.add(ModelCentersResponseRemote());
     _centersViewModel.resetPage();
+    _centersViewModel.centersList = [];
     _centersViewModel.centersList.clear();
     filteredCenters.clear();
     _searchController.clear();
@@ -71,43 +73,27 @@ class _CenterPageScreenState extends State<CenterPageScreen> with WidgetsBinding
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      // Refresh centers when app becomes active
-      _refreshCenters();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           statusBarColor: ColorManager.white,
           statusBarIconBrightness: Brightness.dark,
         ),
-        child: WillPopScope(
-          onWillPop: () async {
-            // Refresh centers when manually navigating back
-            _refreshCenters();
-            return true;
-          },
-          child: Scaffold(
-            backgroundColor: ColorManager.white,
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight),
-              child: MyAppBar(title: AppStrings.centers.tr()),
-            ),
-            body: SafeArea(
-              child: StreamBuilder<FlowState>(
-                stream: _centersViewModel.outputState,
-                builder: (context, snapshot) {
-                  if (snapshot.data != null && _centersViewModel.isOutStateLoading) {
-                    _handleCentersStateChanged(snapshot.data!);
-                  }
-                  return _getCentersScreenContent();
-                },
-              ),
+        child: Scaffold(
+          backgroundColor: ColorManager.white,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight),
+            child: MyAppBar(title: AppStrings.centers.tr()),
+          ),
+          body: SafeArea(
+            child: StreamBuilder<FlowState>(
+              stream: _centersViewModel.outputState,
+              builder: (context, snapshot) {
+                if (snapshot.data != null && _centersViewModel.isOutStateLoading) {
+                  _handleCentersStateChanged(snapshot.data!);
+                }
+                return _getCentersScreenContent();
+              },
             ),
           ),
         ));
@@ -125,17 +111,17 @@ class _CenterPageScreenState extends State<CenterPageScreen> with WidgetsBinding
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(AppPadding.p10),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
-                  border:
-                      Border.all(color: Colors.grey), // Optional: visible border
-                ),
-                child: SvgPicture.asset(ImageAssets.filterIcon),
-              ),
-              const SizedBox(width: AppSize.s10), // Optional: spacing between icon and text field
+              // Container(
+              //   padding: const EdgeInsets.all(AppPadding.p10),
+              //   alignment: Alignment.center,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
+              //     border:
+              //         Border.all(color: Colors.grey), // Optional: visible border
+              //   ),
+              //   child: SvgPicture.asset(ImageAssets.filterIcon),
+              // ),
+              // const SizedBox(width: AppSize.s10), // Optional: spacing between icon and text field
               Expanded(
                 child: MyTextField(
                   hint: "",

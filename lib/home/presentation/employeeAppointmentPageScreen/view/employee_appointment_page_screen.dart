@@ -137,7 +137,7 @@ class _EmployeeAppointmentPageScreenState extends State<EmployeeAppointmentPageS
                             padding: const EdgeInsets.symmetric(
                                 vertical: AppPadding.p8, horizontal: AppPadding.p16),
                             child: EmployeeAppointmentItemCard(order: filteredOrders[index],fun: (orderId){
-
+                              _navigateToOrderDetails("$orderId");
                             }),
                           );
                         },
@@ -151,6 +151,16 @@ class _EmployeeAppointmentPageScreenState extends State<EmployeeAppointmentPageS
         },
       ),
     );
+  }
+
+  _navigateToOrderDetails(String orderId){
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.pushNamed(
+        context,
+        HomeRoutes.reserveDetailsRoute,
+        arguments: {'orderId': "$orderId"},
+      );
+    });
   }
 
   _handleOrdersStateChanged(FlowState state) {

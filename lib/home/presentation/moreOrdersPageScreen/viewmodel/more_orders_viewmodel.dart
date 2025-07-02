@@ -7,6 +7,7 @@ import '../../../../app/baseViewModel/baseViewModel.dart';
 import '../../../../app/state_renderer/state_renderer.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../data/request/home_order_request.dart';
+import '../../../data/request/orders_request.dart';
 
 class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelInputs,MoreOrdersViewModelOutputs{
 
@@ -15,6 +16,11 @@ class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelIn
   final HomeUseCase _homeUseCase;
 
   MoreOrdersViewModel(this._homeUseCase);
+
+  final orderRequest = HomeOrderRequest(true , 6 , 1,3);
+
+  int page = 1;
+  List<Data> ordersList = [];
 
   //inputs
   @override
@@ -30,6 +36,13 @@ class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelIn
   }
 
   @override
+  void resetPage() {
+    page = 1;
+    orderRequest.page = 1;
+    ordersList.clear();
+  }
+
+  @override
   Sink get ordersData => _ordersStreamController.sink;
 
    var isOrdersLoading = false;
@@ -41,7 +54,7 @@ class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelIn
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _homeUseCase.execute(HomeOrderRequest(true, 10, 3))) // 10 is limit for recent orders in home
+    (await _homeUseCase.execute(orderRequest)) // 10 is limit for recent orders in home
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
@@ -65,6 +78,7 @@ class MoreOrdersViewModel extends BaseViewModel implements MoreOrdersViewModelIn
 
 abstract class MoreOrdersViewModelInputs{
    Sink get ordersData;
+   void resetPage();
 }
 
 abstract class MoreOrdersViewModelOutputs{

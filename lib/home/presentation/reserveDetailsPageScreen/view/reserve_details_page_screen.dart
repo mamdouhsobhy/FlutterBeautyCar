@@ -56,27 +56,33 @@ class _ReserveDetailsPageScreenState extends State<ReserveDetailsPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: ColorManager.white,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        child: Scaffold(
-          backgroundColor: ColorManager.white,
-          appBar: MyAppBar(title: AppStrings.reserveDetails.tr()),
-          body: SafeArea(
-              child:
-              StreamBuilder<FlowState>(
-                stream: _orderViewModel.outputState,
-                builder: (context, snapshot) {
-                  if (snapshot.data != null && _orderViewModel.isOutStateLoading) {
-                    _handleOrderDetailsStateChanged(snapshot.data!);
-                  }
-                  return _getReserveDetailsScreenContent();
-                },
-              ),
-              ),
-        ));
+    return WillPopScope(
+      onWillPop: () async{
+        Navigator.pop(context);
+        return true;
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor: ColorManager.white,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+            backgroundColor: ColorManager.white,
+            appBar: MyAppBar(title: AppStrings.reserveDetails.tr()),
+            body: SafeArea(
+                child:
+                StreamBuilder<FlowState>(
+                  stream: _orderViewModel.outputState,
+                  builder: (context, snapshot) {
+                    if (snapshot.data != null && _orderViewModel.isOutStateLoading) {
+                      _handleOrderDetailsStateChanged(snapshot.data!);
+                    }
+                    return _getReserveDetailsScreenContent();
+                  },
+                ),
+                ),
+          )),
+    );
   }
 
   Widget _getReserveDetailsScreenContent() {

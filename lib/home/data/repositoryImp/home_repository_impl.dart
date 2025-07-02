@@ -27,11 +27,11 @@ class HomeRepositoryImpl implements HomeRepository{
   HomeRepositoryImpl(this._homeRemoteDataSource,this._networkInfo);
 
   @override
-  Future<Either<Failure, ModelOrdersResponseRemote>> getHomeOrders(bool pagination , int limit , int status) async{
+  Future<Either<Failure, ModelOrdersResponseRemote>> getHomeOrders(bool pagination , int limit , int page , int status) async{
     if(await _networkInfo.isConnected){
 
       try{
-        final response = await _homeRemoteDataSource.getHomeOrders(pagination,limit,status);
+        final response = await _homeRemoteDataSource.getHomeOrders(pagination,limit , page,status);
 
         if(response.status == true){
           return Right(response);

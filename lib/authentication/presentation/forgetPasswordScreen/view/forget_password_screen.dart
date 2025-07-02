@@ -19,6 +19,7 @@ import '../../../../../resources/valuesManager.dart';
 import '../../../../../utils/loading_page.dart';
 import '../../../../../utils/shared_button.dart';
 import '../../../../../utils/shared_text_field_with_phone_code.dart';
+import '../../../../app/sharedPrefs/app_prefs.dart';
 import '../../../../utils/Constants.dart';
 import '../../../../utils/function.dart';
 import '../../../../utils/shared_appbar.dart';
@@ -32,6 +33,7 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   final ForgetPasswordViewModel _forgetPasswordViewModel = instance<ForgetPasswordViewModel>();
 
   final _formKey = GlobalKey<FormState>();
@@ -41,6 +43,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   _bind() {
     _forgetPasswordViewModel.start();
+    _forgetPasswordViewModel.sendOtpRequest.type = "${_appPreferences.getUserType()}";
     _countryCodeController.text = Constants.defaultCountryCode;
   }
 

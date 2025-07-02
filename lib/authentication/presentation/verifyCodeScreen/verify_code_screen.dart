@@ -21,6 +21,7 @@ import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_button.dart';
+import '../../../app/sharedPrefs/app_prefs.dart';
 import '../../../utils/shared_appbar.dart';
 import '../routeManager/routesManager.dart';
 
@@ -33,6 +34,7 @@ class VerifyCodeScreen extends StatefulWidget {
 
 class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   final VerifyViewModel _verifyViewModel = instance<VerifyViewModel>();
   String? _phoneNumber;
   String? _type;
@@ -60,6 +62,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   }
 
   _bind() {
+    _verifyViewModel.verifyRequest.type = "${_appPreferences.getUserType()}";
     _verifyViewModel.start();
   }
 

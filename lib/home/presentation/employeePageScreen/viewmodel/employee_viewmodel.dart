@@ -46,7 +46,7 @@ class EmployeeViewModel extends BaseViewModel implements EmployeeViewModelInputs
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _employeeUseCase.execute(50))
+    (await _employeeUseCase.execute(100))
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));

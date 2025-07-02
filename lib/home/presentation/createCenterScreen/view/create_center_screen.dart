@@ -220,7 +220,7 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                               child: _createCenterViewModel
                                           .createOrUpdateCenter.image ==
                                       null
-                                  ? _centerId != null ? ClipOval(child: Image.network("${snapshot.data?.data![0].image}",fit: BoxFit.cover)) : SvgPicture.asset(ImageAssets.avatarIcon,
+                                  ? (_centerId != null && snapshot.data?.data?.isNotEmpty == true) ? ClipOval(child: Image.network("${snapshot.data?.data![0].image}",fit: BoxFit.cover)) : SvgPicture.asset(ImageAssets.avatarIcon,
                                       fit: BoxFit.cover)
                                   : ClipOval(
                                     child: Image.file(_createCenterViewModel
@@ -530,9 +530,12 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
           stream: _createCenterViewModel.outputCreateOrUpdateCenterData,
           builder: (ctx, createCenterSnapshot) {
             if (createCenterSnapshot.data != null && createCenterSnapshot.data?.status == true) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _navigateToHome();
-              });
+              if(_createCenterViewModel.isCreateCenterLoading) {
+                _createCenterViewModel.isCreateCenterLoading = false;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _navigateToHome();
+                });
+              }
             }
             return MyButton(
               color: ColorManager.colorRedB2,

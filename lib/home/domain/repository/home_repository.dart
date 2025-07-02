@@ -16,7 +16,7 @@ import '../../../../app/errorHandler/failure.dart';
 
 abstract class HomeRepository {
 
-  Future<Either<Failure,ModelOrdersResponseRemote>> getHomeOrders(bool pagination,int limit,int status);
+  Future<Either<Failure,ModelOrdersResponseRemote>> getHomeOrders(bool pagination,int limit, int page , int status);
 
   Future<Either<Failure,ModelCentersResponseRemote>> getCenters(bool pagination , int limit , int page);
 

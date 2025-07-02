@@ -14,7 +14,7 @@ class HomeUseCase implements BaseUseCase<HomeOrderRequest,ModelOrdersResponseRem
 
   @override
   Future<Either<Failure, ModelOrdersResponseRemote>> execute(HomeOrderRequest request) async{
-    return await _repository.getHomeOrders(request.pagination,request.limit,request.status);
+    return await _repository.getHomeOrders(request.pagination,request.limit,request.page,request.status);
   }
 
   @override

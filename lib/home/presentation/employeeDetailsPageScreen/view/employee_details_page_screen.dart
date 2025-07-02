@@ -66,23 +66,29 @@ class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
       AppStrings.review.tr(),
     ];
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: ColorManager.white,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-      child: Scaffold(
-        backgroundColor: ColorManager.white,
-        appBar: MyAppBar(title: ""),
-        body: SafeArea(
-          child: StreamBuilder<FlowState>(
-            stream: _employeeDetailsViewModel.outputState,
-            builder: (context, snapshot) {
-              if (snapshot.data != null && _employeeDetailsViewModel.isOutStateLoading) {
-                _handleEmployeesStateChanged(snapshot.data!);
-              }
-              return _getEmployeeDetailsScreenContent(pageList);
-            },
+    return WillPopScope(
+      onWillPop: () async{
+        Navigator.pop(context,true);
+        return true;
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: ColorManager.white,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        child: Scaffold(
+          backgroundColor: ColorManager.white,
+          appBar: MyAppBar(title: ""),
+          body: SafeArea(
+            child: StreamBuilder<FlowState>(
+              stream: _employeeDetailsViewModel.outputState,
+              builder: (context, snapshot) {
+                if (snapshot.data != null && _employeeDetailsViewModel.isOutStateLoading) {
+                  _handleEmployeesStateChanged(snapshot.data!);
+                }
+                return _getEmployeeDetailsScreenContent(pageList);
+              },
+            ),
           ),
         ),
       ),

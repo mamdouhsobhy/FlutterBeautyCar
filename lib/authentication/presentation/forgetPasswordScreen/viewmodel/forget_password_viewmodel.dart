@@ -57,7 +57,7 @@ class ForgetPasswordViewModel extends BaseViewModel implements ForgetPasswordVie
 
   Future<FormData> buildSendOtpFormData() async {
     return FormData.fromMap({
-      "type": UserTypes.owner,
+      "type": sendOtpRequest.type,
       "phone":  sendOtpRequest.phone
     });
   }

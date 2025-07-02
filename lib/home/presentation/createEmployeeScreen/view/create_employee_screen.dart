@@ -196,7 +196,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                                   child: _createEmployeeViewModel
                                       .createOrUpdateEmployee.image ==
                                       null
-                                      ? _employeeId != null ? ClipOval(child: Image.network("${snapshot.data?.data![0].image}",fit: BoxFit.cover)) : SvgPicture.asset(ImageAssets.avatarIcon,
+                                      ? (_employeeId != null && snapshot.data?.data?.isNotEmpty == true) ? ClipOval(child: Image.network("${snapshot.data?.data![0].image}",fit: BoxFit.cover)) : SvgPicture.asset(ImageAssets.avatarIcon,
                                       fit: BoxFit.cover)
                                       : ClipOval(
                                         child: Image.file(_createEmployeeViewModel
@@ -520,9 +520,12 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
           stream: _createEmployeeViewModel.outputCreateOrUpdateEmployeeData,
           builder: (ctx, snapshot) {
             if (snapshot.data != null && snapshot.data?.status == true) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                 _navigateToHome();
-              });
+              if(_createEmployeeViewModel.isCreateEmployeeLoading) {
+                _createEmployeeViewModel.isCreateEmployeeLoading = false;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _navigateToHome();
+                });
+              }
             }
             return MyButton(
               color: ColorManager.colorRedB2,

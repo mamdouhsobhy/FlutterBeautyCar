@@ -30,6 +30,9 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+
   final ResetPasswordViewModel _resetPasswordViewModel = instance<ResetPasswordViewModel>();
   final _formKey = GlobalKey<FormState>();
 
@@ -41,6 +44,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   _bind() {
     _resetPasswordViewModel.start();
+    _resetPasswordViewModel.resetPasswordRequest.type = "${_appPreferences.getUserType()}";
+
   }
 
 

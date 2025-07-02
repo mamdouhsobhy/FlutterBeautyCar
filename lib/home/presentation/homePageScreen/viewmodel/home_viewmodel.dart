@@ -49,7 +49,7 @@ class HomeViewModel extends BaseViewModel implements HomeViewModelInputs,HomeVie
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _homeUseCase.execute(HomeOrderRequest(true, 10, 3))) // 10 is limit for recent orders in home
+    (await _homeUseCase.execute(HomeOrderRequest(true, 10 , 0 , 3))) // 10 is limit for recent orders in home
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));

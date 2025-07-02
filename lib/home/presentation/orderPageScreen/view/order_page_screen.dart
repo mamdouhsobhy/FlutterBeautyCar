@@ -262,8 +262,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                        child: StreamBuilder<ModelOrdersResponseRemote>(
                          stream: _ordersViewModel.outputOrdersData,
                          builder: (context, snapshot) {
-                           if (snapshot.hasData &&
-                               snapshot.data?.data?.isNotEmpty == true) {
+                           if (snapshot.hasData && snapshot.data?.data?.isNotEmpty == true) {
                              for (var center in snapshot.data!.data!) {
                                if (!_ordersViewModel.ordersList.contains(
                                    center)) {

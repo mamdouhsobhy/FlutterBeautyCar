@@ -62,7 +62,7 @@ class RegisterViewModel extends BaseViewModel implements LoginViewModelInputs,Lo
       "email":  registerRequest.email,
       "phone":  registerRequest.phone,
       // "image": registerRequest.image.isEmpty ? null : await MultipartFile.fromFile(registerRequest.image),
-      "type": UserTypes.owner,
+      "type": registerRequest.type,
       "password": registerRequest.password,
       "password_confirmation": registerRequest.password_confirmation
     });

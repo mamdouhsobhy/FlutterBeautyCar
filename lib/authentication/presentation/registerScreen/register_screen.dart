@@ -13,6 +13,7 @@ import '../../../../app/di/di.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/colorManager.dart';
 import '../../../../utils/loading_page.dart';
+import '../../../app/sharedPrefs/app_prefs.dart';
 import '../../../resources/assetsManager.dart';
 import '../../../resources/fontManager.dart';
 import '../../../resources/stringManager.dart';
@@ -32,6 +33,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   final RegisterViewModel _registerViewModel = instance<RegisterViewModel>();
   final _formKey = GlobalKey<FormState>();
 
@@ -44,6 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isTermsAccepted = false;
 
   _bind() {
+    _registerViewModel.registerRequest.type = "${_appPreferences.getUserType()}";
     _registerViewModel.start();
     _countryCodeController.text = Constants.defaultCountryCode;
   }

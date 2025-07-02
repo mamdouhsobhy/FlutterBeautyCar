@@ -25,6 +25,7 @@ abstract class HomeServiceClient {
   Future<ModelOrdersResponseRemote> getHomeOrders(
       @Query("pagination") bool pagination,
       @Query("limit") int limit,
+      @Query("page") int page,
       @Query("status") int status,
       );
 
