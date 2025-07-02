@@ -1,11 +1,13 @@
 import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/view/side_menu.dart';
+import 'package:beauty_car/home/presentation/homePageScreen/view/side_menu_employee.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
 import 'package:beauty_car/home/presentation/routeManager/home_routes_manager.dart';
 import 'package:beauty_car/resources/assetsManager.dart';
 import 'package:beauty_car/resources/fontManager.dart';
 import 'package:beauty_car/resources/stringManager.dart';
+import 'package:beauty_car/utils/Constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +59,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
         child: Scaffold(
           key: _scaffoldKey,
           backgroundColor: ColorManager.white,
-          drawer: SafeArea(child: Drawer(child: SideMenu(appPreferences: _appPreferences,fun: widget.sideMenuTabsPressed))),
+          drawer: SafeArea(child: Drawer(child:
+          "${_appPreferences.getUserType()}" == UserTypes.owner ? SideMenu(appPreferences: _appPreferences,fun: widget.sideMenuTabsPressed)
+              : SideMenuEmployee(appPreferences: _appPreferences,fun: widget.sideMenuTabsPressed)
+          )
+          ),
           body: SafeArea(
               child:
               StreamBuilder<FlowState>(

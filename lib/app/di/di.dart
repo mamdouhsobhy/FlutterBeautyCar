@@ -51,6 +51,7 @@ import '../networkInfo/network_info.dart';
 import '../sharedPrefs/app_prefs.dart';
 
 final instance = GetIt.instance;
+final appPrefs = instance<AppPreferences>();
 
 Future<void> initAppModule() async{
 

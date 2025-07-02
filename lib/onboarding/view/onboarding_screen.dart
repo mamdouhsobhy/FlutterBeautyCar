@@ -33,6 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   _bind(){
     _appPreferences.setOnBoardingScreenViewed();
+    _viewModel.userType = "${_appPreferences.getUserType()}";
     _viewModel.start();
   }
 

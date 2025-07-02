@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:beauty_car/utils/Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../authentication/data/response/login/login.dart';
@@ -11,6 +12,7 @@ const String PREFS_KEY_LANG = "PREFS_KEY_LANG";
 const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED = "PREFS_KEY_ONBOARDING_SCREEN_VIEWED";
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_USER_DATA = "PREFS_KEY_USER_DATA";
+const String PREFS_KEY_USER_TYPE = "PREFS_KEY_USER_TYPE";
 
 class AppPreferences{
   final SharedPreferences _sharedPreferences;
@@ -55,6 +57,15 @@ class AppPreferences{
     bool isLoggedIn = _sharedPreferences.getBool(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
     print("🟢 Checking isUserLoggedIn(): $isLoggedIn");
     return isLoggedIn;
+  }
+
+  setUserType(int type) {
+    _sharedPreferences.setInt(PREFS_KEY_USER_TYPE, type);
+  }
+
+  int getUserType() {
+    int type = _sharedPreferences.getInt(PREFS_KEY_USER_TYPE) ?? 1;
+    return type;
   }
 
   Future<void> setUserData(ModelLoginResponseRemote userData) async {

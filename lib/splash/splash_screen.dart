@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:beauty_car/selectUserType/select_user_type_page_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../app/sharedPrefs/app_prefs.dart';
@@ -42,14 +43,22 @@ class _SplashScreenState extends State<SplashScreen> {
       initCentersModule();
       initOrdersModule();
       initEmployeeModule();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+
+      if("${_appPreferences.getUserType()}" == UserTypes.owner) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        MaterialPageRoute(builder: (context) => const SelectUserTypePageScreen()),
       );
     }
   }

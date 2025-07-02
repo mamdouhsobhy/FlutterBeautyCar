@@ -1,5 +1,9 @@
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/presentation/employee_review_page_screen/viewmodel/review_orders_viewmodel.dart';
+import 'package:beauty_car/utils/Constants.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,9 +12,11 @@ import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/assetsManager.dart';
 import '../../../../resources/colorManager.dart';
 import '../../../../resources/fontManager.dart';
+import '../../../../resources/stringManager.dart';
 import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
 import '../../../../utils/loading_page.dart';
+import '../../../../utils/shared_appbar.dart';
 import '../../homeSharedViews/employee_review_item_card.dart';
 
 class EmployeeReviewPageScreen extends StatefulWidget {
@@ -23,8 +29,9 @@ class EmployeeReviewPageScreen extends StatefulWidget {
 
 class _EmployeeReviewPageScreenState extends State<EmployeeReviewPageScreen> {
 
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   final ReviewOrdersViewModel _reviewOrdersViewModel = instance<ReviewOrdersViewModel>();
-
+  ModelLoginResponseRemote? userDate;
   final ScrollController _scrollController = ScrollController();
 
   List<Data> filteredOrders = [];
@@ -33,10 +40,20 @@ class _EmployeeReviewPageScreenState extends State<EmployeeReviewPageScreen> {
     _reviewOrdersViewModel.start();
   }
 
+  _getUserDate() async{
+    userDate = await _appPreferences.getUserData();
 
+  }
   @override
   void initState() {
-    _reviewOrdersViewModel.ratedOrderRequest.empId = widget.employeeId;
+    _getUserDate();
+
+    if("${_appPreferences.getUserType()}" == UserTypes.owner) {
+      _reviewOrdersViewModel.ratedOrderRequest.empId = widget.employeeId;
+    }else{
+      _reviewOrdersViewModel.ratedOrderRequest.empId = "${userDate?.data?.id}";
+    }
+
     _bind();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
@@ -57,6 +74,7 @@ class _EmployeeReviewPageScreenState extends State<EmployeeReviewPageScreen> {
         ),
         child: Scaffold(
           backgroundColor: ColorManager.white,
+          appBar: "${_appPreferences.getUserType()}" == UserTypes.employee ? MyAppBar(title: AppStrings.reviews.tr()) : null,
           body: SafeArea(
             child: StreamBuilder<FlowState>(
               stream: _reviewOrdersViewModel.outputState,

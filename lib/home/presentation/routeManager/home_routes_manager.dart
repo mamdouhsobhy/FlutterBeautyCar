@@ -1,8 +1,13 @@
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/presentation/changePasswordScreen/view/change_password_screen.dart';
 import 'package:beauty_car/home/presentation/createEmployeeScreen/view/create_employee_screen.dart';
+import 'package:beauty_car/home/presentation/deleteAccountScreen/delete_account_screen.dart';
 import 'package:beauty_car/home/presentation/editProfileScreen/view/edit_profile_screen.dart';
+import 'package:beauty_car/home/presentation/employee_review_page_screen/view/employee_review_page_screen.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/view/more_orders_page_screen.dart';
+import 'package:beauty_car/home/presentation/privacyPolicyPageScreen/privacy_policy_page_screen.dart';
 import 'package:beauty_car/home/presentation/settingPageScreen/setting_page_screen.dart';
+import 'package:beauty_car/home/presentation/termsAndConditionScreen/terms_and_condition_Screen.dart';
 import 'package:flutter/material.dart';
 import '../../../app/di/di.dart';
 import '../createCenterScreen/view/create_center_screen.dart';
@@ -18,6 +23,10 @@ class HomeRoutes {
   static const String settingsRoute = "/setting";
   static const String editProfileRoute = "/editProfile";
   static const String changePasswordRoute = "/changePassword";
+  static const String deleteAccountRoute = "/deleteAccount";
+  static const String privacyPolicyRoute = "/privacyPolicy";
+  static const String termsAndConditionRoute = "/termsAndCondition";
+  static const String employeeReviewsRoute = "/employeeReviews";
 }
 
 class HomeRouteGenerator {
@@ -61,6 +70,23 @@ class HomeRouteGenerator {
         initChangePasswordModule();
         return MaterialPageRoute(
             builder: (_) => const ChangePasswordScreen(),
+            settings: settings);
+      case HomeRoutes.deleteAccountRoute:
+        return MaterialPageRoute(
+            builder: (_) => const DeleteAccountScreen(),
+            settings: settings);
+      case HomeRoutes.privacyPolicyRoute:
+        return MaterialPageRoute(
+            builder: (_) => const PrivacyPolicyPageScreen(),
+            settings: settings);
+      case HomeRoutes.termsAndConditionRoute:
+        return MaterialPageRoute(
+            builder: (_) => const TermsAndConditionScreen(),
+            settings: settings);
+      case HomeRoutes.employeeReviewsRoute:
+        initEmployeeReviewModule();
+        return MaterialPageRoute(
+            builder: (_) =>  EmployeeReviewPageScreen(employeeId: ""),
             settings: settings);
       default:
         return unDefinedRoute();

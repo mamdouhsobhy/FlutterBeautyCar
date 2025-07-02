@@ -136,5 +136,18 @@
   "english": "الإنجليزية",
   "arabic": "العربية",
   "profile_update_successully": "تم تحديث الملف الشخصى بنجاح",
-  "password_update_successully": "تم تحديث كلمة المرور بنجاح"
+  "password_update_successully": "تم تحديث كلمة المرور بنجاح",
+  "if_you_want_delete_account": "إذا كنت بحاجة إلى حذف الحساب الخاصة بك، يرجى إدخال كلمة المرور الخاصة بك.",
+  "privacy_policy": "سياسة الخصوصية",
+  "terms_and_condition": "الشروط والأحكام",
+  "select_type": "اختر النوع",
+  "owner": "المالك",
+  "employee": "الموظف",
+  "onboarding_title_1_emp_2": "مرحبا بك فى تظبيق (Beauty car card)ابدأ مشوارك المهني بسهولة",
+  "onboarding_subtitle_1_emp_2": "انضم لفريقنا وابدأ في تقديم خدماتك عبر التطبيق، بخطوات بسيطة ومنظمة",
+  "onboarding_title_2_emp_2": "فى تظبيق (Beauty car card)امسح الكود... وابدأ المهمة",
+  "onboarding_subtitle_2_emp_2": "كل مهمة توصلك عبر رمز QR فريد.\u2028 امسح الكود، اعرف تفاصيل الطلب، وابدأ التنفيذ بثقة ودقة",
+  "onboarding_title_3_emp_2": "فى تظبيق (Beauty car card) نظام واضح... دخل مضمون",
+  "onboarding_subtitle_3_emp_2": "نظام مرن لتلقي الطلبات،  بكل شفافية مع تفاصيل دقيقة لكل مهمة",
+  "scan": "المسح"
 }

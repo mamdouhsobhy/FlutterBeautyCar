@@ -6,7 +6,7 @@ part 'login.g.dart';
 @JsonSerializable()
 class ModelLoginResponseRemote extends BaseResponse{
   @JsonKey(name: "data")
-  final Data? data;
+  final UserData? data;
   @JsonKey(name: "token")
   final String? token;
 
@@ -28,7 +28,7 @@ class ModelLoginResponseRemote extends BaseResponse{
 }
 
 @JsonSerializable()
-class Data {
+class UserData {
   @JsonKey(name: "id")
   final int? id;
   @JsonKey(name: "name")
@@ -40,7 +40,7 @@ class Data {
   @JsonKey(name: "image")
   String? image;
 
-  Data ({
+  UserData ({
     this.id,
     this.name,
     this.email,
@@ -48,12 +48,12 @@ class Data {
     this.image,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return _$DataFromJson(json);
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return _$UserDataFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$DataToJson(this);
+    return _$UserDataToJson(this);
   }
 }
 

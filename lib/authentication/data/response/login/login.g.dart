@@ -11,7 +11,7 @@ ModelLoginResponseRemote _$ModelLoginResponseRemoteFromJson(
     ModelLoginResponseRemote(
       data: json['data'] == null
           ? null
-          : Data.fromJson(json['data'] as Map<String, dynamic>),
+          : UserData.fromJson(json['data'] as Map<String, dynamic>),
       token: json['token'] as String?,
       status: json['status'] as bool?,
       code: (json['code'] as num?)?.toInt(),
@@ -28,7 +28,7 @@ Map<String, dynamic> _$ModelLoginResponseRemoteToJson(
       'token': instance.token,
     };
 
-Data _$DataFromJson(Map<String, dynamic> json) => Data(
+UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       email: json['email'] as String?,
@@ -36,7 +36,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       image: json['image'] as String?,
     );
 
-Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'email': instance.email,

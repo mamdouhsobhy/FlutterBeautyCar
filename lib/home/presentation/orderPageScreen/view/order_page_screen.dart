@@ -222,7 +222,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                        child: Container(
                          alignment: Alignment.center,
                          padding: const EdgeInsets.symmetric(
-                             horizontal: AppPadding.p12,
+                             horizontal: AppPadding.p4,
                              vertical: AppPadding.p8),
                          decoration: BoxDecoration(
                            color: isSelected
@@ -234,7 +234,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                          child: Text(
                            statusList[index],
                            style: getRegularStyle(
-                               fontSize: FontSize.size14,
+                               fontSize: FontSize.size12,
                                color: isSelected ? Colors.white : Colors.black),
                          ),
                        ),

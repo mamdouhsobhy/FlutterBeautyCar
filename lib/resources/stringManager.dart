@@ -139,6 +139,18 @@ class AppStrings {
   static const String arabic = "arabic";
   static const String profile_update_successully = "profile_update_successully";
   static const String password_update_successully = "password_update_successully";
-
+  static const String if_you_want_delete_account = "if_you_want_delete_account";
+  static const String privacy_policy = "privacy_policy";
+  static const String terms_and_condition = "terms_and_condition";
+  static const String select_type = "select_type";
+  static const String owner = "owner";
+  static const String employee = "employee";
+  static const String onboarding_title_1_emp_2 = "onboarding_title_1_emp_2";
+  static const String onboarding_subtitle_1_emp_2 = "onboarding_subtitle_1_emp_2";
+  static const String onboarding_title_2_emp_2 = "onboarding_title_2_emp_2";
+  static const String onboarding_subtitle_2_emp_2 = "onboarding_subtitle_2_emp_2";
+  static const String onboarding_title_3_emp_2 = "onboarding_title_3_emp_2";
+  static const String onboarding_subtitle_3_emp_2 = "onboarding_subtitle_3_emp_2";
+  static const String scan = "scan";
 
 }

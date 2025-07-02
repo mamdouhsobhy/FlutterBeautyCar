@@ -12,17 +12,17 @@ import '../../../../resources/fontManager.dart';
 import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
 
-class SideMenu extends StatefulWidget {
-  SideMenu({super.key, required this.appPreferences,required this.fun});
+class SideMenuEmployee extends StatefulWidget {
+  SideMenuEmployee({super.key, required this.appPreferences,required this.fun});
 
   AppPreferences appPreferences;
   Function(int) fun;
 
   @override
-  State<SideMenu> createState() => _SideMenuState();
+  State<SideMenuEmployee> createState() => _SideMenuEmployeeState();
 }
 
-class _SideMenuState extends State<SideMenu> {
+class _SideMenuEmployeeState extends State<SideMenuEmployee> {
   ModelLoginResponseRemote? userData;
 
   @override
@@ -99,16 +99,6 @@ class _SideMenuState extends State<SideMenu> {
             ),
           ),
           ListTile(
-            leading: SvgPicture.asset(ImageAssets.centerIcon),
-            title: Text(AppStrings.centers.tr(),
-                style: getRegularStyle(
-                    color: ColorManager.black, fontSize: AppSize.s16)),
-            onTap: () {
-              widget.fun(1);
-              Navigator.pop(context); // Close drawer
-            },
-          ),
-          ListTile(
             leading: SvgPicture.asset(ImageAssets.ordersIcon),
             title: Text(AppStrings.orders.tr(),
                 style: getRegularStyle(
@@ -119,22 +109,14 @@ class _SideMenuState extends State<SideMenu> {
             },
           ),
           ListTile(
-            leading: SvgPicture.asset(ImageAssets.usersIcon),
-            title: Text(AppStrings.employees.tr(),
-                style: getRegularStyle(
-                    color: ColorManager.black, fontSize: AppSize.s16)),
-            onTap: () {
-              widget.fun(3);
-              Navigator.pop(context); // Close drawer
-            },
-          ),
-          ListTile(
             leading: SvgPicture.asset(ImageAssets.waitIcon),
-            title: Text(AppStrings.wait_appointment.tr(),
+            title: Text(AppStrings.reviews.tr(),
                 style: getRegularStyle(
                     color: ColorManager.black, fontSize: AppSize.s16)),
             onTap: () {
-              Navigator.pop(context); // Close drawer
+              Navigator.pop(context); //
+              Navigator.pushNamed(context, HomeRoutes.employeeReviewsRoute);
+// Close drawer
             },
           ),
           ListTile(
@@ -143,7 +125,6 @@ class _SideMenuState extends State<SideMenu> {
                 style: getRegularStyle(
                     color: ColorManager.black, fontSize: AppSize.s16)),
             onTap: () {
-
               Navigator.pop(context); // Close drawer
             },
           ),
@@ -164,7 +145,7 @@ class _SideMenuState extends State<SideMenu> {
             onTap: () {
               Navigator.pop(context); // Close drawer
               Navigator.pushNamed(context, HomeRoutes.privacyPolicyRoute);
-              },
+            },
           ),
           ListTile(
             title: Text(AppStrings.terms_and_condition.tr(),
@@ -185,16 +166,6 @@ class _SideMenuState extends State<SideMenu> {
                   .setUserData(ModelLoginResponseRemote());
               await widget.appPreferences.setUserLoggedIn(false);
               Phoenix.rebirth(context);
-            },
-          ),
-          ListTile(
-            leading: SvgPicture.asset(ImageAssets.deleteIcon),
-            title: Text(AppStrings.delete_account.tr(),
-                style: getRegularStyle(
-                    color: ColorManager.colorRedB2, fontSize: AppSize.s16)),
-            onTap: () async {
-              Navigator.pop(context); // Close drawer
-              Navigator.pushNamed(context, HomeRoutes.deleteAccountRoute);
             },
           )
         ],

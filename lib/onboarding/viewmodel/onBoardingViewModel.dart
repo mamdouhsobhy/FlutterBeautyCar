@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:beauty_car/utils/Constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../app/baseViewModel/baseViewModel.dart';
@@ -15,6 +16,8 @@ class OnBoardingViewModel extends BaseViewModel implements OnBoardingViewModelIn
   late final List<SliderObject> _list;
   int _currentIndex = 0;
 
+  String userType = UserTypes.owner;
+
   //baseViewModel inputs
   @override
   void dispose() {
@@ -23,7 +26,11 @@ class OnBoardingViewModel extends BaseViewModel implements OnBoardingViewModelIn
 
   @override
   void start() {
-    _list = _getSliderData();
+    if(userType == UserTypes.owner) {
+      _list = _getSliderData();
+    }else{
+      _list = _getSliderDataEmployee();
+    }
     _postDataToView();
   }
 
@@ -70,6 +77,12 @@ class OnBoardingViewModel extends BaseViewModel implements OnBoardingViewModelIn
       SliderObject(AppStrings.onboardingTitle2.tr(), AppStrings.onboardingSubtitle2.tr(), ImageAssets.onboardingLogo2),
       SliderObject(AppStrings.onboardingTitle3.tr(), AppStrings.onboardingSubtitle3.tr(), ImageAssets.onboardingLogo3),
     ];
+
+  List<SliderObject> _getSliderDataEmployee() => [
+    SliderObject(AppStrings.onboarding_title_1_emp_2.tr(), AppStrings.onboarding_subtitle_1_emp_2.tr(), ImageAssets.onboardingLogo1Emp),
+    SliderObject(AppStrings.onboarding_title_2_emp_2.tr(), AppStrings.onboarding_subtitle_2_emp_2.tr(), ImageAssets.onboardingLogo2Emp),
+    SliderObject(AppStrings.onboarding_title_3_emp_2.tr(), AppStrings.onboarding_subtitle_3_emp_2.tr(), ImageAssets.onboardingLogo3Emp),
+  ];
 
 }
 

@@ -43,7 +43,11 @@ class ImageAssets {
   static const String arrowRightIcon = "$imagePath/ic_arrow_right.svg";
   static const String langIcon = "$imagePath/ic_lang.svg";
   static const String lockIcon = "$imagePath/ic_unlock.svg";
-
+  static const String deleteAccountIcon = "$imagePath/ic_delete_account.svg";
+  static const String onboardingLogo1Emp = "$imagePath/onboarding_emp1.png";
+  static const String onboardingLogo2Emp = "$imagePath/onboarding_emp2.png";
+  static const String onboardingLogo3Emp = "$imagePath/onboarding_emp3.png";
+  static const String qrCodeIcon = "$imagePath/ic_qr_code.png";
 }
 
 class JsonAssets {

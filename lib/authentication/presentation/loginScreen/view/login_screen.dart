@@ -45,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _bind() {
     _loginViewModel.start();
+    _loginViewModel.loginObject.type = "${_appPreferences.getUserType()}";
     _countryCodeController.text = Constants.defaultCountryCode;
   }
 
@@ -238,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
           const SizedBox(height: AppSize.s20),
-          Row(
+          if ("${_appPreferences.getUserType()}" == UserTypes.owner) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
@@ -258,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 ),
             ],
-          ),
+          ) else SizedBox(),
           const SizedBox(height: AppSize.s60),
         ],
       )),

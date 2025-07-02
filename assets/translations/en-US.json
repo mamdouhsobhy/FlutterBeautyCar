@@ -136,5 +136,19 @@
   "english": "English",
   "arabic": "Arabic",
   "profile_update_successully": "Profile updated successfully",
-  "password_update_successully": "Password updated successfully"
+  "password_update_successully": "Password updated successfully",
+  "if_you_want_delete_account": "If you want to delete your account, please enter your password.",
+  "privacy_policy": "Privacy Policy",
+  "terms_and_condition": "Terms and Conditions",
+  "select_type": "Select Type",
+  "owner": "Owner",
+  "employee": "Employee",
+  "onboarding_title_1_emp_2": "Welcome to the (Beauty car card) application. Start your career easily.",
+  "onboarding_subtitle_1_emp_2": "Join our team and start offering your services through the app, with simple and organized steps.",
+  "onboarding_title_2_emp_2": "In the (Beauty car card) application, scan the code... and start the mission",
+  "onboarding_subtitle_2_emp_2": "Each task is delivered to you via a unique QR code. Scan the code, view the order details, and start completing it with confidence and accuracy.",
+  "onboarding_title_3_emp_2": "In the application (Beauty car card) there is a clear system... guaranteed income",
+  "onboarding_subtitle_3_emp_2": "Flexible ordering system, with complete transparency and accurate details for each task",
+  "scan": "Scan"
+
 }
