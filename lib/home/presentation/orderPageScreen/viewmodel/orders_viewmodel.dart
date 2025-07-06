@@ -71,13 +71,13 @@ class OrdersViewModel extends BaseViewModel implements OrdersViewModelInputs,Ord
     );
   }
 
-  Future<void> updateOrderStatus(String orderId , int status) async {
+  Future<void> updateOrderStatus(String orderId , String reason , int status) async {
     isUpdateOrderLoading = false;
     isOutStateLoading = true;
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _ordersUseCase.executeUpdateOrderStatus(orderId,status))
+    (await _ordersUseCase.executeUpdateOrderStatus(orderId , reason ,status))
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));

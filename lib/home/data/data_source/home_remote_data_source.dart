@@ -8,6 +8,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_u
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
+import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
 import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
@@ -30,7 +31,7 @@ abstract class HomeRemoteDataSource {
 
   Future<ModelOrdersResponseRemote> getOrdersWithStatus(bool pagination , int limit , int page , int status);
 
-  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id , int status);
+  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id , String reason , int status);
 
   Future<ModelOrdersResponseRemote> getOrderDetails(String id);
 
@@ -49,6 +50,12 @@ abstract class HomeRemoteDataSource {
   Future<ModelLoginResponseRemote> updateProfile(FormData data);
 
   Future<BaseResponse> changePassword(FormData data);
+
+  Future<ModelGetSettingsResponseRemote> getSettings();
+
+  Future<ModelLoginResponseRemote> deleteAccount(FormData data);
+
+  Future<ModelLoginResponseRemote> updateNotification(FormData data);
 
 }
 
@@ -98,8 +105,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id, int status) async{
-    return await _homeServiceClient.updateOrderStatus(id , status);
+  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id , String reason , int status) async{
+    return await _homeServiceClient.updateOrderStatus(id , reason , status);
   }
 
   @override
@@ -145,6 +152,21 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<BaseResponse> changePassword(FormData data) async{
     return await _homeServiceClient.changePassword(data);
+  }
+
+  @override
+  Future<ModelGetSettingsResponseRemote> getSettings() async{
+    return await _homeServiceClient.getSettings();
+  }
+
+  @override
+  Future<ModelLoginResponseRemote> deleteAccount(FormData data) async{
+    return await _homeServiceClient.deleteAccount(data);
+  }
+
+  @override
+  Future<ModelLoginResponseRemote> updateNotification(FormData data) async{
+    return await _homeServiceClient.updateNotification(data);
   }
 
 

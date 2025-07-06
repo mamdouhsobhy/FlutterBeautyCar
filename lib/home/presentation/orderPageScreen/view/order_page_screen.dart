@@ -311,17 +311,17 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                                        horizontal: AppPadding.p16),
                                    child: OrderRequestItemCard(
                                        orders: filteredOrders[index],
-                                       fun: (orderId, actionType) {
+                                       fun: (orderId , cancelReason , actionType) {
                                          if (actionType == "details") {
                                            _navigateToOrderDetails(orderId);
                                          } else if (actionType == "accept") {
                                            mActionType = OrderStatus.accepted;
                                            _ordersViewModel.updateOrderStatus(
-                                               orderId, OrderStatus.accepted);
+                                               orderId , "" , OrderStatus.accepted);
                                          } else {
                                            mActionType = OrderStatus.cancelled;
                                            _ordersViewModel.updateOrderStatus(
-                                               orderId, OrderStatus.cancelled);
+                                               orderId , cancelReason , OrderStatus.cancelled);
                                          }
                                        }),
                                  );

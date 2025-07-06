@@ -149,6 +149,7 @@
   "onboarding_subtitle_2_emp_2": "Each task is delivered to you via a unique QR code. Scan the code, view the order details, and start completing it with confidence and accuracy.",
   "onboarding_title_3_emp_2": "In the application (Beauty car card) there is a clear system... guaranteed income",
   "onboarding_subtitle_3_emp_2": "Flexible ordering system, with complete transparency and accurate details for each task",
-  "scan": "Scan"
-
+  "scan": "Scan",
+  "account_deleted_successfully": "Account deleted successfully",
+  "reject_reason": "Reject Reason"
 }

@@ -7,6 +7,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_u
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
+import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
 import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
@@ -32,7 +33,7 @@ abstract class HomeRepository {
 
   Future<Either<Failure,ModelOrdersResponseRemote>> getOrdersWithStatus(bool pagination , int limit , int page , int status);
 
-  Future<Either<Failure,ModelUpdateOrderStatusResponseRemote>> updateOrderStatus(String id , int status);
+  Future<Either<Failure,ModelUpdateOrderStatusResponseRemote>> updateOrderStatus(String id , String reason , int status);
 
   Future<Either<Failure,ModelOrdersResponseRemote>> getOrderDetails(String id);
 
@@ -52,5 +53,10 @@ abstract class HomeRepository {
 
   Future<Either<Failure,BaseResponse>> changePassword(FormData data);
 
+  Future<Either<Failure,ModelGetSettingsResponseRemote>> getSettings();
+
+  Future<Either<Failure,ModelLoginResponseRemote>> deleteAccount(FormData data);
+
+  Future<Either<Failure,ModelLoginResponseRemote>> updateNotification(FormData data);
 
 }

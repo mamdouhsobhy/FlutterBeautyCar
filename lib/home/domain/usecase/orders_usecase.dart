@@ -18,8 +18,8 @@ class OrdersUseCase implements BaseUseCase<OrdersRequest,ModelOrdersResponseRemo
   }
 
   @override
-  Future<Either<Failure, ModelUpdateOrderStatusResponseRemote>> executeUpdateOrderStatus(String id , int status) async{
-    return await _repository.updateOrderStatus(id , status);
+  Future<Either<Failure, ModelUpdateOrderStatusResponseRemote>> executeUpdateOrderStatus(String id , String reason , int status) async{
+    return await _repository.updateOrderStatus(id , reason , status);
   }
 }
 

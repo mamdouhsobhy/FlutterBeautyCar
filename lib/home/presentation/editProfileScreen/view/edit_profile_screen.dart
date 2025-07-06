@@ -48,6 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   XFile? userImage;
 
   _bind(){
+    _profileViewModel.type = "${_appPreferences.getUserType()}";
     _profileViewModel.start();
   }
 

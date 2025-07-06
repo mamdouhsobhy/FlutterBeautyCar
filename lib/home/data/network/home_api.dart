@@ -14,6 +14,7 @@ import 'package:retrofit/http.dart';
 
 import '../../../../utils/Constants.dart';
 import '../../../authentication/data/response/login/login.dart';
+import '../response/getSettings/get_settings.dart';
 
 part 'home_api.g.dart';
 
@@ -67,7 +68,7 @@ abstract class HomeServiceClient {
 
   @POST("vendor/orders/updateStatus")
   Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(
-      @Query("order_id") String id, @Query("status") int limit);
+      @Query("order_id") String id, @Query("refaused_reason") String reason , @Query("status") int limit);
 
   @GET("vendor/orders")
   Future<ModelOrdersResponseRemote> getOrderDetails(
@@ -114,5 +115,16 @@ abstract class HomeServiceClient {
   @MultiPart()
   @POST("guest/changePassword")
   Future<BaseResponse> changePassword(@Body() FormData formData);
+
+  @GET("guest/settings")
+  Future<ModelGetSettingsResponseRemote> getSettings();
+
+  @MultiPart()
+  @POST("guest/deleteAccount")
+  Future<ModelLoginResponseRemote> deleteAccount(@Body() FormData formData);
+
+  @MultiPart()
+  @POST("guest/updateNotification")
+  Future<ModelLoginResponseRemote> updateNotification(@Body() FormData formData);
 
 }

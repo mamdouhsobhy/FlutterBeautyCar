@@ -149,5 +149,7 @@
   "onboarding_subtitle_2_emp_2": "كل مهمة توصلك عبر رمز QR فريد.\u2028 امسح الكود، اعرف تفاصيل الطلب، وابدأ التنفيذ بثقة ودقة",
   "onboarding_title_3_emp_2": "فى تظبيق (Beauty car card) نظام واضح... دخل مضمون",
   "onboarding_subtitle_3_emp_2": "نظام مرن لتلقي الطلبات،  بكل شفافية مع تفاصيل دقيقة لكل مهمة",
-  "scan": "المسح"
+  "scan": "المسح",
+  "account_deleted_successfully": "تم حذف الحساب بنجاح",
+  "reject_reason": "سبب الرفض"
 }

@@ -1,5 +1,7 @@
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/viewmodel/appointment_orders_viewmodel.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,9 +11,12 @@ import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/assetsManager.dart';
 import '../../../../resources/colorManager.dart';
 import '../../../../resources/fontManager.dart';
+import '../../../../resources/stringManager.dart';
 import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
+import '../../../../utils/Constants.dart';
 import '../../../../utils/loading_page.dart';
+import '../../../../utils/shared_appbar.dart';
 import '../../homeSharedViews/employee_appointment_item_card.dart';
 import '../../homeSharedViews/employee_item_card.dart';
 import '../../routeManager/home_routes_manager.dart';
@@ -27,6 +32,7 @@ class EmployeeAppointmentPageScreen extends StatefulWidget {
 class _EmployeeAppointmentPageScreenState extends State<EmployeeAppointmentPageScreen> {
 
   final AppointmentOrdersViewModel _appointmentOrdersViewModel = instance<AppointmentOrdersViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final ScrollController _scrollController = ScrollController();
 
@@ -59,6 +65,7 @@ class _EmployeeAppointmentPageScreenState extends State<EmployeeAppointmentPageS
         ),
         child: Scaffold(
           backgroundColor: ColorManager.white,
+          appBar: "${_appPreferences.getUserType()}" == UserTypes.owner ? MyAppBar(title: AppStrings.appointment.tr()) : null,
           body: SafeArea(
             child: StreamBuilder<FlowState>(
               stream: _appointmentOrdersViewModel.outputState,

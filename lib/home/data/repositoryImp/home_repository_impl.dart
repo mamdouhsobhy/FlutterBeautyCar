@@ -9,6 +9,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_u
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
+import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
 import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
@@ -211,11 +212,11 @@ class HomeRepositoryImpl implements HomeRepository{
   }
 
   @override
-  Future<Either<Failure, ModelUpdateOrderStatusResponseRemote>> updateOrderStatus(String id,int status) async{
+  Future<Either<Failure, ModelUpdateOrderStatusResponseRemote>> updateOrderStatus(String id , String reason ,int status) async{
     if(await _networkInfo.isConnected){
 
       try{
-        final response = await _homeRemoteDataSource.updateOrderStatus(id ,status);
+        final response = await _homeRemoteDataSource.updateOrderStatus(id , reason ,status);
 
         if(response.status == true){
           return Right(response);
@@ -420,6 +421,72 @@ class HomeRepositoryImpl implements HomeRepository{
 
       try{
         final response = await _homeRemoteDataSource.changePassword(data);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ModelGetSettingsResponseRemote>> getSettings() async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.getSettings();
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ModelLoginResponseRemote>> deleteAccount(FormData data) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.deleteAccount(data);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ModelLoginResponseRemote>> updateNotification(FormData data) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.updateNotification(data);
 
         if(response.status == true){
           return Right(response);

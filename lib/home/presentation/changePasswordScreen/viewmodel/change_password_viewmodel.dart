@@ -19,6 +19,8 @@ class ChangePasswordViewModel extends BaseViewModel implements ChangePasswordVie
 
   ChangePasswordViewModel(this._profileUseCase);
 
+  String type = "";
+
   //inputs
   @override
   void dispose() {
@@ -59,7 +61,7 @@ class ChangePasswordViewModel extends BaseViewModel implements ChangePasswordVie
     final formData = FormData();
     formData.fields.addAll([
       MapEntry("old_password", oldPassword),
-      const MapEntry("type", UserTypes.owner),
+      MapEntry("type", type),
       MapEntry("password", newPassword),
       MapEntry("password_confirmation", confirmPassword),
     ]);

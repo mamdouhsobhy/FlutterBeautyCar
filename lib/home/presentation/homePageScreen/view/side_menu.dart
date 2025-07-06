@@ -135,6 +135,7 @@ class _SideMenuState extends State<SideMenu> {
                     color: ColorManager.black, fontSize: AppSize.s16)),
             onTap: () {
               Navigator.pop(context); // Close drawer
+              Navigator.pushNamed(context, HomeRoutes.employeeAppointmentRoute);
             },
           ),
           ListTile(

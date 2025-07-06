@@ -1,4 +1,6 @@
 import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
+import 'package:beauty_car/authentication/data/response/login/login.dart';
+import 'package:beauty_car/home/presentation/settingPageScreen/viewmodel/setting_viewmodel.dart';
 import 'package:beauty_car/resources/assetsManager.dart';
 import 'package:beauty_car/resources/languageManager.dart';
 import 'package:beauty_car/resources/styleManager.dart';
@@ -9,11 +11,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../app/di/di.dart';
-import '../../../resources/colorManager.dart';
-import '../../../resources/stringManager.dart';
-import '../../../utils/shared_appbar.dart';
-import '../routeManager/home_routes_manager.dart';
+import '../../../../app/di/di.dart';
+import '../../../../app/state_renderer/state_renderer_impl.dart';
+import '../../../../resources/colorManager.dart';
+import '../../../../resources/stringManager.dart';
+import '../../../../utils/loading_page.dart';
+import '../../../../utils/shared_appbar.dart';
+import '../../routeManager/home_routes_manager.dart';
 
 class SettingPageScreen extends StatefulWidget {
   const SettingPageScreen({super.key});
@@ -23,11 +27,23 @@ class SettingPageScreen extends StatefulWidget {
 }
 
 class _SettingPageScreenState extends State<SettingPageScreen> {
+
+  final SettingViewModel _settingViewModel = instance<SettingViewModel>();
+
   final AppPreferences _appPreferences = instance<AppPreferences>();
+
+  ModelLoginResponseRemote? userDate;
 
   bool _isNotifyChecked = false;
   bool _isEnglishChecked = false;
   bool _isArabicChecked = false;
+
+  @override
+  void initState() {
+    _settingViewModel.type = "${_appPreferences.getUserType()}";
+    _settingViewModel.start();
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -37,12 +53,21 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
 
   void _initializeLanguagePreference() async {
     final appLanguage = await _appPreferences.getAppLanguage();
+    userDate = await _appPreferences.getUserData();
+
     setState(() {
       if (appLanguage == ENGLISH) {
         _isEnglishChecked = true;
       } else {
         _isArabicChecked = true;
       }
+
+      if(userDate?.data?.notificationStatus == 1){
+        _isNotifyChecked = true;
+      }else{
+        _isNotifyChecked = false;
+      }
+
     });
   }
 
@@ -59,7 +84,18 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
             preferredSize: const Size.fromHeight(kToolbarHeight),
             child: MyAppBar(title: AppStrings.settings.tr()),
           ),
-          body: SafeArea(child: _getSettingScreenContent()),
+          body: SafeArea(
+              child:
+              StreamBuilder<FlowState>(
+                stream: _settingViewModel.outputState,
+                builder: (context, snapshot) {
+                  if (snapshot.data != null && _settingViewModel.isOutStateLoading) {
+                    _handleTermsAndConditionStateChanged(snapshot.data!);
+                  }
+                  return _getSettingScreenContent();
+                },
+              ),
+          ),
         ));
   }
 
@@ -108,21 +144,30 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                     SvgPicture.asset(ImageAssets.notificationIcon,color: ColorManager.colorRedB2,),
                     Text(" ${AppStrings.notification.tr()} ",style: getSemiBoldStyle(color: ColorManager.colorBlack03,fontSize: AppSize.s16)),
                     Expanded(child: SizedBox()),
-                    SizedBox(
-                      width: 50,
-                      height: 30,
-                      child: Switch(
-                        inactiveThumbColor: ColorManager.colorRedB2,
-                        activeTrackColor: ColorManager.colorRedB2,
-                        activeColor: ColorManager.white,
-                        value: _isNotifyChecked,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _isNotifyChecked = value;
-                          });
-                        },
-                      ),
-                    )
+                    StreamBuilder<ModelLoginResponseRemote>(
+                        stream: _settingViewModel.outputUpdateNotifyData,
+                        builder: (ctx, snapshot) {
+                          if (snapshot.data != null && snapshot.data?.status == true) {
+                            if(_settingViewModel.isUpdateLoading){
+                              _settingViewModel.isUpdateLoading = false;
+                              userDate?.data?.notificationStatus = snapshot.data?.data?.notificationStatus;
+                              _appPreferences.setUserData(userDate!);
+                            }
+                          }
+                          return SizedBox(
+                            width: 50,
+                            height: 30,
+                            child: Switch(
+                              inactiveThumbColor: ColorManager.colorRedB2,
+                              activeTrackColor: ColorManager.colorRedB2,
+                              activeColor: ColorManager.white,
+                              value: userDate?.data?.notificationStatus == 1 ? _isNotifyChecked = true : _isNotifyChecked = false,
+                              onChanged: (bool value) {
+                                _settingViewModel.updateNotify();
+                              },
+                            ),
+                          );
+                        }),
                   ],),
               )
           ),
@@ -217,6 +262,29 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
         ),
       );
     });
+  }
+
+  _handleTermsAndConditionStateChanged(FlowState state) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (state is LoadingState && !isLoadingDialogShowing()) {
+        showLoadingDialog(context);
+      } else if (state is ErrorState) {
+        _settingViewModel.isOutStateLoading = false;
+        dismissLoadingDialog();
+        showErrorDialog(context, message: state.getMessage());
+      } else if (state is SuccessState) {
+        _settingViewModel.isOutStateLoading = false;
+        dismissLoadingDialog();
+      } else {
+        dismissLoadingDialog();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _settingViewModel.dispose();
+    super.dispose();
   }
 
 }

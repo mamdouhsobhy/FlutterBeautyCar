@@ -39,6 +39,8 @@ class UserData {
   final String? phone;
   @JsonKey(name: "image")
   String? image;
+  @JsonKey(name: "notification_status")
+  int? notificationStatus;
 
   UserData ({
     this.id,
@@ -46,6 +48,7 @@ class UserData {
     this.email,
     this.phone,
     this.image,
+    this.notificationStatus
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {

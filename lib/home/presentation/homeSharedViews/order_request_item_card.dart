@@ -10,18 +10,29 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../resources/colorManager.dart';
 import '../../../resources/valuesManager.dart';
+import '../../../utils/shared_button.dart';
+import '../../../utils/shared_text_field.dart';
 
-class OrderRequestItemCard extends StatelessWidget {
+class OrderRequestItemCard extends StatefulWidget {
   OrderRequestItemCard({super.key,required this.orders,required this.fun});
 
   final Data orders;
-  late Function(String , String) fun;
+  late Function(String , String , String) fun;
+
+  @override
+  State<OrderRequestItemCard> createState() => _OrderRequestItemCardState();
+}
+
+class _OrderRequestItemCardState extends State<OrderRequestItemCard> {
+  final TextEditingController _reasonController = TextEditingController();
+
+  bool _isReject = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        fun("${orders.id}","details");
+        widget.fun("${widget.orders.id}","","details");
       },
       child: Card(
         color: ColorManager.white,
@@ -49,9 +60,9 @@ class OrderRequestItemCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("${orders.clientName}",style: getBoldStyle(color: ColorManager.colorGray72,fontSize: FontSize.size16)),
+                          Text("${widget.orders.clientName}",style: getBoldStyle(color: ColorManager.colorGray72,fontSize: FontSize.size16)),
                           const SizedBox(height: AppSize.s4),
-                          Text(orders.serviceName ?? "------",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))
+                          Text(widget.orders.serviceName ?? "------",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))
                         ],
                       ),
                     )
@@ -65,9 +76,9 @@ class OrderRequestItemCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("${orders.id}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16)),
+                          Text("${widget.orders.id}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16)),
                           const SizedBox(height: AppSize.s4),
-                          Text("${orders.date}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size12))
+                          Text("${widget.orders.date}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size12))
                         ],
                       ),
                     ),
@@ -76,7 +87,7 @@ class OrderRequestItemCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSize.s16),
-            if (orders.status == OrderStatus.pending) Padding(
+            if (widget.orders.status == OrderStatus.pending) Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,7 +95,7 @@ class OrderRequestItemCard extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        fun("${orders.id}","accept");
+                        widget.fun("${widget.orders.id}","","accept");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.colorGreen34,
@@ -104,7 +115,9 @@ class OrderRequestItemCard extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {
-                        fun("${orders.id}","reject");
+                        setState(() {
+                          _isReject = true;
+                        });
                       },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: ColorManager.colorRedB2),
@@ -123,7 +136,30 @@ class OrderRequestItemCard extends StatelessWidget {
                 ],
               ),
             ) else SizedBox(),
-            SizedBox(height: orders.status == OrderStatus.pending ? AppSize.s20 : 0),
+            _isReject ? Column(
+              children: [
+                MyTextField(
+                    hint: AppStrings.reject_reason.tr(),
+                    title: "",
+                    suffixIcon: "",
+                    obscureText: false,
+                    inputType: TextInputType.text,
+                    validator: null,
+                    controller: _reasonController,
+                    takeValue: (value) {
+                      _reasonController.text = value;
+                    }),
+                MyButton(
+                  color: ColorManager.colorRedB2,
+                  buttonText: AppStrings.reject.tr(),
+                  paddingVertical: AppPadding.p0,
+                  fun: () {
+                    widget.fun("${widget.orders.id}",_reasonController.text,"reject");
+                  },
+                )
+              ],
+            ):SizedBox(),
+            SizedBox(height: widget.orders.status == OrderStatus.pending ? AppSize.s20 : 0),
           ],
         ),
       ),

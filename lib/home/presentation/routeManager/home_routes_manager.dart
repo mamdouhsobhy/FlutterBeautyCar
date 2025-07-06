@@ -1,13 +1,14 @@
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/presentation/changePasswordScreen/view/change_password_screen.dart';
 import 'package:beauty_car/home/presentation/createEmployeeScreen/view/create_employee_screen.dart';
-import 'package:beauty_car/home/presentation/deleteAccountScreen/delete_account_screen.dart';
+import 'package:beauty_car/home/presentation/deleteAccountScreen/view/delete_account_screen.dart';
 import 'package:beauty_car/home/presentation/editProfileScreen/view/edit_profile_screen.dart';
+import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/view/employee_appointment_page_screen.dart';
 import 'package:beauty_car/home/presentation/employee_review_page_screen/view/employee_review_page_screen.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/view/more_orders_page_screen.dart';
 import 'package:beauty_car/home/presentation/privacyPolicyPageScreen/privacy_policy_page_screen.dart';
-import 'package:beauty_car/home/presentation/settingPageScreen/setting_page_screen.dart';
-import 'package:beauty_car/home/presentation/termsAndConditionScreen/terms_and_condition_Screen.dart';
+import 'package:beauty_car/home/presentation/settingPageScreen/view/setting_page_screen.dart';
+import 'package:beauty_car/home/presentation/termsAndConditionScreen/view/terms_and_condition_Screen.dart';
 import 'package:flutter/material.dart';
 import '../../../app/di/di.dart';
 import '../createCenterScreen/view/create_center_screen.dart';
@@ -27,6 +28,7 @@ class HomeRoutes {
   static const String privacyPolicyRoute = "/privacyPolicy";
   static const String termsAndConditionRoute = "/termsAndCondition";
   static const String employeeReviewsRoute = "/employeeReviews";
+  static const String employeeAppointmentRoute = "/employeeAppointment";
 }
 
 class HomeRouteGenerator {
@@ -58,6 +60,7 @@ class HomeRouteGenerator {
             builder: (_) => const CreateEmployeeScreen(),
             settings: settings);
       case HomeRoutes.settingsRoute:
+        initSettingModule();
         return MaterialPageRoute(
             builder: (_) => const SettingPageScreen(),
             settings: settings);
@@ -72,14 +75,17 @@ class HomeRouteGenerator {
             builder: (_) => const ChangePasswordScreen(),
             settings: settings);
       case HomeRoutes.deleteAccountRoute:
+        initDeleteAccountModule();
         return MaterialPageRoute(
             builder: (_) => const DeleteAccountScreen(),
             settings: settings);
       case HomeRoutes.privacyPolicyRoute:
+        initSettingModule();
         return MaterialPageRoute(
             builder: (_) => const PrivacyPolicyPageScreen(),
             settings: settings);
       case HomeRoutes.termsAndConditionRoute:
+        initSettingModule();
         return MaterialPageRoute(
             builder: (_) => const TermsAndConditionScreen(),
             settings: settings);
@@ -87,6 +93,11 @@ class HomeRouteGenerator {
         initEmployeeReviewModule();
         return MaterialPageRoute(
             builder: (_) =>  EmployeeReviewPageScreen(employeeId: ""),
+            settings: settings);
+      case HomeRoutes.employeeAppointmentRoute:
+        initEmployeeAppointmentOrderModule();
+        return MaterialPageRoute(
+            builder: (_) =>  EmployeeAppointmentPageScreen(employeeId: ""),
             settings: settings);
       default:
         return unDefinedRoute();

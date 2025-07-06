@@ -1,4 +1,5 @@
 import 'package:beauty_car/app/baseResponse/base_response.dart';
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/presentation/changePasswordScreen/viewmodel/change_password_viewmodel.dart';
 import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,6 +26,7 @@ class ChangePasswordScreen extends StatefulWidget {
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final ChangePasswordViewModel _changePasswordViewModel = instance<ChangePasswordViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final TextEditingController _currentPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
@@ -33,6 +35,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   _bind(){
+    _changePasswordViewModel.type = "${_appPreferences.getUserType()}";
     _changePasswordViewModel.start();
   }
 
@@ -216,7 +219,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     _currentPasswordController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
-    // _createEmployeeViewModel.dispose();
+     _changePasswordViewModel.dispose();
     super.dispose();
   }
 }

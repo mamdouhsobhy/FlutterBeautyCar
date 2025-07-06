@@ -34,6 +34,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       image: json['image'] as String?,
+      notificationStatus: (json['notification_status'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
@@ -42,4 +43,5 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'email': instance.email,
       'phone': instance.phone,
       'image': instance.image,
+      'notification_status': instance.notificationStatus,
     };

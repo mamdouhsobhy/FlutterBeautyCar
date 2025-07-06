@@ -18,6 +18,8 @@ class ProfileViewModel extends BaseViewModel implements ProfileViewModelInputs,P
 
   ProfileViewModel(this._profileUseCase);
 
+  String type = "";
+
   //inputs
   @override
   void dispose() {
@@ -58,7 +60,7 @@ class ProfileViewModel extends BaseViewModel implements ProfileViewModelInputs,P
     final formData = FormData();
     formData.fields.addAll([
       MapEntry("name", name),
-      const MapEntry("type", UserTypes.owner)
+      MapEntry("type", type)
     ]);
 
     if(image != null) {

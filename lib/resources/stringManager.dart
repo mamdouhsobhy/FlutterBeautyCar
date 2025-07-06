@@ -152,5 +152,7 @@ class AppStrings {
   static const String onboarding_title_3_emp_2 = "onboarding_title_3_emp_2";
   static const String onboarding_subtitle_3_emp_2 = "onboarding_subtitle_3_emp_2";
   static const String scan = "scan";
+  static const String account_deleted_successfully = "account_deleted_successfully";
+  static const String reject_reason = "reject_reason";
 
 }

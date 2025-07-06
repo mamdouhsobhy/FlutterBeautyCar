@@ -13,6 +13,7 @@ import 'package:beauty_car/home/domain/usecase/appointment_orders_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/centers_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/create_center_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/create_employee_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/delete_account_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/employee_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/employee_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/home_usecase.dart';
@@ -20,10 +21,12 @@ import 'package:beauty_car/home/domain/usecase/order_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/profile_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/rated_orders_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/settings_usecase.dart';
 import 'package:beauty_car/home/presentation/centerPageScreen/viewmodel/centers_viewmodel.dart';
 import 'package:beauty_car/home/presentation/changePasswordScreen/viewmodel/change_password_viewmodel.dart';
 import 'package:beauty_car/home/presentation/createCenterScreen/viewmodel/create_center_viewmodel.dart';
 import 'package:beauty_car/home/presentation/createEmployeeScreen/viewmodel/create_employee_viewmodel.dart';
+import 'package:beauty_car/home/presentation/deleteAccountScreen/viewmodel/delete_account_viewmodel.dart';
 import 'package:beauty_car/home/presentation/editProfileScreen/viewmodel/profile_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/viewmodel/appointment_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeeDetailsPageScreen/viewmodel/employee_details_viewmodel.dart';
@@ -33,6 +36,8 @@ import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewm
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/viewmodel/more_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/orderPageScreen/viewmodel/orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/reserveDetailsPageScreen/viewmodel/order_details_viewmodel.dart';
+import 'package:beauty_car/home/presentation/settingPageScreen/viewmodel/setting_viewmodel.dart';
+import 'package:beauty_car/home/presentation/termsAndConditionScreen/viewmodel/terms_and_condition_viewmodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -243,8 +248,21 @@ initChangePasswordModule(){
 
 initSettingModule(){
 
-  if(!GetIt.I.isRegistered<ImagePicker>()) {
-    instance.registerFactory<ImagePicker>(() => ImagePicker());
+  if(!GetIt.I.isRegistered<SettingsUseCase>()) {
+    instance.registerFactory<SettingsUseCase>(() => SettingsUseCase(instance()));
+    instance.registerFactory<TermsAndConditionViewModel>(() => TermsAndConditionViewModel(instance()));
+    instance.registerFactory<SettingViewModel>(() => SettingViewModel(instance()));
+  }
+
+
+}
+
+
+initDeleteAccountModule(){
+
+  if(!GetIt.I.isRegistered<DeleteAccountUseCase>()) {
+    instance.registerFactory<DeleteAccountUseCase>(() => DeleteAccountUseCase(instance()));
+    instance.registerFactory<DeleteAccountViewModel>(() => DeleteAccountViewModel(instance()));
   }
 
 }
