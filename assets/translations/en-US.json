@@ -151,5 +151,6 @@
   "onboarding_subtitle_3_emp_2": "Flexible ordering system, with complete transparency and accurate details for each task",
   "scan": "Scan",
   "account_deleted_successfully": "Account deleted successfully",
-  "reject_reason": "Reject Reason"
+  "reject_reason": "Reject Reason",
+  "requests_awaiting_payment": "Requests Awaiting Payment"
 }

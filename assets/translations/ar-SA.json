@@ -151,5 +151,6 @@
   "onboarding_subtitle_3_emp_2": "نظام مرن لتلقي الطلبات،  بكل شفافية مع تفاصيل دقيقة لكل مهمة",
   "scan": "المسح",
   "account_deleted_successfully": "تم حذف الحساب بنجاح",
-  "reject_reason": "سبب الرفض"
+  "reject_reason": "سبب الرفض",
+  "requests_awaiting_payment": "طلبات في انتظار الدفع"
 }

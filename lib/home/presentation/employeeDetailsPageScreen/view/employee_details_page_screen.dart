@@ -122,7 +122,17 @@ class _EmployeeDetailsPageScreenState extends State<EmployeeDetailsPageScreen> {
                     width: AppSize.s80,
                     height: AppSize.s80,
                     decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: SvgPicture.asset(ImageAssets.avatarIcon, fit: BoxFit.cover),
+                    child: employee?.image != null && employee!.image!.isNotEmpty
+                        ? ClipOval(
+                          child: Image.network(
+                                                employee!.image!,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                          return SvgPicture.asset(ImageAssets.avatarIcon, fit: BoxFit.cover);
+                                                },
+                                              ),
+                        )
+                        : SvgPicture.asset(ImageAssets.avatarIcon, fit: BoxFit.cover),
                   ),
                   GestureDetector(
                     onTap: () {

@@ -65,7 +65,7 @@ class _EmployeeAppointmentPageScreenState extends State<EmployeeAppointmentPageS
         ),
         child: Scaffold(
           backgroundColor: ColorManager.white,
-          appBar: "${_appPreferences.getUserType()}" == UserTypes.owner ? MyAppBar(title: AppStrings.appointment.tr()) : null,
+          appBar: widget.employeeId.isEmpty ? MyAppBar(title: AppStrings.appointment.tr()) : null,
           body: SafeArea(
             child: StreamBuilder<FlowState>(
               stream: _appointmentOrdersViewModel.outputState,

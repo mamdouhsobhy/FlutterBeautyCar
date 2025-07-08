@@ -115,12 +115,6 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
       }
     }
 
-    if(center!=null && center.serviceIds?.isNotEmpty == true) {
-      for (String service in center.serviceIds!) {
-        _createCenterViewModel.services.add(
-            Services(id: int.parse(service), name: "", image: ""));
-      }
-    }
 
     _employeeNameController.text = "${center?.employee?.name}";
     _createCenterViewModel.createOrUpdateCenter.employeeId = "${center?.employee?.id}";
@@ -139,6 +133,13 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
       _selectedStatus = AppStrings.closed.tr();
       _createCenterViewModel.createOrUpdateCenter.status = CenterStatus.closed;
       setState(() {});
+    }
+
+    if(center!=null && center.serviceIds?.isNotEmpty == true) {
+      for (int service in center.serviceIds!) {
+        _createCenterViewModel.services.add(
+            Services(id: service, name: "", image: ""));
+      }
     }
 
     print("Counter +1");

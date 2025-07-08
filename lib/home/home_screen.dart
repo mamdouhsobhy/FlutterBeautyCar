@@ -3,6 +3,7 @@ import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/presentation/centerPageScreen/view/center_page_screen.dart';
 import 'package:beauty_car/home/presentation/editProfileScreen/view/edit_profile_screen.dart';
 import 'package:beauty_car/home/presentation/employeePageScreen/view/employee_page_screen.dart';
+import 'package:beauty_car/home/presentation/employeeScanPageScreen/view/employee_scan_page_screen.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/view/home_page_screen.dart';
 import 'package:beauty_car/home/presentation/orderPageScreen/view/order_page_screen.dart';
 import 'package:beauty_car/home/presentation/routeManager/home_routes_manager.dart';
@@ -47,9 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
         const EmployeePageScreen(),
       ];
     }else{
+      initEditProfileModule();
+      initScanOrdersModule();
       _tabsScreens = [
         HomePageScreen(sideMenuTabsPressed: (index) => _onItemTapped(index)),
-        const Center(child: Text("QR Code")),
+        const EmployeeScanPageScreen(),
         const OrderPageScreen(),
         const EditProfileScreen(),
       ];

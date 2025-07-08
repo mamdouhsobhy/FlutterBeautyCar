@@ -50,7 +50,7 @@ class Data {
   @JsonKey(name: "vendor_id")
   final int? vendorId;
   @JsonKey(name: "service_ids")
-  final List<String>? serviceIds;
+  final List<dynamic>? serviceIds;
   @JsonKey(name: "status")
   final int? status;
 
@@ -76,14 +76,6 @@ class Data {
   Map<String, dynamic> toJson() {
     return _$DataToJson(this);
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is Data && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
 }
 
 @JsonSerializable()
@@ -103,7 +95,7 @@ class Employee {
   @JsonKey(name: "password")
   final String? password;
   @JsonKey(name: "image")
-  final dynamic? image;
+  final String? image;
   @JsonKey(name: "experiance")
   final int? experiance;
   @JsonKey(name: "ssd_num")
@@ -118,12 +110,14 @@ class Employee {
   final int? vendorId;
   @JsonKey(name: "shop_id")
   final int? shopId;
-  @JsonKey(name: "firebase_token")
-  final dynamic? firebaseToken;
-  @JsonKey(name: "otp")
-  final dynamic? otp;
+  // @JsonKey(name: "firebase_token")
+  // final String? firebaseToken;
+  // @JsonKey(name: "otp")
+  // final int? otp;
   @JsonKey(name: "type")
   final int? type;
+  @JsonKey(name: "notification_status")
+  final int? notificationStatus;
   @JsonKey(name: "image_path")
   final String? imagePath;
 
@@ -143,9 +137,10 @@ class Employee {
     this.status,
     this.vendorId,
     this.shopId,
-    this.firebaseToken,
-    this.otp,
+    // this.firebaseToken,
+    // this.otp,
     this.type,
+    this.notificationStatus,
     this.imagePath,
   });
 
@@ -176,16 +171,18 @@ class Vendor {
   final String? password;
   @JsonKey(name: "image")
   final String? image;
-  @JsonKey(name: "firebase_token")
-  final dynamic? firebaseToken;
+  // @JsonKey(name: "firebase_token")
+  // final String? firebaseToken;
   @JsonKey(name: "status")
   final int? status;
-  @JsonKey(name: "otp")
-  final String? otp;
+  // @JsonKey(name: "otp")
+  // final int? otp;
   @JsonKey(name: "verified_phone")
   final int? verifiedPhone;
   @JsonKey(name: "type")
   final int? type;
+  @JsonKey(name: "notification_status")
+  final int? notificationStatus;
   @JsonKey(name: "image_path")
   final String? imagePath;
 
@@ -198,11 +195,12 @@ class Vendor {
     this.phone,
     this.password,
     this.image,
-    this.firebaseToken,
+    // this.firebaseToken,
     this.status,
-    this.otp,
+    // this.otp,
     this.verifiedPhone,
     this.type,
+    this.notificationStatus,
     this.imagePath,
   });
 

@@ -62,7 +62,7 @@ class SettingViewModel extends BaseViewModel implements SettingViewModelInputs,S
   Future<FormData> buildUpdateNotifyFormData() async {
     return FormData.fromMap({
       "type": type,
-      // "fcm_Token": ""
+      "fcm_token": ""
     });
   }
 

@@ -21,6 +21,7 @@ import 'package:beauty_car/home/domain/usecase/order_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/profile_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/rated_orders_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/scan_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/settings_usecase.dart';
 import 'package:beauty_car/home/presentation/centerPageScreen/viewmodel/centers_viewmodel.dart';
 import 'package:beauty_car/home/presentation/changePasswordScreen/viewmodel/change_password_viewmodel.dart';
@@ -31,6 +32,7 @@ import 'package:beauty_car/home/presentation/editProfileScreen/viewmodel/profile
 import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/viewmodel/appointment_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeeDetailsPageScreen/viewmodel/employee_details_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employeePageScreen/viewmodel/employee_viewmodel.dart';
+import 'package:beauty_car/home/presentation/employeeScanPageScreen/viewmodel/scan_viewmodel.dart';
 import 'package:beauty_car/home/presentation/employee_review_page_screen/viewmodel/review_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/viewmodel/more_orders_viewmodel.dart';
@@ -232,6 +234,7 @@ initEditProfileModule(){
   if(!GetIt.I.isRegistered<ProfileUseCase>()) {
     instance.registerFactory<ProfileUseCase>(() => ProfileUseCase(instance()));
     instance.registerFactory<ProfileViewModel>(() => ProfileViewModel(instance()));
+    instance.registerFactory<ChangePasswordViewModel>(() => ChangePasswordViewModel(instance()));
     instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 
@@ -263,6 +266,15 @@ initDeleteAccountModule(){
   if(!GetIt.I.isRegistered<DeleteAccountUseCase>()) {
     instance.registerFactory<DeleteAccountUseCase>(() => DeleteAccountUseCase(instance()));
     instance.registerFactory<DeleteAccountViewModel>(() => DeleteAccountViewModel(instance()));
+  }
+
+}
+
+initScanOrdersModule(){
+
+  if(!GetIt.I.isRegistered<ScanUseCase>()) {
+    instance.registerFactory<ScanUseCase>(() => ScanUseCase(instance()));
+    instance.registerFactory<ScanViewModel>(() => ScanViewModel(instance()));
   }
 
 }

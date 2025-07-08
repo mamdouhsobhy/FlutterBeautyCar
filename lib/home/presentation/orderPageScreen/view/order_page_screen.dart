@@ -300,32 +300,35 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                              filteredOrders = _ordersViewModel.ordersList;
                              // }
                              print("ListSize ${filteredOrders.length}");
-                             return ListView.builder(
-                               controller: _scrollController,
-                               physics: const AlwaysScrollableScrollPhysics(),
-                               itemCount: filteredOrders.length,
-                               itemBuilder: (context, index) {
-                                 return Padding(
-                                   padding: const EdgeInsets.symmetric(
-                                       vertical: AppPadding.p8,
-                                       horizontal: AppPadding.p16),
-                                   child: OrderRequestItemCard(
-                                       orders: filteredOrders[index],
-                                       fun: (orderId , cancelReason , actionType) {
-                                         if (actionType == "details") {
-                                           _navigateToOrderDetails(orderId);
-                                         } else if (actionType == "accept") {
-                                           mActionType = OrderStatus.accepted;
-                                           _ordersViewModel.updateOrderStatus(
-                                               orderId , "" , OrderStatus.accepted);
-                                         } else {
-                                           mActionType = OrderStatus.cancelled;
-                                           _ordersViewModel.updateOrderStatus(
-                                               orderId , cancelReason , OrderStatus.cancelled);
-                                         }
-                                       }),
-                                 );
-                               },
+                             return ConstrainedBox(
+                               constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+                               child: ListView.builder(
+                                 controller: _scrollController,
+                                 physics: const AlwaysScrollableScrollPhysics(),
+                                 itemCount: filteredOrders.length,
+                                 itemBuilder: (context, index) {
+                                   return Padding(
+                                     padding: const EdgeInsets.symmetric(
+                                         vertical: AppPadding.p8,
+                                         horizontal: AppPadding.p16),
+                                     child: OrderRequestItemCard(
+                                         orders: filteredOrders[index],
+                                         fun: (orderId , cancelReason , actionType) {
+                                           if (actionType == "details") {
+                                             _navigateToOrderDetails(orderId);
+                                           } else if (actionType == "accept") {
+                                             mActionType = OrderStatus.accepted;
+                                             _ordersViewModel.updateOrderStatus(
+                                                 orderId , "" , OrderStatus.accepted);
+                                           } else {
+                                             mActionType = OrderStatus.cancelled;
+                                             _ordersViewModel.updateOrderStatus(
+                                                 orderId , cancelReason , OrderStatus.cancelled);
+                                           }
+                                         }),
+                                   );
+                                 },
+                               ),
                              );
                            }
                          },

@@ -45,9 +45,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       openTime: json['open_time'] as String?,
       closeTime: json['close_time'] as String?,
       vendorId: (json['vendor_id'] as num?)?.toInt(),
-      serviceIds: (json['service_ids'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      serviceIds: json['service_ids'] as List<dynamic>?,
       status: (json['status'] as num?)?.toInt(),
     );
 
@@ -74,7 +72,7 @@ Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       password: json['password'] as String?,
-      image: json['image'],
+      image: json['image'] as String?,
       experiance: (json['experiance'] as num?)?.toInt(),
       ssdNum: json['ssd_num'] as String?,
       startTime: json['start_time'] as String?,
@@ -82,9 +80,8 @@ Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
       status: (json['status'] as num?)?.toInt(),
       vendorId: (json['vendor_id'] as num?)?.toInt(),
       shopId: (json['shop_id'] as num?)?.toInt(),
-      firebaseToken: json['firebase_token'],
-      otp: json['otp'],
       type: (json['type'] as num?)?.toInt(),
+      notificationStatus: (json['notification_status'] as num?)?.toInt(),
       imagePath: json['image_path'] as String?,
     );
 
@@ -104,9 +101,8 @@ Map<String, dynamic> _$EmployeeToJson(Employee instance) => <String, dynamic>{
       'status': instance.status,
       'vendor_id': instance.vendorId,
       'shop_id': instance.shopId,
-      'firebase_token': instance.firebaseToken,
-      'otp': instance.otp,
       'type': instance.type,
+      'notification_status': instance.notificationStatus,
       'image_path': instance.imagePath,
     };
 
@@ -119,11 +115,10 @@ Vendor _$VendorFromJson(Map<String, dynamic> json) => Vendor(
       phone: json['phone'] as String?,
       password: json['password'] as String?,
       image: json['image'] as String?,
-      firebaseToken: json['firebase_token'],
       status: (json['status'] as num?)?.toInt(),
-      otp: json['otp'] as String?,
       verifiedPhone: (json['verified_phone'] as num?)?.toInt(),
       type: (json['type'] as num?)?.toInt(),
+      notificationStatus: (json['notification_status'] as num?)?.toInt(),
       imagePath: json['image_path'] as String?,
     );
 
@@ -136,11 +131,10 @@ Map<String, dynamic> _$VendorToJson(Vendor instance) => <String, dynamic>{
       'phone': instance.phone,
       'password': instance.password,
       'image': instance.image,
-      'firebase_token': instance.firebaseToken,
       'status': instance.status,
-      'otp': instance.otp,
       'verified_phone': instance.verifiedPhone,
       'type': instance.type,
+      'notification_status': instance.notificationStatus,
       'image_path': instance.imagePath,
     };
 

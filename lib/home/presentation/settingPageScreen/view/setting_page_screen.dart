@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../../app/di/di.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/colorManager.dart';
@@ -123,7 +122,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                     SvgPicture.asset(ImageAssets.userIcon,color: ColorManager.colorRedB2,),
                     Text(" ${AppStrings.edit_profile.tr()} ",style: getSemiBoldStyle(color: ColorManager.colorBlack03,fontSize: AppSize.s16)),
                     Expanded(child: SizedBox()),
-                    SvgPicture.asset(ImageAssets.arrowRightIcon,color: ColorManager.colorRedB2,)
+                    Transform.rotate(angle: _isEnglishChecked ? 3.14 : 0.0,child: SvgPicture.asset(ImageAssets.arrowRightIcon,color: ColorManager.colorRedB2,))
                   ],),
                 )
             ),
@@ -191,7 +190,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                       SvgPicture.asset(ImageAssets.langIcon,color: ColorManager.colorRedB2,),
                       Text(" ${AppStrings.lang_setting.tr()} ",style: getSemiBoldStyle(color: ColorManager.colorBlack03,fontSize: AppSize.s16)),
                       Expanded(child: SizedBox()),
-                      SvgPicture.asset(ImageAssets.arrowRightIcon,color: ColorManager.colorRedB2,)
+                      Transform.rotate(angle: _isEnglishChecked ? 3.14 : 0.0,child: SvgPicture.asset(ImageAssets.arrowRightIcon,color: ColorManager.colorRedB2,))
                     ],),
                 )
             ),
@@ -216,7 +215,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                       SvgPicture.asset(ImageAssets.lockIcon,color: ColorManager.colorRedB2,),
                       Text(" ${AppStrings.change_password.tr()} ",style: getSemiBoldStyle(color: ColorManager.colorBlack03,fontSize: AppSize.s16)),
                       Expanded(child: SizedBox()),
-                      SvgPicture.asset(ImageAssets.arrowRightIcon,color: ColorManager.colorRedB2,)
+                      Transform.rotate(angle: _isEnglishChecked ? 3.14 : 0.0,child: SvgPicture.asset(ImageAssets.arrowRightIcon,color: ColorManager.colorRedB2,))
                     ],),
                 )
             ),

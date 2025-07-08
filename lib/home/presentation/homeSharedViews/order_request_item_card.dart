@@ -48,25 +48,29 @@ class _OrderRequestItemCardState extends State<OrderRequestItemCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: AppPadding.p16,right: AppPadding.p16),
-                      child: SvgPicture.asset(ImageAssets.avatarIcon),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: AppPadding.p4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("${widget.orders.clientName}",style: getBoldStyle(color: ColorManager.colorGray72,fontSize: FontSize.size16)),
-                          const SizedBox(height: AppSize.s4),
-                          Text(widget.orders.serviceName ?? "------",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))
-                        ],
+                Expanded(
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: AppPadding.p16,right: AppPadding.p16),
+                        child: SvgPicture.asset(ImageAssets.avatarIcon),
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: AppPadding.p4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("${widget.orders.clientName}",style: getBoldStyle(color: ColorManager.colorGray72,fontSize: FontSize.size16)),
+                              const SizedBox(height: AppSize.s4),
+                              Text(widget.orders.serviceName ?? "------",maxLines: 1,overflow: TextOverflow.ellipsis,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16))
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Column(
                   children: [
@@ -138,6 +142,7 @@ class _OrderRequestItemCardState extends State<OrderRequestItemCard> {
             ) else SizedBox(),
             _isReject ? Column(
               children: [
+                const SizedBox(height: AppSize.s16),
                 MyTextField(
                     hint: AppStrings.reject_reason.tr(),
                     title: "",
@@ -149,6 +154,7 @@ class _OrderRequestItemCardState extends State<OrderRequestItemCard> {
                     takeValue: (value) {
                       _reasonController.text = value;
                     }),
+                const SizedBox(height: AppSize.s16),
                 MyButton(
                   color: ColorManager.colorRedB2,
                   buttonText: AppStrings.reject.tr(),

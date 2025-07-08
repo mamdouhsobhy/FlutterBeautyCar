@@ -154,5 +154,6 @@ class AppStrings {
   static const String scan = "scan";
   static const String account_deleted_successfully = "account_deleted_successfully";
   static const String reject_reason = "reject_reason";
+  static const String requests_awaiting_payment = "requests_awaiting_payment";
 
 }
