@@ -1,5 +1,6 @@
 import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
+import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
@@ -24,6 +25,14 @@ abstract class HomeServiceClient {
 
   @GET("vendor/orders")
   Future<ModelOrdersResponseRemote> getHomeOrders(
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("page") int page,
+      @Query("status") int status,
+      );
+
+  @GET("employee/orders")
+  Future<ModelOrdersResponseRemote> getHomeOrdersForEmployee(
       @Query("pagination") bool pagination,
       @Query("limit") int limit,
       @Query("page") int page,
@@ -66,8 +75,20 @@ abstract class HomeServiceClient {
     @Query("status") int status,
   );
 
+  @GET("employee/orders")
+  Future<ModelOrdersResponseRemote> getOrdersWithStatusForEmployee(
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("page") int page,
+      @Query("status") int status,
+      );
+
   @POST("vendor/orders/updateStatus")
   Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(
+      @Query("order_id") String id, @Query("refaused_reason") String reason , @Query("status") int limit);
+
+  @POST("employee/orders/updateStatus")
+  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatusForEmployee(
       @Query("order_id") String id, @Query("refaused_reason") String reason , @Query("status") int limit);
 
   @GET("vendor/orders")
@@ -108,6 +129,9 @@ abstract class HomeServiceClient {
   @GET("vendor/getStatistics")
   Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics();
 
+  @GET("employee/getStatistics")
+  Future<ModelGetHomeStatisticsResponseRemote> getHomeStatisticsForEmployee();
+
   @MultiPart()
   @POST("guest/updateProfile")
   Future<ModelLoginResponseRemote> updateProfile(@Body() FormData formData);
@@ -126,5 +150,9 @@ abstract class HomeServiceClient {
   @MultiPart()
   @POST("guest/updateNotification")
   Future<ModelLoginResponseRemote> updateNotification(@Body() FormData formData);
+
+  @MultiPart()
+  @POST("employee/orders/confirm/scan")
+  Future<ModelCompleteOrderResponseRemote> completeOrder(@Body() FormData formData);
 
 }

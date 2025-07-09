@@ -62,30 +62,31 @@ final appPrefs = instance<AppPreferences>();
 
 Future<void> initAppModule() async{
 
-  final sharedPrefs = await SharedPreferences.getInstance();
-  
-  instance.registerLazySingleton<SharedPreferences>(()=>sharedPrefs);
+    final sharedPrefs = await SharedPreferences.getInstance();
+    
+    instance.registerLazySingleton<SharedPreferences>(()=>sharedPrefs);
 
-  instance.registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
+    instance.registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
 
-  instance.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(InternetConnectionChecker()));
+    instance.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(InternetConnectionChecker()));
 
-  instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
+    instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
 
-  Dio dio = await instance<DioFactory>().getDio();
-  //for Authentication
-  instance.registerLazySingleton<AuthServiceClient>(() => AuthServiceClient(dio));
+    Dio dio = await instance<DioFactory>().getDio();
+    //for Authentication
+    instance.registerLazySingleton<AuthServiceClient>(() => AuthServiceClient(dio));
 
-  instance.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(instance()));
+    instance.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(instance()));
 
-  instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(instance(), instance()));
+    instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(instance(), instance()));
 
-  //for home
-   instance.registerLazySingleton<HomeServiceClient>(() => HomeServiceClient(dio));
-  //
-   instance.registerLazySingleton<HomeRemoteDataSource>(() => HomeRemoteDataSourceImpl(instance()));
-  //
-   instance.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(instance(), instance()));
+    //for home
+     instance.registerLazySingleton<HomeServiceClient>(() => HomeServiceClient(dio));
+    //
+     instance.registerLazySingleton<HomeRemoteDataSource>(() => HomeRemoteDataSourceImpl(instance()));
+    //
+     instance.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(instance(), instance()));
+
 }
 
 initLoginModule(){
@@ -136,21 +137,23 @@ initResetPasswordModule(){
 
 initHomeModule(){
 
-  if(!GetIt.I.isRegistered<HomeUseCase>()) {
-    instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
-    instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
-    instance.registerFactory<MoreOrdersViewModel>(() => MoreOrdersViewModel(instance()));
-  }
+    if(!GetIt.I.isRegistered<HomeUseCase>()) {
+      instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
+      instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
+      instance.registerFactory<MoreOrdersViewModel>(() => MoreOrdersViewModel(instance()));
+      print("Home module initialized successfully");
+    }
 
 }
 
 
 initCentersModule(){
 
-  if(!GetIt.I.isRegistered<CentersUseCase>()) {
-    instance.registerFactory<CentersUseCase>(() => CentersUseCase(instance()));
-    instance.registerFactory<CentersViewModel>(() => CentersViewModel(instance()));
-  }
+    if(!GetIt.I.isRegistered<CentersUseCase>()) {
+      instance.registerFactory<CentersUseCase>(() => CentersUseCase(instance()));
+      instance.registerFactory<CentersViewModel>(() => CentersViewModel(instance()));
+      print("Centers module initialized successfully");
+    }
 
 }
 
@@ -167,10 +170,11 @@ initCreateCentersModule(){
 
 initOrdersModule(){
 
-  if(!GetIt.I.isRegistered<OrdersUseCase>()) {
-    instance.registerFactory<OrdersUseCase>(() => OrdersUseCase(instance()));
-    instance.registerFactory<OrdersViewModel>(() => OrdersViewModel(instance()));
-  }
+    if(!GetIt.I.isRegistered<OrdersUseCase>()) {
+      instance.registerFactory<OrdersUseCase>(() => OrdersUseCase(instance()));
+      instance.registerFactory<OrdersViewModel>(() => OrdersViewModel(instance()));
+      print("Orders module initialized successfully");
+    }
 
 }
 

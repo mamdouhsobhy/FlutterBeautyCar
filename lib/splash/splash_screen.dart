@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (userData?.token != null) {
         Constants.token = userData!.token!;
       }
-      
+
       initHomeModule();
       initCentersModule();
       initOrdersModule();
@@ -73,20 +73,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: ColorManager.colorGray_5A,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-    child: Scaffold(
-      backgroundColor: ColorManager.colorGray_5A,
-      body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Image.asset(fit: BoxFit.fill,ImageAssets.splashLogo),
+        value: SystemUiOverlayStyle(
+          statusBarColor: ColorManager.colorGray_5A,
+          statusBarIconBrightness: Brightness.dark,
         ),
-      ),
-    )
+        child: Scaffold(
+          backgroundColor: ColorManager.colorGray_5A,
+          body: SafeArea(
+            child: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Image.asset(fit: BoxFit.fill,ImageAssets.splashLogo),
+            ),
+          ),
+        )
     );
   }
 

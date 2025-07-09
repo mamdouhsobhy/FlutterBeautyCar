@@ -1,31 +1,31 @@
 import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'update_order_status.g.dart';
+part 'complete_order.g.dart';
 
 @JsonSerializable()
-class ModelUpdateOrderStatusResponseRemote extends BaseResponse{
+class ModelCompleteOrderResponseRemote extends BaseResponse{
   @JsonKey(name: "data")
-  final UpdatedOrderData? data;
+  final CompleteOrderData? data;
 
-  ModelUpdateOrderStatusResponseRemote ({
+  ModelCompleteOrderResponseRemote ({
     this.data,
     super.status,
     super.code,
     super.message
   });
 
-  factory ModelUpdateOrderStatusResponseRemote.fromJson(Map<String, dynamic> json) {
-    return _$ModelUpdateOrderStatusResponseRemoteFromJson(json);
+  factory ModelCompleteOrderResponseRemote.fromJson(Map<String, dynamic> json) {
+    return _$ModelCompleteOrderResponseRemoteFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$ModelUpdateOrderStatusResponseRemoteToJson(this);
+    return _$ModelCompleteOrderResponseRemoteToJson(this);
   }
 }
 
 @JsonSerializable()
-class UpdatedOrderData {
+class CompleteOrderData {
   @JsonKey(name: "id")
   final int? id;
   @JsonKey(name: "created_at")
@@ -38,6 +38,8 @@ class UpdatedOrderData {
   final String? clientName;
   @JsonKey(name: "client_phone")
   final String? clientPhone;
+  @JsonKey(name: "client_image")
+  final String? clientImage;
   @JsonKey(name: "vendor_id")
   final int? vendorId;
   @JsonKey(name: "vendor_name")
@@ -80,18 +82,23 @@ class UpdatedOrderData {
   final String? date;
   @JsonKey(name: "time")
   final String? time;
+  @JsonKey(name: "refaused_reason")
+  final String? refausedReason;
   @JsonKey(name: "place_type")
   final String? placeType;
   @JsonKey(name: "status")
   final String? status;
+  @JsonKey(name: "client_image_path")
+  final String? clientImagePath;
 
-  UpdatedOrderData ({
+  CompleteOrderData ({
     this.id,
     this.createdAt,
     this.updatedAt,
     this.clientId,
     this.clientName,
     this.clientPhone,
+    this.clientImage,
     this.vendorId,
     this.vendorName,
     this.vendorPhone,
@@ -113,16 +120,18 @@ class UpdatedOrderData {
     this.carColor,
     this.date,
     this.time,
+    this.refausedReason,
     this.placeType,
     this.status,
+    this.clientImagePath,
   });
 
-  factory UpdatedOrderData.fromJson(Map<String, dynamic> json) {
-    return _$UpdatedOrderDataFromJson(json);
+  factory CompleteOrderData.fromJson(Map<String, dynamic> json) {
+    return _$CompleteOrderDataFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$UpdatedOrderDataToJson(this);
+    return _$CompleteOrderDataToJson(this);
   }
 }
 

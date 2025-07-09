@@ -1,6 +1,8 @@
+import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/presentation/employeeScanPageScreen/viewmodel/scan_viewmodel.dart';
 import 'package:beauty_car/home/presentation/homeSharedViews/order_scan_item_card.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -191,7 +193,7 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
                                         if (actionType == "details") {
                                           _navigateToOrderDetails("${order.id}");
                                         } else {
-                                          _openQrScannerAndRefresh();
+                                          _openQrScannerAndRefresh(order);
                                         }
                                       });
                                 },
@@ -207,6 +209,7 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
             ),
           ),
         ),
+        completeOrder()
       ],
     );
   }
@@ -221,16 +224,31 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
     });
   }
 
-  Future<void> _openQrScannerAndRefresh() async {
+  Future<void> _openQrScannerAndRefresh(Data order) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const QrScannerScreen()),
     );
-
+    context.showInfoToast("$result");
     if (result != null) {
+
       print("Scanned QR: $result");
-      _refreshOrders(); // <- refresh after scanning
     }
+  }
+
+  Widget completeOrder(){
+    return StreamBuilder<ModelCompleteOrderResponseRemote>(
+        stream: _scanViewModel.outputCompleteOrderData,
+        builder: (ctx, snapshot)
+    {
+      if (snapshot.data != null && snapshot.data?.status == true) {
+        if (_scanViewModel.isCompleteOrderLoading) {
+          _scanViewModel.isCompleteOrderLoading = false;
+           _refreshOrders();
+        }
+      }
+      return SizedBox();
+    });
   }
 
   handleOrdersStateChanged(FlowState state) {

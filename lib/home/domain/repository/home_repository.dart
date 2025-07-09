@@ -2,6 +2,7 @@
 import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
+import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
@@ -58,5 +59,7 @@ abstract class HomeRepository {
   Future<Either<Failure,ModelLoginResponseRemote>> deleteAccount(FormData data);
 
   Future<Either<Failure,ModelLoginResponseRemote>> updateNotification(FormData data);
+
+  Future<Either<Failure,ModelCompleteOrderResponseRemote>> completeOrder(FormData data);
 
 }

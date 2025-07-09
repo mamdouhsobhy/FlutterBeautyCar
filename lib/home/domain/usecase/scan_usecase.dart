@@ -1,7 +1,9 @@
 
+import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import '../../../app/baseUseCase/base_usecase.dart';
 import '../../../app/errorHandler/failure.dart';
 import '../../data/request/home_order_request.dart';
@@ -15,6 +17,11 @@ class ScanUseCase implements BaseUseCase<HomeOrderRequest,ModelOrdersResponseRem
   @override
   Future<Either<Failure, ModelOrdersResponseRemote>> execute(HomeOrderRequest request) async{
     return await _repository.getHomeOrders(request.pagination,request.limit,request.page,request.status);
+  }
+
+  @override
+  Future<Either<Failure, ModelCompleteOrderResponseRemote>> executeCompleteOrder(FormData request) async{
+    return await _repository.completeOrder(request);
   }
 
 

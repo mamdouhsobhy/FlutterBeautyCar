@@ -1,3 +1,4 @@
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 

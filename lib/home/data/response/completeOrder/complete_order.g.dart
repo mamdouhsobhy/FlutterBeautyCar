@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'update_order_status.dart';
+part of 'complete_order.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ModelUpdateOrderStatusResponseRemote
-    _$ModelUpdateOrderStatusResponseRemoteFromJson(Map<String, dynamic> json) =>
-        ModelUpdateOrderStatusResponseRemote(
-          data: json['data'] == null
-              ? null
-              : UpdatedOrderData.fromJson(json['data'] as Map<String, dynamic>),
-          status: json['status'] as bool?,
-          code: (json['code'] as num?)?.toInt(),
-          message: json['message'] as String?,
-        );
+ModelCompleteOrderResponseRemote _$ModelCompleteOrderResponseRemoteFromJson(
+        Map<String, dynamic> json) =>
+    ModelCompleteOrderResponseRemote(
+      data: json['data'] == null
+          ? null
+          : CompleteOrderData.fromJson(json['data'] as Map<String, dynamic>),
+      status: json['status'] as bool?,
+      code: (json['code'] as num?)?.toInt(),
+      message: json['message'] as String?,
+    );
 
-Map<String, dynamic> _$ModelUpdateOrderStatusResponseRemoteToJson(
-        ModelUpdateOrderStatusResponseRemote instance) =>
+Map<String, dynamic> _$ModelCompleteOrderResponseRemoteToJson(
+        ModelCompleteOrderResponseRemote instance) =>
     <String, dynamic>{
       'status': instance.status,
       'code': instance.code,
@@ -26,14 +26,15 @@ Map<String, dynamic> _$ModelUpdateOrderStatusResponseRemoteToJson(
       'data': instance.data,
     };
 
-UpdatedOrderData _$UpdatedOrderDataFromJson(Map<String, dynamic> json) =>
-    UpdatedOrderData(
+CompleteOrderData _$CompleteOrderDataFromJson(Map<String, dynamic> json) =>
+    CompleteOrderData(
       id: (json['id'] as num?)?.toInt(),
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       clientId: (json['client_id'] as num?)?.toInt(),
       clientName: json['client_name'] as String?,
       clientPhone: json['client_phone'] as String?,
+      clientImage: json['client_image'] as String?,
       vendorId: (json['vendor_id'] as num?)?.toInt(),
       vendorName: json['vendor_name'] as String?,
       vendorPhone: json['vendor_phone'] as String?,
@@ -55,11 +56,13 @@ UpdatedOrderData _$UpdatedOrderDataFromJson(Map<String, dynamic> json) =>
       carColor: json['car_color'] as String?,
       date: json['date'] as String?,
       time: json['time'] as String?,
+      refausedReason: json['refaused_reason'] as String?,
       placeType: json['place_type'] as String?,
       status: json['status'] as String?,
+      clientImagePath: json['client_image_path'] as String?,
     );
 
-Map<String, dynamic> _$UpdatedOrderDataToJson(UpdatedOrderData instance) =>
+Map<String, dynamic> _$CompleteOrderDataToJson(CompleteOrderData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'created_at': instance.createdAt,
@@ -67,6 +70,7 @@ Map<String, dynamic> _$UpdatedOrderDataToJson(UpdatedOrderData instance) =>
       'client_id': instance.clientId,
       'client_name': instance.clientName,
       'client_phone': instance.clientPhone,
+      'client_image': instance.clientImage,
       'vendor_id': instance.vendorId,
       'vendor_name': instance.vendorName,
       'vendor_phone': instance.vendorPhone,
@@ -88,6 +92,8 @@ Map<String, dynamic> _$UpdatedOrderDataToJson(UpdatedOrderData instance) =>
       'car_color': instance.carColor,
       'date': instance.date,
       'time': instance.time,
+      'refaused_reason': instance.refausedReason,
       'place_type': instance.placeType,
       'status': instance.status,
+      'client_image_path': instance.clientImagePath,
     };

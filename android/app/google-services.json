@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "735125574880",
+    "project_id": "beauty-car-app",
+    "storage_bucket": "beauty-car-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735125574880:android:ba4da514435c856385ac85",
+        "android_client_info": {
+          "package_name": "com.example.beauty_car"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGXixP3GfxD1vH6c55khKi3X9rnAlI4kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

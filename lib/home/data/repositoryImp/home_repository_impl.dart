@@ -4,6 +4,7 @@ import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/data_source/home_remote_data_source.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
+import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
@@ -16,11 +17,15 @@ import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_sta
 import 'package:beauty_car/home/domain/repository/home_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import '../../../app/di/di.dart';
 import '../../../app/errorHandler/error_handler.dart';
 import '../../../app/errorHandler/failure.dart';
 import '../../../app/networkInfo/network_info.dart';
+import '../../../app/sharedPrefs/app_prefs.dart';
 
 class HomeRepositoryImpl implements HomeRepository{
+
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final HomeRemoteDataSource _homeRemoteDataSource;
   final NetworkInfo _networkInfo;
@@ -32,6 +37,7 @@ class HomeRepositoryImpl implements HomeRepository{
     if(await _networkInfo.isConnected){
 
       try{
+
         final response = await _homeRemoteDataSource.getHomeOrders(pagination,limit , page,status);
 
         if(response.status == true){
@@ -487,6 +493,28 @@ class HomeRepositoryImpl implements HomeRepository{
 
       try{
         final response = await _homeRemoteDataSource.updateNotification(data);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ModelCompleteOrderResponseRemote>> completeOrder(FormData data) async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.completeOrder(data);
 
         if(response.status == true){
           return Right(response);

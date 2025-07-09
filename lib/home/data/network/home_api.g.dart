@@ -67,6 +67,49 @@ class _HomeServiceClient implements HomeServiceClient {
   }
 
   @override
+  Future<ModelOrdersResponseRemote> getHomeOrdersForEmployee(
+    bool pagination,
+    int limit,
+    int page,
+    int status,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pagination': pagination,
+      r'limit': limit,
+      r'page': page,
+      r'status': status,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ModelOrdersResponseRemote>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'employee/orders',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ModelOrdersResponseRemote _value;
+    try {
+      _value = ModelOrdersResponseRemote.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ModelCentersResponseRemote> getCenters(
     bool pagination,
     int limit,
@@ -325,6 +368,49 @@ class _HomeServiceClient implements HomeServiceClient {
   }
 
   @override
+  Future<ModelOrdersResponseRemote> getOrdersWithStatusForEmployee(
+    bool pagination,
+    int limit,
+    int page,
+    int status,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pagination': pagination,
+      r'limit': limit,
+      r'page': page,
+      r'status': status,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ModelOrdersResponseRemote>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'employee/orders',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ModelOrdersResponseRemote _value;
+    try {
+      _value = ModelOrdersResponseRemote.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(
     String id,
     String reason,
@@ -347,6 +433,48 @@ class _HomeServiceClient implements HomeServiceClient {
             .compose(
               _dio.options,
               'vendor/orders/updateStatus',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ModelUpdateOrderStatusResponseRemote _value;
+    try {
+      _value = ModelUpdateOrderStatusResponseRemote.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatusForEmployee(
+    String id,
+    String reason,
+    int limit,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'order_id': id,
+      r'refaused_reason': reason,
+      r'status': limit,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<ModelUpdateOrderStatusResponseRemote>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'employee/orders/updateStatus',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -630,6 +758,41 @@ class _HomeServiceClient implements HomeServiceClient {
   }
 
   @override
+  Future<ModelGetHomeStatisticsResponseRemote>
+      getHomeStatisticsForEmployee() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<ModelGetHomeStatisticsResponseRemote>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'employee/getStatistics',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ModelGetHomeStatisticsResponseRemote _value;
+    try {
+      _value = ModelGetHomeStatisticsResponseRemote.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ModelLoginResponseRemote> updateProfile(FormData formData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -791,6 +954,41 @@ class _HomeServiceClient implements HomeServiceClient {
     late ModelLoginResponseRemote _value;
     try {
       _value = ModelLoginResponseRemote.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ModelCompleteOrderResponseRemote> completeOrder(
+      FormData formData) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = formData;
+    final _options = _setStreamType<ModelCompleteOrderResponseRemote>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+        .compose(
+          _dio.options,
+          'employee/orders/confirm/scan',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ModelCompleteOrderResponseRemote _value;
+    try {
+      _value = ModelCompleteOrderResponseRemote.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

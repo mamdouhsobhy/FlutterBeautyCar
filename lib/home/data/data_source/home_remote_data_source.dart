@@ -3,6 +3,7 @@ import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/network/home_api.dart';
 import 'package:beauty_car/home/data/response/centers/centers.dart';
+import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_update_center.dart';
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
@@ -13,6 +14,9 @@ import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
 import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
 import 'package:dio/dio.dart';
+
+import '../../../app/di/di.dart';
+import '../../../app/sharedPrefs/app_prefs.dart';
 
 abstract class HomeRemoteDataSource {
   Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit ,int page, int status);
@@ -57,16 +61,28 @@ abstract class HomeRemoteDataSource {
 
   Future<ModelLoginResponseRemote> updateNotification(FormData data);
 
+  Future<ModelCompleteOrderResponseRemote> completeOrder(FormData data);
+
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
+
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+
   final HomeServiceClient _homeServiceClient;
 
   HomeRemoteDataSourceImpl(this._homeServiceClient);
 
   @override
   Future<ModelOrdersResponseRemote> getHomeOrders(bool pagination , int limit , int page , int status) async {
-    return await _homeServiceClient.getHomeOrders(pagination,limit,page,status);
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getHomeOrders(pagination, limit, page, status);
+    }else{
+      return await _homeServiceClient.getHomeOrdersForEmployee(pagination, limit, page, status);
+    }
+
   }
 
   @override
@@ -101,12 +117,24 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<ModelOrdersResponseRemote> getOrdersWithStatus(bool pagination , int limit , int page , int status) async {
-    return await _homeServiceClient.getOrdersWithStatus(pagination , limit , page , status);
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getOrdersWithStatus(pagination, limit, page, status);
+    }else{
+      return await _homeServiceClient.getOrdersWithStatusForEmployee(pagination, limit, page, status);
+    }
   }
 
   @override
   Future<ModelUpdateOrderStatusResponseRemote> updateOrderStatus(String id , String reason , int status) async{
-    return await _homeServiceClient.updateOrderStatus(id , reason , status);
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.updateOrderStatus(id, reason, status);
+    }else{
+      return await _homeServiceClient.updateOrderStatusForEmployee(id, reason, status);
+    }
   }
 
   @override
@@ -141,7 +169,13 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<ModelGetHomeStatisticsResponseRemote> getHomeStatistics() async{
-    return await _homeServiceClient.getHomeStatistics();
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getHomeStatistics();
+    }else{
+      return await _homeServiceClient.getHomeStatisticsForEmployee();
+    }
   }
 
   @override
@@ -167,6 +201,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<ModelLoginResponseRemote> updateNotification(FormData data) async{
     return await _homeServiceClient.updateNotification(data);
+  }
+
+  @override
+  Future<ModelCompleteOrderResponseRemote> completeOrder(FormData data) async{
+    return await _homeServiceClient.completeOrder(data);
   }
 
 
