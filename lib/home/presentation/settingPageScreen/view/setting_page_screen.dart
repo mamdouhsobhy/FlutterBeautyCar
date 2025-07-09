@@ -5,7 +5,9 @@ import 'package:beauty_car/resources/assetsManager.dart';
 import 'package:beauty_car/resources/languageManager.dart';
 import 'package:beauty_car/resources/styleManager.dart';
 import 'package:beauty_car/resources/valuesManager.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -27,6 +29,8 @@ class SettingPageScreen extends StatefulWidget {
 
 class _SettingPageScreenState extends State<SettingPageScreen> {
 
+  final _firebaseMessaging = FirebaseMessaging.instance;
+
   final SettingViewModel _settingViewModel = instance<SettingViewModel>();
 
   final AppPreferences _appPreferences = instance<AppPreferences>();
@@ -36,11 +40,19 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
   bool _isNotifyChecked = false;
   bool _isEnglishChecked = false;
   bool _isArabicChecked = false;
+  String? fCMToken = "";
+  int notifyType = 0;
+
+  _bind() async {
+    _settingViewModel.start();
+    fCMToken = await _firebaseMessaging.getToken();
+    print("FCM Token: $fCMToken");
+  }
 
   @override
   void initState() {
     _settingViewModel.type = "${_appPreferences.getUserType()}";
-    _settingViewModel.start();
+    _bind();
     super.initState();
   }
 
@@ -52,19 +64,22 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
 
   void _initializeLanguagePreference() async {
     final appLanguage = await _appPreferences.getAppLanguage();
-    userDate = await _appPreferences.getUserData();
+    if(userDate == null) {
+      userDate = await _appPreferences.getUserData();
+      notifyType = userDate?.data?.notificationStatus ?? 0;
+      if(userDate?.data?.notificationStatus == 1){
+        _isNotifyChecked = true;
+      }else{
+        _isNotifyChecked = false;
+      }
+
+    }
 
     setState(() {
       if (appLanguage == ENGLISH) {
         _isEnglishChecked = true;
       } else {
         _isArabicChecked = true;
-      }
-
-      if(userDate?.data?.notificationStatus == 1){
-        _isNotifyChecked = true;
-      }else{
-        _isNotifyChecked = false;
       }
 
     });
@@ -149,6 +164,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                           if (snapshot.data != null && snapshot.data?.status == true) {
                             if(_settingViewModel.isUpdateLoading){
                               _settingViewModel.isUpdateLoading = false;
+                              notifyType = snapshot.data?.data?.notificationStatus ?? 0;
                               userDate?.data?.notificationStatus = snapshot.data?.data?.notificationStatus;
                               _appPreferences.setUserData(userDate!);
                             }
@@ -160,9 +176,10 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                               inactiveThumbColor: ColorManager.colorRedB2,
                               activeTrackColor: ColorManager.colorRedB2,
                               activeColor: ColorManager.white,
-                              value: userDate?.data?.notificationStatus == 1 ? _isNotifyChecked = true : _isNotifyChecked = false,
+                              value: _isNotifyChecked,
                               onChanged: (bool value) {
-                                _settingViewModel.updateNotify();
+                                _isNotifyChecked = value;
+                                switchStatus();
                               },
                             ),
                           );
@@ -261,6 +278,14 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
         ),
       );
     });
+  }
+
+  switchStatus() {
+    if (_isNotifyChecked) {
+      _settingViewModel.updateNotify("$fCMToken");
+    } else {
+      _settingViewModel.updateNotify("");
+    }
   }
 
   _handleTermsAndConditionStateChanged(FlowState state) {

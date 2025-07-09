@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'app/app.dart';
 import 'app/di/di.dart';
+import 'firebase/LocalNotificationService.dart';
 
 // This needs to be a top-level function
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -20,6 +21,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await FireBaseApi().initNotification();
+  LocalNotificationService.initialize();
   await EasyLocalization.ensureInitialized();
   await initAppModule();
   runApp(EasyLocalization(

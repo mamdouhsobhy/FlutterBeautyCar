@@ -1,4 +1,5 @@
 import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
+import 'package:beauty_car/authentication/data/response/login/login.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/view/side_menu.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/view/side_menu_employee.dart';
@@ -8,7 +9,9 @@ import 'package:beauty_car/resources/assetsManager.dart';
 import 'package:beauty_car/resources/fontManager.dart';
 import 'package:beauty_car/resources/stringManager.dart';
 import 'package:beauty_car/utils/Constants.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,13 +37,18 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageScreenState extends State<HomePageScreen> {
 
+  final _firebaseMessaging = FirebaseMessaging.instance;
   final HomeViewModel _homeViewModel = instance<HomeViewModel>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
+  ModelLoginResponseRemote? userDate;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String? fCMToken = "";
 
-  _bind() {
+  _bind() async {
     _homeViewModel.start();
+    userDate = await _appPreferences.getUserData();
+    print("FCM Token: $fCMToken");
   }
 
   @override
@@ -57,6 +65,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
         arguments: {'orderId': "$orderId"},
       );
     });
+  }
+
+  @override
+  void didChangeDependencies() async{
+    fCMToken = await _firebaseMessaging.getToken();
+    if(userDate?.data?.notificationStatus == 1) {
+      _homeViewModel.updateNotify("$fCMToken", "${_appPreferences.getUserType()}");
+    }
+    super.didChangeDependencies();
   }
 
   @override

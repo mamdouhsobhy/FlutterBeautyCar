@@ -2,8 +2,10 @@
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import '../../../app/baseUseCase/base_usecase.dart';
 import '../../../app/errorHandler/failure.dart';
+import '../../../authentication/data/response/login/login.dart';
 import '../../data/request/home_order_request.dart';
 import '../repository/home_repository.dart';
 
@@ -20,6 +22,11 @@ class HomeUseCase implements BaseUseCase<HomeOrderRequest,ModelOrdersResponseRem
   @override
   Future<Either<Failure, ModelGetHomeStatisticsResponseRemote>> executeHomeStatistics() async{
     return await _repository.getHomeStatistics();
+  }
+
+  @override
+  Future<Either<Failure, ModelLoginResponseRemote>> executeUpdateNotification(FormData input) async{
+    return await _repository.updateNotification(input);
   }
 
 }

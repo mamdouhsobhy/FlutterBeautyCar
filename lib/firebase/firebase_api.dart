@@ -2,6 +2,8 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'LocalNotificationService.dart';
+
 class FireBaseApi{
   final _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -58,13 +60,16 @@ class FireBaseApi{
 
     if (message.notification != null) {
       print("Message also contained a notification: ${message.notification}");
+      LocalNotificationService.showNotification(message);
     }
   }
-  
+
+
   void _handleMessageOpenedApp(RemoteMessage message) {
     print("App opened from notification");
     print("Message data: ${message.data}");
     // Handle navigation based on message data
   }
+
 
 }

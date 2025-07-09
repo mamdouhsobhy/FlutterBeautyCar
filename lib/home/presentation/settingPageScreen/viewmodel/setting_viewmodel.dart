@@ -1,10 +1,5 @@
 import 'dart:async';
 import 'package:beauty_car/authentication/data/response/login/login.dart';
-import 'package:beauty_car/home/data/request/orders_request.dart';
-import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
-import 'package:beauty_car/home/data/response/orders/orders.dart';
-import 'package:beauty_car/home/data/response/updateOrderStatus/update_order_status.dart';
-import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/settings_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -41,13 +36,13 @@ class SettingViewModel extends BaseViewModel implements SettingViewModelInputs,S
   var isUpdateLoading = false;
   var isOutStateLoading = false;
 
-  Future<void> updateNotify() async {
+  Future<void> updateNotify(String fcmToke) async {
     isUpdateLoading = false;
     isOutStateLoading = true;
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _settingsUseCase.executeUpdateNotification( await buildUpdateNotifyFormData() ))
+    (await _settingsUseCase.executeUpdateNotification( await buildUpdateNotifyFormData(fcmToke) ))
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
@@ -59,10 +54,10 @@ class SettingViewModel extends BaseViewModel implements SettingViewModelInputs,S
     );
   }
 
-  Future<FormData> buildUpdateNotifyFormData() async {
+  Future<FormData> buildUpdateNotifyFormData(String fcmToke) async {
     return FormData.fromMap({
       "type": type,
-      "fcm_token": ""
+      "fcm_token": fcmToke
     });
   }
 
