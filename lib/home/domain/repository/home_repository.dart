@@ -7,6 +7,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/data/response/getNotification/get_notification.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
@@ -61,5 +62,7 @@ abstract class HomeRepository {
   Future<Either<Failure,ModelLoginResponseRemote>> updateNotification(FormData data);
 
   Future<Either<Failure,ModelCompleteOrderResponseRemote>> completeOrder(FormData data);
+
+  Future<Either<Failure,ModelGetNotificationResponseRemote>> getNotification();
 
 }

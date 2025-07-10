@@ -42,6 +42,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _countryCodeController = TextEditingController();
+  final TextEditingController _startTimeController = TextEditingController();
+  final TextEditingController _endTimeController = TextEditingController();
+  final TextEditingController _ssnController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -72,6 +75,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _emailController.text = "${userData?.data?.email}";
     _countryCodeController.text = getCountryCode("${userData?.data?.phone}")!;
     _phoneController.text = "${userData?.data?.phone}".replaceAll(_countryCodeController.text, "");
+
+    if(_appPreferences.getUserType() == 2) {
+      _startTimeController.text = "${userData?.data?.start_time}";
+      _endTimeController.text = "${userData?.data?.end_time}";
+      _ssnController.text = "${userData?.data?.ssd_num}";
+    }
+
     setState(() {});
   }
 
@@ -197,6 +207,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               paddingHorizontal: AppPadding.p16,
                               controller: _phoneController
                           ),
+                          _appPreferences.getUserType() == 2 ? Column(
+                            children: [
+                              const SizedBox(height: AppSize.s16),
+                              MyTextField(
+                                  hint: AppStrings.enterStartTime.tr(),
+                                  title: AppStrings.startTime.tr(),
+                                  suffixIcon: "",
+                                  readOnly: true,
+                                  obscureText: false,
+                                  inputType: TextInputType.text,
+                                  validator: null,
+                                  controller: _startTimeController,
+                                  takeValue: (value) {}),
+                              const SizedBox(height: AppSize.s16),
+                              MyTextField(
+                                  hint: AppStrings.enterEndTime.tr(),
+                                  title: AppStrings.endTime.tr(),
+                                  suffixIcon: "",
+                                  readOnly: true,
+                                  obscureText: false,
+                                  inputType: TextInputType.text,
+                                  validator: null,
+                                  controller: _endTimeController,
+                                  takeValue: (value) {}),
+                              const SizedBox(height: AppSize.s16),
+                            ],
+                          ) : SizedBox()
                         ],
                       ),
                     )
@@ -228,7 +265,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 fun: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     _profileViewModel.updateProfile(
-                        _userNameController.text, userImage != null ? File(userImage!.path) : null);
+                        _userNameController.text, userImage != null ? File(userImage!.path) : null ,
+                        _startTimeController.text,_endTimeController.text , "${userData?.data?.phone}",_emailController.text);
                   }
                 },
               );

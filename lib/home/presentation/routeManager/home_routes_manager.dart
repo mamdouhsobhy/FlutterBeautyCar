@@ -6,6 +6,7 @@ import 'package:beauty_car/home/presentation/editProfileScreen/view/edit_profile
 import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/view/employee_appointment_page_screen.dart';
 import 'package:beauty_car/home/presentation/employee_review_page_screen/view/employee_review_page_screen.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/view/more_orders_page_screen.dart';
+import 'package:beauty_car/home/presentation/notificationScreen/view/notification_page_screen.dart';
 import 'package:beauty_car/home/presentation/privacyPolicyPageScreen/privacy_policy_page_screen.dart';
 import 'package:beauty_car/home/presentation/settingPageScreen/view/setting_page_screen.dart';
 import 'package:beauty_car/home/presentation/termsAndConditionScreen/view/terms_and_condition_Screen.dart';
@@ -29,6 +30,7 @@ class HomeRoutes {
   static const String termsAndConditionRoute = "/termsAndCondition";
   static const String employeeReviewsRoute = "/employeeReviews";
   static const String employeeAppointmentRoute = "/employeeAppointment";
+  static const String notificationRoute = "/notification";
 }
 
 class HomeRouteGenerator {
@@ -98,6 +100,11 @@ class HomeRouteGenerator {
         initEmployeeAppointmentOrderModule();
         return MaterialPageRoute(
             builder: (_) =>  EmployeeAppointmentPageScreen(employeeId: ""),
+            settings: settings);
+      case HomeRoutes.notificationRoute:
+        initNotificationModule();
+        return MaterialPageRoute(
+            builder: (_) =>  NotificationPageScreen(),
             settings: settings);
       default:
         return unDefinedRoute();

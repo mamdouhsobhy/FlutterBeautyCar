@@ -41,6 +41,12 @@ class UserData {
   String? image;
   @JsonKey(name: "notification_status")
   int? notificationStatus;
+  @JsonKey(name: "ssd_num")
+  String? ssd_num;
+  @JsonKey(name: "start_time")
+  String? start_time;
+  @JsonKey(name: "end_time")
+  String? end_time;
 
   UserData ({
     this.id,
@@ -48,7 +54,10 @@ class UserData {
     this.email,
     this.phone,
     this.image,
-    this.notificationStatus
+    this.notificationStatus,
+    this.ssd_num,
+    this.start_time,
+    this.end_time
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {

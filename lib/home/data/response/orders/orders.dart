@@ -37,6 +37,8 @@ class Data {
   final String? clientName;
   @JsonKey(name: "client_phone")
   final String? clientPhone;
+  @JsonKey(name: "client_image_path")
+  final String? client_image_path;
   @JsonKey(name: "shop_id")
   final int? shopId;
   @JsonKey(name: "shop_name")
@@ -91,6 +93,7 @@ class Data {
     this.clientId,
     this.clientName,
     this.clientPhone,
+    this.client_image_path,
     this.shopId,
     this.shopName,
     this.shopAddress,

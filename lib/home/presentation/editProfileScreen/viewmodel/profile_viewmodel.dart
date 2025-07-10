@@ -38,13 +38,13 @@ class ProfileViewModel extends BaseViewModel implements ProfileViewModelInputs,P
    var isUpdateLoading = false;
    var isOutStateLoading = false;
 
-  Future<void> updateProfile(String name,File? image) async {
+  Future<void> updateProfile(String name,File? image,String startTime , String endTime,String phone,String email) async {
     isUpdateLoading = false;
     isOutStateLoading = true;
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _profileUseCase.execute(await buildUpdateProfileFormData(name,image)))
+    (await _profileUseCase.execute(await buildUpdateProfileFormData(name,image,startTime,endTime,phone,email)))
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
@@ -56,12 +56,21 @@ class ProfileViewModel extends BaseViewModel implements ProfileViewModelInputs,P
     );
   }
 
-  Future<FormData> buildUpdateProfileFormData(String name, File? image) async {
+  Future<FormData> buildUpdateProfileFormData(
+      String name, File? image,String startTime , String endTime,String phone,String email
+      ) async {
     final formData = FormData();
     formData.fields.addAll([
       MapEntry("name", name),
       MapEntry("type", type)
     ]);
+
+    if(type == "2"){
+      formData.fields.addAll([
+        MapEntry("start_time", startTime),
+        MapEntry("end_time", endTime)
+      ]);
+    }
 
     if(image != null) {
       formData.files.add(MapEntry(

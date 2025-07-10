@@ -17,6 +17,7 @@ import 'package:beauty_car/home/domain/usecase/delete_account_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/employee_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/employee_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/home_usecase.dart';
+import 'package:beauty_car/home/domain/usecase/notification_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/order_details_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/orders_usecase.dart';
 import 'package:beauty_car/home/domain/usecase/profile_usecase.dart';
@@ -36,6 +37,7 @@ import 'package:beauty_car/home/presentation/employeeScanPageScreen/viewmodel/sc
 import 'package:beauty_car/home/presentation/employee_review_page_screen/viewmodel/review_orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/homePageScreen/viewmodel/home_viewmodel.dart';
 import 'package:beauty_car/home/presentation/moreOrdersPageScreen/viewmodel/more_orders_viewmodel.dart';
+import 'package:beauty_car/home/presentation/notificationScreen/viewmodel/notification_viewmodel.dart';
 import 'package:beauty_car/home/presentation/orderPageScreen/viewmodel/orders_viewmodel.dart';
 import 'package:beauty_car/home/presentation/reserveDetailsPageScreen/viewmodel/order_details_viewmodel.dart';
 import 'package:beauty_car/home/presentation/settingPageScreen/viewmodel/setting_viewmodel.dart';
@@ -229,6 +231,15 @@ initEmployeeAppointmentOrderModule(){
   if(!GetIt.I.isRegistered<AppointmentOrdersUseCase>()) {
     instance.registerFactory<AppointmentOrdersUseCase>(() => AppointmentOrdersUseCase(instance()));
     instance.registerFactory<AppointmentOrdersViewModel>(() => AppointmentOrdersViewModel(instance()));
+  }
+
+}
+
+initNotificationModule(){
+
+  if(!GetIt.I.isRegistered<NotificationUseCase>()) {
+    instance.registerFactory<NotificationUseCase>(() => NotificationUseCase(instance()));
+    instance.registerFactory<NotificationViewModel>(() => NotificationViewModel(instance()));
   }
 
 }

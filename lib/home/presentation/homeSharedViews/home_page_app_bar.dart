@@ -1,3 +1,4 @@
+import 'package:beauty_car/home/presentation/routeManager/home_routes_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -24,7 +25,7 @@ class HomePageAppBar extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Navigator.pushNamed(context, "");
+              Navigator.pushNamed(context, HomeRoutes.notificationRoute);
             },
             child: Stack(
               clipBehavior: Clip.none,

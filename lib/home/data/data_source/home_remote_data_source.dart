@@ -8,6 +8,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/data/response/getNotification/get_notification.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
@@ -62,6 +63,8 @@ abstract class HomeRemoteDataSource {
   Future<ModelLoginResponseRemote> updateNotification(FormData data);
 
   Future<ModelCompleteOrderResponseRemote> completeOrder(FormData data);
+
+  Future<ModelGetNotificationResponseRemote> getNotification();
 
 }
 
@@ -139,7 +142,13 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<ModelOrdersResponseRemote> getOrderDetails(String id) async{
-    return await _homeServiceClient.getOrderDetails(id);
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getOrderDetails(id);
+    }else{
+      return await _homeServiceClient.getOrderDetailsForEmployee(id);
+    }
   }
 
   @override
@@ -159,12 +168,24 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<ModelGetRatedOrdersResponseRemote> getRatedOrders(bool pagination, int limit, String empId, int page) async{
-    return await _homeServiceClient.getRatedOrders(pagination , limit , empId , page);
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getRatedOrders(pagination, limit, empId, page);
+    }else{
+      return await _homeServiceClient.getRatedOrdersForEmployee(pagination, limit, empId, page);
+    }
   }
 
   @override
   Future<ModelOrdersResponseRemote> getAppointmentOrders(bool pagination, int limit, String empId, int page) async{
-    return await _homeServiceClient.getAppointmentOrders(pagination , limit , empId , page);
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getAppointmentOrders(pagination, limit, empId, page);
+    }else{
+      return await _homeServiceClient.getAppointmentOrdersForEmployee(pagination, limit, empId, page);
+    }
   }
 
   @override
@@ -208,5 +229,15 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     return await _homeServiceClient.completeOrder(data);
   }
 
+  @override
+  Future<ModelGetNotificationResponseRemote> getNotification() async{
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.getNotification();
+    }else{
+      return await _homeServiceClient.getNotificationForEmployee();
+    }
+  }
 
 }

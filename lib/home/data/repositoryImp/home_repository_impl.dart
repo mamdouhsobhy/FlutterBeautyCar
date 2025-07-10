@@ -9,6 +9,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/data/response/getNotification/get_notification.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/data/response/getSettings/get_settings.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
@@ -515,6 +516,28 @@ class HomeRepositoryImpl implements HomeRepository{
 
       try{
         final response = await _homeRemoteDataSource.completeOrder(data);
+
+        if(response.status == true){
+          return Right(response);
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, response.message?? ResponseMessage.DEFAULT));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+
+
+    }else{
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ModelGetNotificationResponseRemote>> getNotification() async{
+    if(await _networkInfo.isConnected){
+
+      try{
+        final response = await _homeRemoteDataSource.getNotification();
 
         if(response.status == true){
           return Right(response);

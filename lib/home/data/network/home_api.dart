@@ -5,6 +5,7 @@ import 'package:beauty_car/home/data/response/createOrUpdateCenter/create_or_upd
 import 'package:beauty_car/home/data/response/createOrUpdateEmployee/create_or_update_employee.dart';
 import 'package:beauty_car/home/data/response/employees/employees.dart';
 import 'package:beauty_car/home/data/response/getHomeStatistics/get_home_statistics.dart';
+import 'package:beauty_car/home/data/response/getNotification/get_notification.dart';
 import 'package:beauty_car/home/data/response/getRatedOrders/get_rated_orders.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/data/response/services/services.dart';
@@ -95,6 +96,10 @@ abstract class HomeServiceClient {
   Future<ModelOrdersResponseRemote> getOrderDetails(
       @Query("id") String id);
 
+  @GET("employee/orders")
+  Future<ModelOrdersResponseRemote> getOrderDetailsForEmployee(
+      @Query("id") String id);
+
   @GET("vendor/employees")
   Future<ModelEmployeesResponseRemote> getEmployeeDetails(@Query("id") String empId);
 
@@ -118,8 +123,24 @@ abstract class HomeServiceClient {
       @Query("page") int page,
       );
 
+  @GET("employee/rateorders")
+  Future<ModelGetRatedOrdersResponseRemote> getRatedOrdersForEmployee(
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("employee_id") String empId,
+      @Query("page") int page,
+      );
+
   @GET("vendor/orders")
   Future<ModelOrdersResponseRemote> getAppointmentOrders(
+      @Query("pagination") bool pagination,
+      @Query("limit") int limit,
+      @Query("employee_id") String empId,
+      @Query("page") int page,
+      );
+
+  @GET("employee/orders")
+  Future<ModelOrdersResponseRemote> getAppointmentOrdersForEmployee(
       @Query("pagination") bool pagination,
       @Query("limit") int limit,
       @Query("employee_id") String empId,
@@ -154,5 +175,11 @@ abstract class HomeServiceClient {
   @MultiPart()
   @POST("employee/orders/confirm/scan")
   Future<ModelCompleteOrderResponseRemote> completeOrder(@Body() FormData formData);
+
+  @GET("employee/notifications")
+  Future<ModelGetNotificationResponseRemote> getNotificationForEmployee();
+
+  @GET("vendor/notifications")
+  Future<ModelGetNotificationResponseRemote> getNotification();
 
 }

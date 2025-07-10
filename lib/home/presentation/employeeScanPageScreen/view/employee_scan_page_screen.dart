@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:beauty_car/home/data/response/completeOrder/complete_order.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/presentation/employeeScanPageScreen/viewmodel/scan_viewmodel.dart';
@@ -229,10 +231,38 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
       context,
       MaterialPageRoute(builder: (_) => const QrScannerScreen()),
     );
-    context.showInfoToast("$result");
-    if (result != null) {
 
-      print("Scanned QR: $result");
+    if (result != null && result is String) {
+      try {
+        context.showSuccessToast("$result");
+        // 1. Clean string into JSON-compatible format
+        String jsonCompatible = result
+            .replaceAll(RegExp(r'{|}'), '') // remove braces
+            .split(',') // split by commas
+            .map((pair) {
+          var kv = pair.split(':');
+          var key = kv[0].trim();
+          var value = kv[1].trim();
+          return '"$key": $value';
+        })
+            .join(',');
+
+        // 2. Add braces again to make it a JSON object
+        String jsonString = '{' + jsonCompatible + '}';
+
+        // 3. Parse JSON
+        Map<String, dynamic> data = jsonDecode(jsonString);
+
+        // 4. Use the values
+        int planId = data['planId'];
+        int carId = data['carId'];
+        int clientId = data['clientId'];
+
+        _scanViewModel.completeOrder("${order.id}", "$clientId", "$planId");
+        print("Plan ID: $planId, Car ID: $carId, Client ID: $clientId");
+      } catch (e) {
+        print("QR parsing error: $e");
+      }
     }
   }
 
