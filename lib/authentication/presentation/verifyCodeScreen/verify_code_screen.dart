@@ -1,13 +1,13 @@
+import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:beauty_car/authentication/data/response/sendVerifyCode/send_verify_code.dart';
 import 'package:beauty_car/authentication/data/response/verifyAccount/verify_account.dart';
 import 'package:beauty_car/authentication/presentation/verifyCodeScreen/viewmodel/verify_viewmodel.dart';
 import 'package:beauty_car/utils/Constants.dart';
 import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -184,35 +184,38 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             const SizedBox(height: AppSize.s30),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p10),
-              child: PinCodeTextField(
-                appContext: context,
-                length: 5,
-                keyboardType: TextInputType.number,
-                animationType: AnimationType.none,
-                autoFocus: false,
-                controller: _otpController,
-                onChanged: (value) {
-                  _verifyViewModel.verifyRequest.otp = value;
-                },
-                onCompleted: (value) {
-                  // Handle OTP completion
-                  print("OTP Completed: $value");
-                },
-                pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.circle,
-                    borderRadius: BorderRadius.circular(AppSize.s30),
-                    fieldHeight: AppSize.s50,
-                    fieldWidth: AppSize.s56,
-                    activeColor: ColorManager.colorRedB5,
-                    selectedColor: ColorManager.colorRedFA,
-                    inactiveColor: ColorManager.colorGrayD9,
-                    activeFillColor: ColorManager.colorRedFA,
-                    inactiveFillColor: ColorManager.colorGrayD9,
-                    selectedFillColor: ColorManager.colorGrayD9,
-                    borderWidth: AppSize.s1_5),
-                textStyle: getMediumStyle(
-                    color: ColorManager.colorBlack_0D, fontSize: AppSize.s16),
-                enableActiveFill: true,
+              child: Directionality(
+                textDirection: ui.TextDirection.ltr,
+                child: PinCodeTextField(
+                  appContext: context,
+                  length: 5,
+                  keyboardType: TextInputType.number,
+                  animationType: AnimationType.none,
+                  autoFocus: false,
+                  controller: _otpController,
+                  onChanged: (value) {
+                    _verifyViewModel.verifyRequest.otp = value;
+                  },
+                  onCompleted: (value) {
+                    // Handle OTP completion
+                    print("OTP Completed: $value");
+                  },
+                  pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.circle,
+                      borderRadius: BorderRadius.circular(AppSize.s30),
+                      fieldHeight: AppSize.s50,
+                      fieldWidth: AppSize.s56,
+                      activeColor: ColorManager.colorRedB5,
+                      selectedColor: ColorManager.colorRedFA,
+                      inactiveColor: ColorManager.colorGrayD9,
+                      activeFillColor: ColorManager.colorRedFA,
+                      inactiveFillColor: ColorManager.colorGrayD9,
+                      selectedFillColor: ColorManager.colorGrayD9,
+                      borderWidth: AppSize.s1_5),
+                  textStyle: getMediumStyle(
+                      color: ColorManager.colorBlack_0D, fontSize: AppSize.s16),
+                  enableActiveFill: true,
+                ),
               ),
             ),
             const SizedBox(height: AppSize.s30),

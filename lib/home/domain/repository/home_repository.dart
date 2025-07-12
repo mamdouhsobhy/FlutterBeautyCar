@@ -63,6 +63,6 @@ abstract class HomeRepository {
 
   Future<Either<Failure,ModelCompleteOrderResponseRemote>> completeOrder(FormData data);
 
-  Future<Either<Failure,ModelGetNotificationResponseRemote>> getNotification();
+  Future<Either<Failure,ModelGetNotificationResponseRemote>> getNotification(int page);
 
 }

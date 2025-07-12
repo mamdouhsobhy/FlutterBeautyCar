@@ -152,5 +152,6 @@
   "scan": "المسح",
   "account_deleted_successfully": "تم حذف الحساب بنجاح",
   "reject_reason": "سبب الرفض",
-  "requests_awaiting_payment": "طلبات في انتظار الدفع"
+  "requests_awaiting_payment": "طلبات في انتظار الدفع",
+  "this_order_not_available": "هذا الطلب غير متاح"
 }

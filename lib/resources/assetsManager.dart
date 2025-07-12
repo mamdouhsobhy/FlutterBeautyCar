@@ -48,6 +48,7 @@ class ImageAssets {
   static const String onboardingLogo2Emp = "$imagePath/onboarding_emp2.png";
   static const String onboardingLogo3Emp = "$imagePath/onboarding_emp3.png";
   static const String qrCodeIcon = "$imagePath/ic_qr_code.png";
+  static const String clockIcon = "$imagePath/ic_clock.svg";
 }
 
 class JsonAssets {

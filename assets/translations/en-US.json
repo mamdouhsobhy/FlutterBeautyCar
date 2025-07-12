@@ -152,5 +152,6 @@
   "scan": "Scan",
   "account_deleted_successfully": "Account deleted successfully",
   "reject_reason": "Reject Reason",
-  "requests_awaiting_payment": "Requests Awaiting Payment"
+  "requests_awaiting_payment": "Requests Awaiting Payment",
+  "this_order_not_available": "This order is not available"
 }

@@ -718,14 +718,12 @@ class _HomeServiceClient implements HomeServiceClient {
   Future<ModelGetRatedOrdersResponseRemote> getRatedOrdersForEmployee(
     bool pagination,
     int limit,
-    String empId,
     int page,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'pagination': pagination,
       r'limit': limit,
-      r'employee_id': empId,
       r'page': page,
     };
     final _headers = <String, dynamic>{};
@@ -1117,10 +1115,10 @@ class _HomeServiceClient implements HomeServiceClient {
   }
 
   @override
-  Future<ModelGetNotificationResponseRemote>
-      getNotificationForEmployee() async {
+  Future<ModelGetNotificationResponseRemote> getNotificationForEmployee(
+      int page) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<ModelGetNotificationResponseRemote>(Options(
@@ -1151,9 +1149,9 @@ class _HomeServiceClient implements HomeServiceClient {
   }
 
   @override
-  Future<ModelGetNotificationResponseRemote> getNotification() async {
+  Future<ModelGetNotificationResponseRemote> getNotification(int page) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<ModelGetNotificationResponseRemote>(Options(

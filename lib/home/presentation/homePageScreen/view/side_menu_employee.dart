@@ -11,6 +11,7 @@ import '../../../../resources/colorManager.dart';
 import '../../../../resources/fontManager.dart';
 import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
+import '../../../../selectUserType/select_user_type_page_screen.dart';
 
 class SideMenuEmployee extends StatefulWidget {
   SideMenuEmployee({super.key, required this.appPreferences,required this.fun});
@@ -126,6 +127,7 @@ class _SideMenuEmployeeState extends State<SideMenuEmployee> {
                     color: ColorManager.black, fontSize: AppSize.s16)),
             onTap: () {
               Navigator.pop(context); // Close drawer
+              Navigator.pushNamed(context, HomeRoutes.notificationRoute);
             },
           ),
           ListTile(
@@ -165,7 +167,10 @@ class _SideMenuEmployeeState extends State<SideMenuEmployee> {
               await widget.appPreferences
                   .setUserData(ModelLoginResponseRemote());
               await widget.appPreferences.setUserLoggedIn(false);
-              Phoenix.rebirth(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const SelectUserTypePageScreen()),
+              );
             },
           )
         ],

@@ -53,7 +53,20 @@ class _OrderScanItemCardState extends State<OrderScanItemCard> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: AppPadding.p16,right: AppPadding.p16),
-                        child: SvgPicture.asset(ImageAssets.avatarIcon),
+                        child: Container(
+                          width: AppSize.s50,
+                          height: AppSize.s50,
+                          decoration: const BoxDecoration(shape: BoxShape.circle),
+                          child: ClipOval(
+                            child: Image.network(
+                              "${widget.orders.client_image_path}",
+                              errorBuilder: (context, error, stackTrace) {
+                                return SvgPicture.asset(ImageAssets.avatarIcon);
+                              },
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: Padding(

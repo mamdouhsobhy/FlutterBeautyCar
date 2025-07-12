@@ -47,8 +47,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   _bind() async {
     _homeViewModel.start();
-    userDate = await _appPreferences.getUserData();
-    print("FCM Token: $fCMToken");
   }
 
   @override
@@ -69,9 +67,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   @override
   void didChangeDependencies() async{
-    fCMToken = await _firebaseMessaging.getToken();
-    if(userDate?.data?.notificationStatus == 1) {
-      _homeViewModel.updateNotify("$fCMToken", "${_appPreferences.getUserType()}");
+    if(userDate == null) {
+      userDate = await _appPreferences.getUserData();
+      fCMToken = await _firebaseMessaging.getToken();
+      print("FCM Token: $fCMToken");
+      if (userDate?.data?.notificationStatus == 1) {
+        _homeViewModel.updateNotify(
+            "$fCMToken", "${_appPreferences.getUserType()}");
+      }
     }
     super.didChangeDependencies();
   }
@@ -112,7 +115,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        HomePageAppBar(scafoldKey: _scaffoldKey,),
+        StreamBuilder<ModelGetHomeStatisticsResponseRemote>(
+            stream: _homeViewModel.outputStatisticsData,
+            builder: (context, snapshot) {
+              return HomePageAppBar(scafoldKey: _scaffoldKey, unReadNotify:"${(snapshot.data?.data?.unread_notifications_count ?? 0)}");
+            }),
         Expanded(
           child: RefreshIndicator(
             color: ColorManager.colorRedB2,

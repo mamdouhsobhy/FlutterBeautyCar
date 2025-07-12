@@ -90,6 +90,10 @@ class NotifyData {
   @JsonKey(name: "date")
   final String? date;
 
+  @JsonKey(name: "order_id")
+  final int? order_id;
+
+
   NotifyData({
     this.id,
     this.title,
@@ -106,6 +110,7 @@ class NotifyData {
     this.sender,
     this.readAt,
     this.date,
+    this.order_id,
   });
 
   factory NotifyData.fromJson(Map<String, dynamic> json) =>

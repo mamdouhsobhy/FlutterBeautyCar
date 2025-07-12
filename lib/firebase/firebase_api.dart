@@ -1,75 +1,67 @@
-
-
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:flutter/material.dart';
+import '../home/home_screen.dart';
+import '../home/presentation/routeManager/home_routes_manager.dart';
 import 'LocalNotificationService.dart';
 
-class FireBaseApi{
+// استخدم navigatorKey في MaterialApp
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+class FireBaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
-  Future<void> initNotification() async{
+  Future<void> initNotification() async {
     try {
-      // Request permission for notifications
-      NotificationSettings settings = await _firebaseMessaging.requestPermission(
+      await _firebaseMessaging.requestPermission(
         alert: true,
-        announcement: false,
         badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
         sound: true,
       );
-      
-      print("User granted permission: ${settings.authorizationStatus}");
-      
-      // Get FCM token
-      final fCMToken = await _firebaseMessaging.getToken();
-      print("FCM_Token: $fCMToken");
-      
 
-      // Handle foreground messages
+      final fcmToken = await _firebaseMessaging.getToken();
+      print("FCM_Token: $fcmToken");
+
+      // Foreground
       FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
-      
-      // Handle when app is opened from notification
+
+      // When App is Opened from Notification (background)
       FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
-      
-      // Check if app was opened from notification
-      RemoteMessage? initialMessage = await _firebaseMessaging.getInitialMessage();
+
+      // Terminated
+      final initialMessage = await _firebaseMessaging.getInitialMessage();
       if (initialMessage != null) {
-        _handleMessageOpenedApp(initialMessage);
+        _handleMessageOpenedApp(initialMessage, fromInitialMessage: true);
       }
-      
     } catch (e) {
-      print("Firebase messaging initialization error: $e");
-    }
-  }
-  
-  // Method to get FCM token for testing
-  Future<String?> getFCMToken() async {
-    try {
-      return await _firebaseMessaging.getToken();
-    } catch (e) {
-      print("Error getting FCM token: $e");
-      return null;
+      print("Firebase Init Error: $e");
     }
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
-    print("Got a message whilst in the foreground!");
-    print("Message data: ${message.data}");
-
     if (message.notification != null) {
-      print("Message also contained a notification: ${message.notification}");
       LocalNotificationService.showNotification(message);
     }
   }
 
+  void _handleMessageOpenedApp(RemoteMessage message, {bool fromInitialMessage = false}) async {
+    final data = message.data;
+    final orderId = data['order_id'];
 
-  void _handleMessageOpenedApp(RemoteMessage message) {
-    print("App opened from notification");
-    print("Message data: ${message.data}");
-    // Handle navigation based on message data
+    if (orderId != null) {
+      if (fromInitialMessage) {
+        // Delay to allow HomeScreen to fully load first
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          navigatorKey.currentState?.pushNamed(
+            HomeRoutes.reserveDetailsRoute,
+            arguments: {"orderId": orderId},
+          );
+        });
+      } else {
+        navigatorKey.currentState?.pushNamed(
+          HomeRoutes.reserveDetailsRoute,
+          arguments: {"orderId": orderId},
+        );
+      }
+    }
   }
-
-
 }

@@ -30,10 +30,13 @@ class Data {
   final int? outdoorOrders;
   @JsonKey(name: "shopOrders")
   final int? shopOrders;
+  @JsonKey(name: "unread_notifications_count")
+  final int? unread_notifications_count;
 
   Data ({
     this.outdoorOrders,
     this.shopOrders,
+    this.unread_notifications_count
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {

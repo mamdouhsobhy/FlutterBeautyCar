@@ -63,6 +63,7 @@ class _OrderRequestItemCardState extends State<OrderRequestItemCard> {
                             errorBuilder: (context, error, stackTrace) {
                               return SvgPicture.asset(ImageAssets.avatarIcon);
                             },
+                            fit: BoxFit.cover,
                           ),
                         ),
                         )

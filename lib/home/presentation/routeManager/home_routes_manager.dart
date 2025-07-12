@@ -69,7 +69,7 @@ class HomeRouteGenerator {
       case HomeRoutes.editProfileRoute:
         initEditProfileModule();
         return MaterialPageRoute(
-            builder: (_) => const EditProfileScreen(),
+            builder: (_) => EditProfileScreen(fromBottomNavigation: 0),
             settings: settings);
       case HomeRoutes.changePasswordRoute:
         initChangePasswordModule();

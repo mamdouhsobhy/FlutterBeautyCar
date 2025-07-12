@@ -64,7 +64,7 @@ abstract class HomeRemoteDataSource {
 
   Future<ModelCompleteOrderResponseRemote> completeOrder(FormData data);
 
-  Future<ModelGetNotificationResponseRemote> getNotification();
+  Future<ModelGetNotificationResponseRemote> getNotification(int page);
 
 }
 
@@ -173,7 +173,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     if(userType == 1) {
       return await _homeServiceClient.getRatedOrders(pagination, limit, empId, page);
     }else{
-      return await _homeServiceClient.getRatedOrdersForEmployee(pagination, limit, empId, page);
+      return await _homeServiceClient.getRatedOrdersForEmployee(pagination, limit, page);
     }
   }
 
@@ -230,13 +230,13 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<ModelGetNotificationResponseRemote> getNotification() async{
+  Future<ModelGetNotificationResponseRemote> getNotification(int page) async{
     int userType = _appPreferences.getUserType();
 
     if(userType == 1) {
-      return await _homeServiceClient.getNotification();
+      return await _homeServiceClient.getNotification(page);
     }else{
-      return await _homeServiceClient.getNotificationForEmployee();
+      return await _homeServiceClient.getNotificationForEmployee(page);
     }
   }
 

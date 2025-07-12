@@ -24,7 +24,8 @@ import '../../../../utils/shared_text_field.dart';
 import '../../../../utils/shared_text_field_with_phone_code.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  int fromBottomNavigation;
+  EditProfileScreen({super.key,required this.fromBottomNavigation});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -111,169 +112,183 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _getEditProfileScreenContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: AppSize.s30),
-                Column(
-                  children: [
-                    Center(
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Container(
-                              width: AppSize.s80,
-                              height: AppSize.s80,
-                              decoration: const BoxDecoration(shape: BoxShape.circle),
-                              child: getUserImage()) ,
-                          GestureDetector(
-                            onTap: () {
-                              _showImagePicker(context);
-                            },
-                            child: Container(
-                              width: AppSize.s30,
-                              height: AppSize.s30,
-                              decoration: const BoxDecoration(
-                                  color: Colors.white, shape: BoxShape.circle),
-                              child: Icon(Icons.camera_alt,
-                                  size: AppSize.s18, color: ColorManager.colorRedB2),
+    if(userData != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: AppSize.s30),
+                  Column(
+                    children: [
+                      Center(
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                                width: AppSize.s80,
+                                height: AppSize.s80,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle),
+                                child: getUserImage()),
+                            GestureDetector(
+                              onTap: () {
+                                _showImagePicker(context);
+                              },
+                              child: Container(
+                                width: AppSize.s30,
+                                height: AppSize.s30,
+                                decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle),
+                                child: Icon(Icons.camera_alt,
+                                    size: AppSize.s18,
+                                    color: ColorManager.colorRedB2),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Form(
-                      autovalidateMode: AutovalidateMode.onUnfocus,
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          MyTextField(
-                              hint: AppStrings.enterUsername.tr(),
-                              title: AppStrings.username.tr(),
-                              suffixIcon: ImageAssets.userIcon,
-                              obscureText: false,
-                              inputType: TextInputType.text,
-                              controller: _userNameController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return AppStrings.enterUsername.tr();
-                                } else {
-                                  null;
-                                }
-                                return null;
-                              },
-                              takeValue: (value) {
-                                _userNameController.text = value;
-                              }),
-                          const SizedBox(height: AppSize.s16),
-                          MyTextField(
-                              hint: AppStrings.enterEmail.tr(),
-                              title: AppStrings.email.tr(),
-                              suffixIcon: ImageAssets.emailIcon,
-                              obscureText: false,
-                              readOnly: true,
-                              inputType: TextInputType.emailAddress,
-                              controller: _emailController,
-                              validator: null,
-                              takeValue: (value) {
-                                _emailController.text = value;
-                                // _createEmployeeViewModel.createOrUpdateEmployee.email = value;
-                              }),
-                          const SizedBox(height: AppSize.s16),
-                          MyTextFieldWithPhoneCode(
-                              hint: AppStrings.enter_phone_number.tr(),
-                              title: AppStrings.phone_number.tr(),
-                              readOnly: true,
-                              defaultCountryCode: getIsoCode(_countryCodeController.text) ?? "SA",
-                              takeValue: (value) {
-                                _phoneController.text = value;
-                                // _createEmployeeViewModel.createOrUpdateEmployee.phone = "";
-                                // _createEmployeeViewModel.createOrUpdateEmployee.phone = _countryCodeController.text + value;
-                              },
-                              takeCountryCode: (code) {
-                                _countryCodeController.text = code;
-                                // _createEmployeeViewModel.createOrUpdateEmployee.phone = "";
-                                // _createEmployeeViewModel.createOrUpdateEmployee.phone = code + _phoneController.text;
-                              },
-                              validator: null,
-                              paddingHorizontal: AppPadding.p16,
-                              controller: _phoneController
-                          ),
-                          _appPreferences.getUserType() == 2 ? Column(
-                            children: [
-                              const SizedBox(height: AppSize.s16),
-                              MyTextField(
-                                  hint: AppStrings.enterStartTime.tr(),
-                                  title: AppStrings.startTime.tr(),
-                                  suffixIcon: "",
-                                  readOnly: true,
-                                  obscureText: false,
-                                  inputType: TextInputType.text,
-                                  validator: null,
-                                  controller: _startTimeController,
-                                  takeValue: (value) {}),
-                              const SizedBox(height: AppSize.s16),
-                              MyTextField(
-                                  hint: AppStrings.enterEndTime.tr(),
-                                  title: AppStrings.endTime.tr(),
-                                  suffixIcon: "",
-                                  readOnly: true,
-                                  obscureText: false,
-                                  inputType: TextInputType.text,
-                                  validator: null,
-                                  controller: _endTimeController,
-                                  takeValue: (value) {}),
-                              const SizedBox(height: AppSize.s16),
-                            ],
-                          ) : SizedBox()
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
+                      Form(
+                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            MyTextField(
+                                hint: AppStrings.enterUsername.tr(),
+                                title: AppStrings.username.tr(),
+                                suffixIcon: ImageAssets.userIcon,
+                                obscureText: false,
+                                inputType: TextInputType.text,
+                                controller: _userNameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return AppStrings.enterUsername.tr();
+                                  } else {
+                                    null;
+                                  }
+                                  return null;
+                                },
+                                takeValue: (value) {
+                                  _userNameController.text = value;
+                                }),
+                            const SizedBox(height: AppSize.s16),
+                            MyTextField(
+                                hint: AppStrings.enterEmail.tr(),
+                                title: AppStrings.email.tr(),
+                                suffixIcon: ImageAssets.emailIcon,
+                                obscureText: false,
+                                readOnly: true,
+                                inputType: TextInputType.emailAddress,
+                                controller: _emailController,
+                                validator: null,
+                                takeValue: (value) {
+                                  _emailController.text = value;
+                                  // _createEmployeeViewModel.createOrUpdateEmployee.email = value;
+                                }),
+                            const SizedBox(height: AppSize.s16),
+                            MyTextFieldWithPhoneCode(
+                                hint: AppStrings.enter_phone_number.tr(),
+                                title: AppStrings.phone_number.tr(),
+                                readOnly: true,
+                                defaultCountryCode: getIsoCode(
+                                    _countryCodeController.text) ?? "SA",
+                                takeValue: (value) {
+                                  _phoneController.text = value;
+                                  // _createEmployeeViewModel.createOrUpdateEmployee.phone = "";
+                                  // _createEmployeeViewModel.createOrUpdateEmployee.phone = _countryCodeController.text + value;
+                                },
+                                takeCountryCode: (code) {
+                                  _countryCodeController.text = code;
+                                  // _createEmployeeViewModel.createOrUpdateEmployee.phone = "";
+                                  // _createEmployeeViewModel.createOrUpdateEmployee.phone = code + _phoneController.text;
+                                },
+                                validator: null,
+                                paddingHorizontal: AppPadding.p16,
+                                controller: _phoneController
+                            ),
+                            _appPreferences.getUserType() == 2 ? Column(
+                              children: [
+                                const SizedBox(height: AppSize.s16),
+                                MyTextField(
+                                    hint: AppStrings.enterStartTime.tr(),
+                                    title: AppStrings.startTime.tr(),
+                                    suffixIcon: "",
+                                    readOnly: true,
+                                    obscureText: false,
+                                    inputType: TextInputType.text,
+                                    validator: null,
+                                    controller: _startTimeController,
+                                    takeValue: (value) {}),
+                                const SizedBox(height: AppSize.s16),
+                                MyTextField(
+                                    hint: AppStrings.enterEndTime.tr(),
+                                    title: AppStrings.endTime.tr(),
+                                    suffixIcon: "",
+                                    readOnly: true,
+                                    obscureText: false,
+                                    inputType: TextInputType.text,
+                                    validator: null,
+                                    controller: _endTimeController,
+                                    takeValue: (value) {}),
+                                const SizedBox(height: AppSize.s16),
+                              ],
+                            ) : SizedBox()
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: AppSize.s16),
-        StreamBuilder<ModelLoginResponseRemote>(
-            stream: _profileViewModel.outputUpdateProfileData,
-            builder: (ctx, snapshot) {
-              if (snapshot.data != null && snapshot.data?.status == true) {
-                if(_profileViewModel.isUpdateLoading){
-                  _profileViewModel.isUpdateLoading = false;
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  userData?.data?.image = snapshot.data?.data?.image;
-                  userData?.data?.name = snapshot.data?.data?.name;
-                  _appPreferences.setUserData(userData!);
-                  _navigateToSettingScreen();
-                });
-                }
-              }
-              return MyButton(
-                color: ColorManager.colorRedB2,
-                buttonText: AppStrings.save.tr(),
-                paddingVertical: AppPadding.p0,
-                fun: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    _profileViewModel.updateProfile(
-                        _userNameController.text, userImage != null ? File(userImage!.path) : null ,
-                        _startTimeController.text,_endTimeController.text , "${userData?.data?.phone}",_emailController.text);
+          const SizedBox(height: AppSize.s16),
+          StreamBuilder<ModelLoginResponseRemote>(
+              stream: _profileViewModel.outputUpdateProfileData,
+              builder: (ctx, snapshot) {
+                if (snapshot.data != null && snapshot.data?.status == true) {
+                  if (_profileViewModel.isUpdateLoading) {
+                    _profileViewModel.isUpdateLoading = false;
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      userData?.data?.image = snapshot.data?.data?.image;
+                      userData?.data?.name = snapshot.data?.data?.name;
+                      _appPreferences.setUserData(userData!);
+                      if(widget.fromBottomNavigation == 0) {
+                        _navigateToSettingScreen();
+                      }else{
+                        context.showSuccessToast(AppStrings.profile_update_successully.tr());
+                      }
+                    });
                   }
-                },
-              );
-            }),
-        const SizedBox(height: AppSize.s16)
-      ],
-    );
+                }
+                return MyButton(
+                  color: ColorManager.colorRedB2,
+                  buttonText: AppStrings.save.tr(),
+                  paddingVertical: AppPadding.p0,
+                  fun: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _profileViewModel.updateProfile(
+                          _userNameController.text,
+                          userImage != null ? File(userImage!.path) : null,
+                          _startTimeController.text, _endTimeController.text,
+                          "${userData?.data?.phone}", _emailController.text);
+                    }
+                  },
+                );
+              }),
+          const SizedBox(height: AppSize.s16)
+        ],
+      );
+    }else{
+      return Center(child: CircularProgressIndicator(color: ColorManager.colorRedB2));
+    }
   }
 
   _navigateToSettingScreen(){

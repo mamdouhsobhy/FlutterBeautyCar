@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../../app/di/di.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/assetsManager.dart';
@@ -16,6 +15,7 @@ import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_appbar.dart';
+import '../../routeManager/home_routes_manager.dart';
 
 class NotificationPageScreen extends StatefulWidget {
   const NotificationPageScreen({super.key});
@@ -26,15 +26,16 @@ class NotificationPageScreen extends StatefulWidget {
 
 class _NotificationPageScreenState extends State<NotificationPageScreen> {
   final NotificationViewModel _notificationViewModel = instance<NotificationViewModel>();
-  
-  List<Data> filteredNotification = [];
+  final ScrollController _scrollController = ScrollController();
+
+  List<NotifyData> filteredNotification = [];
 
   _bind() {
     _notificationViewModel.start();
   }
 
 
-  void _refreshEmployees() {
+  void _refreshNotification() {
     _notificationViewModel.notifyData.add(ModelGetNotificationResponseRemote());
     _notificationViewModel.resetPage();
     _notificationViewModel.notificationList.clear();
@@ -45,6 +46,12 @@ class _NotificationPageScreenState extends State<NotificationPageScreen> {
   @override
   void initState() {
     _bind();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
+        _notificationViewModel.page++ ;
+        _notificationViewModel.getNotification();
+      }
+    });
     super.initState();
   }
 
@@ -76,30 +83,88 @@ class _NotificationPageScreenState extends State<NotificationPageScreen> {
     return StreamBuilder<ModelGetNotificationResponseRemote>(
         stream: _notificationViewModel.outputNotifyData,
         builder: (context, notifications) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              _refreshEmployees();
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: AppPadding.p8,),
-                  ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: notifications.data?.data?.data?.length ?? 0,
-                    separatorBuilder: (context, index) =>
-                        Divider(
-                          height: AppSize.s1,
-                          color: ColorManager.white,
+          return Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _refreshNotification();
+              },
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Stack(
+                    children: [
+                      Container(
+                        height: constraints.maxHeight,
+                        child: StreamBuilder<ModelGetNotificationResponseRemote>(
+                          stream: _notificationViewModel.outputNotifyData,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data?.data?.data?.isNotEmpty == true) {
+                              for (var notify in snapshot.data!.data!.data!) {
+                                if (!_notificationViewModel.notificationList.contains(notify)) {
+                                  _notificationViewModel.notificationList.add(notify);
+                                }
+                              }
+                            }
+
+                            if (_notificationViewModel.notificationList.isEmpty) {
+                              return SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: SizedBox(
+                                  height: constraints.maxHeight,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
+                                      children: [
+                                        SvgPicture.asset(ImageAssets.ordersIcon),
+                                        const SizedBox(height: AppSize.s10),
+                                        Text(
+                                          "No Notification Found",
+                                          style: getRegularStyle(
+                                            color: ColorManager.black,
+                                            fontSize: FontSize.size16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              // if (_searchController.text.isEmpty) {
+                              filteredNotification = _notificationViewModel.notificationList;
+                              // }
+                              print("ListSize ${filteredNotification.length}");
+                              return ConstrainedBox(
+                                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  itemCount: filteredNotification.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: AppPadding.p8,
+                                          horizontal: AppPadding.p16),
+                                      child: NotificationItemCard(notification: filteredNotification[index],fun: (orderId){
+                                        Future.delayed(const Duration(milliseconds: 500), () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            HomeRoutes.reserveDetailsRoute,
+                                            arguments: {'orderId': "$orderId"},
+                                          );
+                                        });
+                                      }),
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+                          },
                         ),
-                    itemBuilder: (context, index) {
-                      var item  = notifications.data?.data?.data![index];
-                      return NotificationItemCard(notification: item!);
-                    },
-                  ),
-                  const SizedBox(height: AppPadding.p8,),
-                ],
+                      )
+                    ],
+                  );
+                },
               ),
             ),
           );

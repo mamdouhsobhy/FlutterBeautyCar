@@ -12,6 +12,7 @@ import 'package:beauty_car/utils/Constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../firebase/firebase_api.dart';
 import '../resources/assetsManager.dart';
 import '../resources/colorManager.dart';
 import '../resources/styleManager.dart';
@@ -54,14 +55,16 @@ class _HomeScreenState extends State<HomeScreen> {
         HomePageScreen(sideMenuTabsPressed: (index) => _onItemTapped(index)),
         const EmployeeScanPageScreen(),
         const OrderPageScreen(),
-        const EditProfileScreen(),
+        EditProfileScreen(fromBottomNavigation: 1),
       ];
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

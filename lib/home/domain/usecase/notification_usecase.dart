@@ -7,14 +7,14 @@ import '../../../app/baseUseCase/base_usecase.dart';
 import '../../../app/errorHandler/failure.dart';
 import '../repository/home_repository.dart';
 
-class NotificationUseCase implements BaseUseCase<void,ModelGetNotificationResponseRemote>{
+class NotificationUseCase implements BaseUseCase<int,ModelGetNotificationResponseRemote>{
   final HomeRepository _repository;
 
   NotificationUseCase(this._repository);
 
   @override
-  Future<Either<Failure, ModelGetNotificationResponseRemote>> execute(void input) async{
-    return await _repository.getNotification();
+  Future<Either<Failure, ModelGetNotificationResponseRemote>> execute(int page) async{
+    return await _repository.getNotification(page);
   }
 
 

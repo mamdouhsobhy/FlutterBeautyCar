@@ -249,7 +249,7 @@ class _ReserveDetailsPageScreenState extends State<ReserveDetailsPageScreen> {
       return AppStrings.pending.tr();
     }else if(status == 2){
       return AppStrings.accepted.tr();
-    }else if(status == 2){
+    }else if(status == 3){
       return AppStrings.completed.tr();
     }else{
       return AppStrings.cancelled.tr();

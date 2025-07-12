@@ -40,10 +40,18 @@ class EmployeeAppointmentItemCard extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 children: [
                   Container(
-                      width: AppSize.s60,
-                      height: AppSize.s60,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: SvgPicture.asset(ImageAssets.avatarIcon)
+                    width: AppSize.s60,
+                    height: AppSize.s60,
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    child: ClipOval(
+                      child: Image.network(
+                        "${order.client_image_path}",
+                        errorBuilder: (context, error, stackTrace) {
+                          return SvgPicture.asset(ImageAssets.avatarIcon);
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   )
                 ],
               ),

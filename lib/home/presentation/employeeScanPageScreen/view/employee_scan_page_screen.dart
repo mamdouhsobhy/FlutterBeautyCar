@@ -100,17 +100,17 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(AppPadding.p10),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
-                  border:
-                  Border.all(color: Colors.grey), // Optional: visible border
-                ),
-                child: SvgPicture.asset(ImageAssets.filterIcon),
-              ),
-              const SizedBox(width: AppSize.s10), // Optional: spacing between icon and text field
+              // Container(
+              //   padding: const EdgeInsets.all(AppPadding.p10),
+              //   alignment: Alignment.center,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(AppSize.s15), // Rounded corners
+              //     border:
+              //     Border.all(color: Colors.grey), // Optional: visible border
+              //   ),
+              //   child: SvgPicture.asset(ImageAssets.filterIcon),
+              // ),
+              //const SizedBox(width: AppSize.s10), // Optional: spacing between icon and text field
               Expanded(
                 child: MyTextField(
                   hint: "",
@@ -234,7 +234,7 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
 
     if (result != null && result is String) {
       try {
-        context.showSuccessToast("$result");
+        // context.showSuccessToast("$result");
         // 1. Clean string into JSON-compatible format
         String jsonCompatible = result
             .replaceAll(RegExp(r'{|}'), '') // remove braces

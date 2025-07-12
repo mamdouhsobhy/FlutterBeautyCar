@@ -8,8 +8,9 @@ import '../../../resources/fontManager.dart';
 import '../../../resources/valuesManager.dart';
 
 class HomePageAppBar extends StatelessWidget {
-   HomePageAppBar({super.key,required this.scafoldKey});
+   HomePageAppBar({super.key,required this.scafoldKey, required this.unReadNotify});
   GlobalKey<ScaffoldState> scafoldKey;
+  String unReadNotify;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,9 +41,9 @@ class HomePageAppBar extends StatelessWidget {
                       color: ColorManager.colorRedB2, // Badge color
                       shape: BoxShape.circle,
                     ),
-                    child: const Text(
-                      '3', // Replace with your dynamic counter value
-                      style: TextStyle(
+                    child: Text(
+                      unReadNotify, // Replace with your dynamic counter value
+                      style: const TextStyle(
                         color: Colors.white, // Text color
                         fontSize: FontSize.size12,       // Font size
                         fontWeight: FontWeight.bold,

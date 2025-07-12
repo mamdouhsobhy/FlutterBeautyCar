@@ -16,6 +16,7 @@ import '../../../../app/di/di.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/colorManager.dart';
 import '../../../../resources/stringManager.dart';
+import '../../../../splash/splash_screen.dart';
 import '../../../../utils/loading_page.dart';
 import '../../../../utils/shared_appbar.dart';
 import '../../routeManager/home_routes_manager.dart';
@@ -255,7 +256,10 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                   setState(() {
                     _isEnglishChecked = value ?? false;
                     _appPreferences.changeAppLanguage(ENGLISH);
-                    Phoenix.rebirth(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SplashScreen()),
+                    );
                   });
                 },
               ),
@@ -268,7 +272,10 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                   setState(() {
                     _isArabicChecked = value ?? false;
                     _appPreferences.changeAppLanguage(ARABIC);
-                    Phoenix.rebirth(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SplashScreen()),
+                    );
                   });
                 },
               ),

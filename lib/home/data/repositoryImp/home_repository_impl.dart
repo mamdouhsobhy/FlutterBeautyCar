@@ -533,11 +533,11 @@ class HomeRepositoryImpl implements HomeRepository{
   }
 
   @override
-  Future<Either<Failure, ModelGetNotificationResponseRemote>> getNotification() async{
+  Future<Either<Failure, ModelGetNotificationResponseRemote>> getNotification(int page) async{
     if(await _networkInfo.isConnected){
 
       try{
-        final response = await _homeRemoteDataSource.getNotification();
+        final response = await _homeRemoteDataSource.getNotification(page);
 
         if(response.status == true){
           return Right(response);

@@ -15,7 +15,9 @@ class NotificationViewModel extends BaseViewModel implements NotificationViewMod
 
   NotificationViewModel(this._notificationUseCase);
 
-  List<Data> notificationList = [];
+  List<NotifyData> notificationList = [];
+
+  int page = 1;
 
   //inputs
   @override
@@ -30,7 +32,9 @@ class NotificationViewModel extends BaseViewModel implements NotificationViewMod
     getNotification();
   }
 
+  @override
   void resetPage() {
+    page = 1;
     notificationList.clear();
   }
 
@@ -46,7 +50,7 @@ class NotificationViewModel extends BaseViewModel implements NotificationViewMod
 
     inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
 
-    (await _notificationUseCase.execute(""))
+    (await _notificationUseCase.execute(page))
         .fold(
           (failure) {
         inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
@@ -70,6 +74,7 @@ class NotificationViewModel extends BaseViewModel implements NotificationViewMod
 
 abstract class NotificationViewModelInputs{
    Sink get notifyData;
+   void resetPage();
 }
 
 abstract class NotificationViewModelOutputs{

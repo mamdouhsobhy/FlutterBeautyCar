@@ -29,9 +29,12 @@ Map<String, dynamic> _$ModelGetHomeStatisticsResponseRemoteToJson(
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
       outdoorOrders: (json['outdoorOrders'] as num?)?.toInt(),
       shopOrders: (json['shopOrders'] as num?)?.toInt(),
+      unread_notifications_count:
+          (json['unread_notifications_count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'outdoorOrders': instance.outdoorOrders,
       'shopOrders': instance.shopOrders,
+      'unread_notifications_count': instance.unread_notifications_count,
     };

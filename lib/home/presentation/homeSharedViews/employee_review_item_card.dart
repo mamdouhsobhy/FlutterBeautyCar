@@ -30,19 +30,23 @@ class EmployeeReviewItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p12),
+              padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p12,right: AppPadding.p12),
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
                   Container(
-                      width: AppSize.s60,
-                      height: AppSize.s60,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: ratedOrders.clientImage ==
-                          null
-                          ? SvgPicture.asset(ImageAssets.avatarIcon,
-                          fit: BoxFit.cover) : ClipOval(child: Image.network("${ratedOrders.clientImage}",fit: BoxFit.cover)
-                      )
+                    width: AppSize.s50,
+                    height: AppSize.s50,
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    child: ClipOval(
+                      child: Image.network(
+                        "${ratedOrders.clientImage}",
+                        errorBuilder: (context, error, stackTrace) {
+                          return SvgPicture.asset(ImageAssets.avatarIcon);
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   )
                 ],
               ),

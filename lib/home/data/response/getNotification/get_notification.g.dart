@@ -63,6 +63,7 @@ NotifyData _$NotifyDataFromJson(Map<String, dynamic> json) => NotifyData(
       sender: json['sender'] as String?,
       readAt: json['read_at'],
       date: json['date'] as String?,
+      order_id: (json['order_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$NotifyDataToJson(NotifyData instance) =>
@@ -82,6 +83,7 @@ Map<String, dynamic> _$NotifyDataToJson(NotifyData instance) =>
       'sender': instance.sender,
       'read_at': instance.readAt,
       'date': instance.date,
+      'order_id': instance.order_id,
     };
 
 Links _$LinksFromJson(Map<String, dynamic> json) => Links(

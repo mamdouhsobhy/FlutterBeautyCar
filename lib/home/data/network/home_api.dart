@@ -127,7 +127,6 @@ abstract class HomeServiceClient {
   Future<ModelGetRatedOrdersResponseRemote> getRatedOrdersForEmployee(
       @Query("pagination") bool pagination,
       @Query("limit") int limit,
-      @Query("employee_id") String empId,
       @Query("page") int page,
       );
 
@@ -177,9 +176,9 @@ abstract class HomeServiceClient {
   Future<ModelCompleteOrderResponseRemote> completeOrder(@Body() FormData formData);
 
   @GET("employee/notifications")
-  Future<ModelGetNotificationResponseRemote> getNotificationForEmployee();
+  Future<ModelGetNotificationResponseRemote> getNotificationForEmployee(@Query("page") int page);
 
   @GET("vendor/notifications")
-  Future<ModelGetNotificationResponseRemote> getNotification();
+  Future<ModelGetNotificationResponseRemote> getNotification(@Query("page") int page);
 
 }

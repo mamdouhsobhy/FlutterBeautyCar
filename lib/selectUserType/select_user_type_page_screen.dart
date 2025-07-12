@@ -27,19 +27,25 @@ class _SelectUserTypePageScreenState extends State<SelectUserTypePageScreen> {
   bool _isEmployeeChecked = false;
 
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: ColorManager.white,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        child: Scaffold(
-          backgroundColor: ColorManager.white,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: MyAppBar(title: AppStrings.select_type.tr()),
+    return WillPopScope(
+      onWillPop: () async{
+        Navigator.pop(context);
+        return false;
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor: ColorManager.white,
+            statusBarIconBrightness: Brightness.dark,
           ),
-          body: SafeArea(child: _getTypeScreenContent()),
-        ));
+          child: Scaffold(
+            backgroundColor: ColorManager.white,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: MyAppBar(title: AppStrings.select_type.tr()),
+            ),
+            body: SafeArea(child: _getTypeScreenContent()),
+          )),
+    );
   }
 
   _intentToOnBoarding(){

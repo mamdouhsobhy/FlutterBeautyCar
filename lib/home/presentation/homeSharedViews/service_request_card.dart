@@ -33,7 +33,20 @@ class ServiceRequestCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p16,right: AppPadding.p16),
-                  child: SvgPicture.asset(ImageAssets.avatarIcon),
+                  child: Container(
+                    width: AppSize.s50,
+                    height: AppSize.s50,
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    child: ClipOval(
+                      child: Image.network(
+                        "${orders.client_image_path}",
+                        errorBuilder: (context, error, stackTrace) {
+                          return SvgPicture.asset(ImageAssets.avatarIcon);
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: AppPadding.p24,bottom: AppPadding.p24,left: AppPadding.p4),

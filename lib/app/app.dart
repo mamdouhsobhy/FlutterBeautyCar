@@ -2,6 +2,7 @@ import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../firebase/firebase_api.dart';
 import '../splash/splash_screen.dart';
 import 'di/di.dart';
 
