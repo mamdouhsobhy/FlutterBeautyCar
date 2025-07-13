@@ -30,7 +30,7 @@ class NotificationItemCard extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Card(
           color: ColorManager.white,
           elevation: 1,

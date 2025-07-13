@@ -9,6 +9,7 @@ import 'package:beauty_car/home/presentation/orderPageScreen/view/order_page_scr
 import 'package:beauty_car/home/presentation/routeManager/home_routes_manager.dart';
 import 'package:beauty_car/resources/stringManager.dart';
 import 'package:beauty_car/utils/Constants.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
         EditProfileScreen(fromBottomNavigation: 1),
       ];
     }
-  }
 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,5 +147,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

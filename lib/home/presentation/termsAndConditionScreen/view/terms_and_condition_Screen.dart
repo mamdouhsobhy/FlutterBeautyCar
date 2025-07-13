@@ -3,6 +3,7 @@ import 'package:beauty_car/home/presentation/termsAndConditionScreen/viewmodel/t
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import '../../../../app/di/di.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
 import '../../../../resources/colorManager.dart';
@@ -67,11 +68,8 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
               const SizedBox(height: AppSize.s30),
               Align(
                 alignment: Alignment.center,
-                child: Text(
-                    textAlign: TextAlign.center,
-                    snapshot.data?.data?.isNotEmpty == true ? "${snapshot.data?.data![0].termsVendor}" : "",
-                    style: getRegularStyle(
-                        color: ColorManager.colorGray72, fontSize: AppSize.s16)),
+                child: Html(
+                    data:snapshot.data?.data?.isNotEmpty == true ? "${snapshot.data?.data![0].termsVendor}" : ""),
               ),
               const SizedBox(height: AppSize.s30),
             ],

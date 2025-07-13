@@ -1,3 +1,5 @@
+import 'package:beauty_car/app/di/di.dart';
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
@@ -9,6 +11,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class FireBaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
+  static String? pendingOrderId;
 
   Future<void> initNotification() async {
     try {
@@ -30,6 +33,9 @@ class FireBaseApi {
       // Terminated
       final initialMessage = await _firebaseMessaging.getInitialMessage();
       if (initialMessage != null) {
+        final data = initialMessage.data;
+        final orderId = data['order_id'];
+        pendingOrderId = orderId;
         _handleMessageOpenedApp(initialMessage, fromInitialMessage: true);
       }
     } catch (e) {
@@ -49,14 +55,25 @@ class FireBaseApi {
 
     if (orderId != null) {
       if (fromInitialMessage) {
-        // Delay to allow HomeScreen to fully load first
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          navigatorKey.currentState?.pushNamed(
-            HomeRoutes.reserveDetailsRoute,
-            arguments: {"orderId": orderId},
+        // التطبيق كان مغلقًا تمامًا (terminated)، انتظر قليلًا قبل التنقل
+        Future.delayed(const Duration(seconds: 1), () {
+          navigatorKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (_) => const HomeScreen(), // افتح الهوم أولاً
+            ),
+                (route) => false,
           );
+
+          // ثم افتح صفحة التفاصيل
+          Future.delayed(const Duration(milliseconds: 500), () {
+            navigatorKey.currentState?.pushNamed(
+              HomeRoutes.reserveDetailsRoute,
+              arguments: {"orderId": orderId},
+            );
+          });
         });
       } else {
+        // التطبيق في الخلفية فقط
         navigatorKey.currentState?.pushNamed(
           HomeRoutes.reserveDetailsRoute,
           arguments: {"orderId": orderId},

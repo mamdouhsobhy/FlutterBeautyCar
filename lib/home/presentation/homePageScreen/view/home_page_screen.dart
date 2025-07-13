@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/di/di.dart';
 import '../../../../app/state_renderer/state_renderer_impl.dart';
+import '../../../../firebase/firebase_api.dart';
 import '../../../../resources/colorManager.dart';
 import '../../../../resources/styleManager.dart';
 import '../../../../resources/valuesManager.dart';
@@ -76,8 +77,25 @@ class _HomePageScreenState extends State<HomePageScreen> {
             "$fCMToken", "${_appPreferences.getUserType()}");
       }
     }
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      final orderId = FireBaseApi.pendingOrderId;
+      if (orderId != null) {
+        context.showSuccessToast(orderId);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushNamed(
+            context,
+            HomeRoutes.reserveDetailsRoute,
+            arguments: {'orderId': orderId},
+          );
+          FireBaseApi.pendingOrderId = null;
+        });
+      }
+    });
+
     super.didChangeDependencies();
   }
+
 
   @override
   Widget build(BuildContext context) {

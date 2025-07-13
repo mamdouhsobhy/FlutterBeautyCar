@@ -13,6 +13,7 @@ const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED = "PREFS_KEY_ONBOARDING_SCREEN_V
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_USER_DATA = "PREFS_KEY_USER_DATA";
 const String PREFS_KEY_USER_TYPE = "PREFS_KEY_USER_TYPE";
+const String PREFS_KEY_ORDER_ID = "PREFS_KEY_ORDER_ID";
 
 class AppPreferences{
   final SharedPreferences _sharedPreferences;
@@ -65,6 +66,15 @@ class AppPreferences{
 
   int getUserType() {
     int type = _sharedPreferences.getInt(PREFS_KEY_USER_TYPE) ?? 1;
+    return type;
+  }
+
+  setOrderId(String type) {
+    _sharedPreferences.setString(PREFS_KEY_ORDER_ID, type);
+  }
+
+  String getOrderId() {
+    String type = _sharedPreferences.getString(PREFS_KEY_ORDER_ID) ?? "";
     return type;
   }
 

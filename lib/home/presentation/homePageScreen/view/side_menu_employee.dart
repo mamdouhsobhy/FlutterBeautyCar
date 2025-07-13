@@ -167,6 +167,7 @@ class _SideMenuEmployeeState extends State<SideMenuEmployee> {
               await widget.appPreferences
                   .setUserData(ModelLoginResponseRemote());
               await widget.appPreferences.setUserLoggedIn(false);
+              await widget.appPreferences.setOrderId("");
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const SelectUserTypePageScreen()),

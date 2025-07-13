@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../../../app/di/di.dart';
 import '../../../app/state_renderer/state_renderer_impl.dart';
@@ -69,11 +70,8 @@ class _PrivacyPolicyPageScreenState extends State<PrivacyPolicyPageScreen> {
                   const SizedBox(height: AppSize.s30),
                   Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      textAlign: TextAlign.center,
-                        snapshot.data?.data?.isNotEmpty == true ? "${snapshot.data?.data![0].privacyVendor}" : "",
-                        style: getRegularStyle(
-                            color: ColorManager.colorGray72, fontSize: AppSize.s16)),
+                    child: Html(
+                        data:snapshot.data?.data?.isNotEmpty == true ? "${snapshot.data?.data![0].privacyVendor}" : ""),
                   ),
                   const SizedBox(height: AppSize.s30),
                 ],
