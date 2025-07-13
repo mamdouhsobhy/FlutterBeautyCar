@@ -89,80 +89,52 @@ class _ReserveDetailsPageScreenState extends State<ReserveDetailsPageScreen> {
     return StreamBuilder<ModelOrdersResponseRemote>(
         stream: _orderViewModel.outputOrderData,
         builder: (context, snapshot) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                _orderViewModel.getOrderDetails("$_orderId");
-              },
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const SizedBox(height: AppSize.s20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(AppStrings.status.tr(),
-                            style: getBoldStyle(
-                                color: ColorManager.colorRedB2,
-                                fontSize: FontSize.size18)),
-                        const SizedBox(width: AppSize.s6),
-                        Card(
-                            color: ColorManager.colorGrayE4,
-                            elevation: 1,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppSize.s4)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: AppPadding.p12,
-                                  vertical: AppPadding.p4),
-                              child: Text(_getOrderStatus(snapshot.data?.data![0].status),
-                                  style: getMediumStyle(
-                                      color: ColorManager.colorGray77,
-                                      fontSize: FontSize.size18)),
-                            ))
-                      ],
-                    ),
-                    const SizedBox(height: AppSize.s25),
-                    Text(AppStrings.carType.tr(),
-                        style: getBoldStyle(
-                            color: ColorManager.colorRedB2,
-                            fontSize: FontSize.size18)),
-                    const SizedBox(height: AppSize.s4),
-                    Card(
-                      color: ColorManager.white,
-                      elevation: 1,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSize.s4)),
-                      child: Column(
+          if(snapshot.hasData && snapshot.data?.data?.isNotEmpty == true){
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  _orderViewModel.getOrderDetails("$_orderId");
+                },
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const SizedBox(height: AppSize.s20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ReserveDetailsItem(
-                              title: AppStrings.carModel.tr(), value: "${snapshot.data?.data![0].carBrand}"),
-                          Divider(
-                              height: AppSize.s1,
-                              color: ColorManager.colorGrayD6),
-                          ReserveDetailsItem(
-                              title: AppStrings.chassisNumber.tr(),
-                              value: "${snapshot.data?.data![0].carModel}"),
-                          Divider(
-                              height: AppSize.s1,
-                              color: ColorManager.colorGrayD6),
-                          ReserveDetailsItem(
-                              title: AppStrings.color.tr(), value: "${snapshot.data?.data![0].carColor}")
+                          Text(AppStrings.status.tr(),
+                              style: getBoldStyle(
+                                  color: ColorManager.colorRedB2,
+                                  fontSize: FontSize.size18)),
+                          const SizedBox(width: AppSize.s6),
+                          Card(
+                              color: ColorManager.colorGrayE4,
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(AppSize.s4)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: AppPadding.p12,
+                                    vertical: AppPadding.p4),
+                                child: Text(_getOrderStatus(snapshot.data?.data![0].status),
+                                    style: getMediumStyle(
+                                        color: ColorManager.colorGray77,
+                                        fontSize: FontSize.size18)),
+                              ))
                         ],
                       ),
-                    ),
-                    const SizedBox(height: AppSize.s25),
-                    Text(AppStrings.reserveDetails.tr(),
-                        style: getBoldStyle(
-                            color: ColorManager.colorRedB2,
-                            fontSize: FontSize.size18)),
-                    const SizedBox(height: AppSize.s4),
-                    Card(
+                      const SizedBox(height: AppSize.s25),
+                      Text(AppStrings.carType.tr(),
+                          style: getBoldStyle(
+                              color: ColorManager.colorRedB2,
+                              fontSize: FontSize.size18)),
+                      const SizedBox(height: AppSize.s4),
+                      Card(
                         color: ColorManager.white,
                         elevation: 1,
                         shape: RoundedRectangleBorder(
@@ -170,77 +142,109 @@ class _ReserveDetailsPageScreenState extends State<ReserveDetailsPageScreen> {
                         child: Column(
                           children: [
                             ReserveDetailsItem(
-                                title: AppStrings.centerName.tr(), value: "${snapshot.data?.data![0].shopName}"),
+                                title: AppStrings.carModel.tr(), value: "${snapshot.data?.data![0].carBrand}"),
                             Divider(
                                 height: AppSize.s1,
                                 color: ColorManager.colorGrayD6),
                             ReserveDetailsItem(
-                                title: AppStrings.orderId.tr(),
-                                value: "${snapshot.data?.data![0].id}"),
+                                title: AppStrings.chassisNumber.tr(),
+                                value: "${snapshot.data?.data![0].carModel}"),
                             Divider(
                                 height: AppSize.s1,
                                 color: ColorManager.colorGrayD6),
                             ReserveDetailsItem(
-                                title: AppStrings.date.tr(), value: "${snapshot.data?.data![0].date}"),
-                            Divider(
-                                height: AppSize.s1,
-                                color: ColorManager.colorGrayD6),
-                            ReserveDetailsItem(
-                                title: AppStrings.time.tr(), value: "${snapshot.data?.data![0].time}"),
-                            Divider(
-                                height: AppSize.s1,
-                                color: ColorManager.colorGrayD6),
-                            ReserveDetailsItem(
-                                title: AppStrings.address.tr(), value: "${snapshot.data?.data![0].addressName}")
+                                title: AppStrings.color.tr(), value: "${snapshot.data?.data![0].carColor}")
                           ],
-                        )),
-                    const SizedBox(height: AppSize.s25),
-                    Text(AppStrings.serviceDetails.tr(),
-                        style: getBoldStyle(
-                            color: ColorManager.colorRedB2,
-                            fontSize: FontSize.size18)),
-                    const SizedBox(height: AppSize.s4),
-                    Card(
-                        color: ColorManager.white,
-                        elevation: 1,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppSize.s4)),
-                        child: Column(
-                          children: [
-                            ReserveDetailsItem(
-                                title: AppStrings.serviceLocation.tr(),
-                                value: "${snapshot.data?.data![0].addressName}"),
-                            Divider(
-                                height: AppSize.s1,
-                                color: ColorManager.colorGrayD6),
-                            ReserveDetailsItem(
-                                title: AppStrings.serviceName.tr(),
-                                value: "${snapshot.data?.data![0].serviceName}"),
-                          ],
-                        )),
-                    const SizedBox(height: AppSize.s25),
-                    Text(AppStrings.customerDetails.tr(),
-                        style: getBoldStyle(
-                            color: ColorManager.colorRedB2,
-                            fontSize: FontSize.size18)),
-                    const SizedBox(height: AppSize.s4),
-                    Card(
-                        color: ColorManager.white,
-                        elevation: 1,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppSize.s4)),
-                        child: Column(
-                          children: [
-                            ReserveDetailsItem(
-                                title: AppStrings.name.tr(), value: "${snapshot.data?.data![0].clientName}"),
-                          ],
-                        )),
-                    const SizedBox(height: AppSize.s25),
-                  ],
+                        ),
+                      ),
+                      const SizedBox(height: AppSize.s25),
+                      Text(AppStrings.reserveDetails.tr(),
+                          style: getBoldStyle(
+                              color: ColorManager.colorRedB2,
+                              fontSize: FontSize.size18)),
+                      const SizedBox(height: AppSize.s4),
+                      Card(
+                          color: ColorManager.white,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s4)),
+                          child: Column(
+                            children: [
+                              ReserveDetailsItem(
+                                  title: AppStrings.centerName.tr(), value: "${snapshot.data?.data![0].shopName}"),
+                              Divider(
+                                  height: AppSize.s1,
+                                  color: ColorManager.colorGrayD6),
+                              ReserveDetailsItem(
+                                  title: AppStrings.orderId.tr(),
+                                  value: "${snapshot.data?.data![0].id}"),
+                              Divider(
+                                  height: AppSize.s1,
+                                  color: ColorManager.colorGrayD6),
+                              ReserveDetailsItem(
+                                  title: AppStrings.date.tr(), value: "${snapshot.data?.data![0].date}"),
+                              Divider(
+                                  height: AppSize.s1,
+                                  color: ColorManager.colorGrayD6),
+                              ReserveDetailsItem(
+                                  title: AppStrings.time.tr(), value: "${snapshot.data?.data![0].time}"),
+                              Divider(
+                                  height: AppSize.s1,
+                                  color: ColorManager.colorGrayD6),
+                              ReserveDetailsItem(
+                                  title: AppStrings.address.tr(), value: "${snapshot.data?.data![0].addressName}")
+                            ],
+                          )),
+                      const SizedBox(height: AppSize.s25),
+                      Text(AppStrings.serviceDetails.tr(),
+                          style: getBoldStyle(
+                              color: ColorManager.colorRedB2,
+                              fontSize: FontSize.size18)),
+                      const SizedBox(height: AppSize.s4),
+                      Card(
+                          color: ColorManager.white,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s4)),
+                          child: Column(
+                            children: [
+                              ReserveDetailsItem(
+                                  title: AppStrings.serviceLocation.tr(),
+                                  value: "${snapshot.data?.data![0].addressName}"),
+                              Divider(
+                                  height: AppSize.s1,
+                                  color: ColorManager.colorGrayD6),
+                              ReserveDetailsItem(
+                                  title: AppStrings.serviceName.tr(),
+                                  value: "${snapshot.data?.data![0].serviceName}"),
+                            ],
+                          )),
+                      const SizedBox(height: AppSize.s25),
+                      Text(AppStrings.customerDetails.tr(),
+                          style: getBoldStyle(
+                              color: ColorManager.colorRedB2,
+                              fontSize: FontSize.size18)),
+                      const SizedBox(height: AppSize.s4),
+                      Card(
+                          color: ColorManager.white,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s4)),
+                          child: Column(
+                            children: [
+                              ReserveDetailsItem(
+                                  title: AppStrings.name.tr(), value: "${snapshot.data?.data![0].clientName}"),
+                            ],
+                          )),
+                      const SizedBox(height: AppSize.s25),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          }else{
+            return Center(child: Text(AppStrings.this_order_not_available.tr()));
+          }
         });
   }
 

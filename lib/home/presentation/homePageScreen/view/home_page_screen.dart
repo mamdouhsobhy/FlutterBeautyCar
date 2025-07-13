@@ -78,10 +78,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
       }
     }
 
+
     Future.delayed(const Duration(milliseconds: 500), () {
       final orderId = FireBaseApi.pendingOrderId;
       if (orderId != null) {
-        context.showSuccessToast(orderId);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushNamed(
             context,

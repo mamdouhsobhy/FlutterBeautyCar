@@ -1,6 +1,7 @@
 import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:beauty_car/home/presentation/employeeAppointmentPageScreen/viewmodel/appointment_orders_viewmodel.dart';
+import 'package:beauty_car/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -144,7 +145,11 @@ class _EmployeeAppointmentPageScreenState extends State<EmployeeAppointmentPageS
                             padding: const EdgeInsets.symmetric(
                                 vertical: AppPadding.p8, horizontal: AppPadding.p16),
                             child: EmployeeAppointmentItemCard(order: filteredOrders[index],fun: (orderId){
-                              _navigateToOrderDetails("$orderId");
+                              if(orderId != null) {
+                                _navigateToOrderDetails("$orderId");
+                              }else{
+                                context.showInfoToast(AppStrings.this_order_not_available.tr());
+                              }
                             }),
                           );
                         },
