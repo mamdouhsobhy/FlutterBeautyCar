@@ -85,7 +85,7 @@ class VerifyViewModel extends BaseViewModel implements VerifyViewModelInputs,Ver
   Future<FormData> buildVerifyAccountFormData() async {
     return FormData.fromMap({
       "type": verifyRequest.type,
-      "phone":  verifyRequest.phone,
+      "phone":  verifyRequest.phone.replaceAll("+", ""),
       "otp": verifyRequest.otp,
     });
   }
@@ -93,7 +93,7 @@ class VerifyViewModel extends BaseViewModel implements VerifyViewModelInputs,Ver
   Future<FormData> buildSendOtpFormData() async {
     return FormData.fromMap({
       "type": verifyRequest.type,
-      "phone":  verifyRequest.phone
+      "phone":  verifyRequest.phone.replaceAll("+", "")
     });
   }
 

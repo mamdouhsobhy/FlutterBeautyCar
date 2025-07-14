@@ -304,7 +304,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                                       obscureText: true,
                                       inputType: TextInputType.visiblePassword,
                                       controller: _passwordController,
-                                      validator: (value){
+                                      validator: _employeeId?.isEmpty == true ? (value){
                                         if (value == null || value.isEmpty) {
                                           return AppStrings.enterPassword.tr();
                                         } else if(_passwordController.text.length < 6){
@@ -313,7 +313,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                                           null;
                                         }
                                         return null;
-                                      },
+                                      } : null,
                                       takeValue: (value) {
                                         _passwordController.text = value;
                                         _createEmployeeViewModel.createOrUpdateEmployee.password = value;
@@ -327,7 +327,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                                       obscureText: true,
                                       inputType: TextInputType.visiblePassword,
                                       controller: _confirmPasswordController,
-                                      validator: (value){
+                                      validator: _employeeId?.isEmpty == true ? (value){
                                         if (value == null || value.isEmpty) {
                                           return AppStrings.confirmPassword.tr();
                                         }else if(_confirmPasswordController.text.length < 6){
@@ -338,7 +338,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                                           null;
                                         }
                                         return null;
-                                      },
+                                      } : null,
                                       takeValue: (value) {
                                         _confirmPasswordController.text = value;
                                         _createEmployeeViewModel.createOrUpdateEmployee.password_confirmation = value;

@@ -274,7 +274,9 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
       if (snapshot.data != null && snapshot.data?.status == true) {
         if (_scanViewModel.isCompleteOrderLoading) {
           _scanViewModel.isCompleteOrderLoading = false;
-           _refreshOrders();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _refreshOrders();
+          });
         }
       }
       return SizedBox();

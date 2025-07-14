@@ -58,7 +58,7 @@ class LoginViewModel extends BaseViewModel implements LoginViewModelInputs,Login
 
   Future<FormData> buildLoginFormData() async {
     return FormData.fromMap({
-      "phone":  loginObject.phone,
+      "phone":  loginObject.phone.replaceAll("+", ""),
       "type": loginObject.type,
       "password": loginObject.password,
     });

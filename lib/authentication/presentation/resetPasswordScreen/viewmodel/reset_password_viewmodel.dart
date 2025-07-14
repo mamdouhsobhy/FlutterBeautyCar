@@ -60,7 +60,7 @@ class ResetPasswordViewModel extends BaseViewModel implements ResetPasswordViewM
   Future<FormData> buildResetPasswordFormData() async {
     return FormData.fromMap({
       "type": resetPasswordRequest.type,
-      "phone":  resetPasswordRequest.phone,
+      "phone":  resetPasswordRequest.phone.replaceAll("+", ""),
       "otp": resetPasswordRequest.otp,
       "password": resetPasswordRequest.password,
       "password_confirmation": resetPasswordRequest.password_confirmation,

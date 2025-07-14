@@ -62,10 +62,11 @@ class _LoginScreenState extends State<LoginScreen> {
       initCentersModule();
       initOrdersModule();
       initEmployeeModule();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-    );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+            (route) => false,
+      );
   }
 
   @override

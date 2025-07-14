@@ -256,10 +256,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                   setState(() {
                     _isEnglishChecked = value ?? false;
                     _appPreferences.changeAppLanguage(ENGLISH);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SplashScreen()),
-                    );
+                    Phoenix.rebirth(context);
                   });
                 },
               ),
@@ -272,10 +269,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                   setState(() {
                     _isArabicChecked = value ?? false;
                     _appPreferences.changeAppLanguage(ARABIC);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SplashScreen()),
-                    );
+                    Phoenix.rebirth(context);
                   });
                 },
               ),

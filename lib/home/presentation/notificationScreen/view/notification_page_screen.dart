@@ -80,95 +80,95 @@ class _NotificationPageScreenState extends State<NotificationPageScreen> {
   }
 
   Widget _getNotificationScreenContent() {
-    return StreamBuilder<ModelGetNotificationResponseRemote>(
-        stream: _notificationViewModel.outputNotifyData,
-        builder: (context, notifications) {
-          return Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                _refreshNotification();
-              },
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Stack(
-                    children: [
-                      Container(
-                        height: constraints.maxHeight,
-                        child: StreamBuilder<ModelGetNotificationResponseRemote>(
-                          stream: _notificationViewModel.outputNotifyData,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data?.data?.data?.isNotEmpty == true) {
-                              for (var notify in snapshot.data!.data!.data!) {
-                                if (!_notificationViewModel.notificationList.contains(notify)) {
-                                  _notificationViewModel.notificationList.add(notify);
-                                }
+    return Column(
+      children: [
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              _refreshNotification();
+            },
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Stack(
+                  children: [
+                    Container(
+                      height: constraints.maxHeight,
+                      child: StreamBuilder<ModelGetNotificationResponseRemote>(
+                        stream: _notificationViewModel.outputNotifyData,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data?.data?.data?.isNotEmpty == true) {
+                            for (var notify in snapshot.data!.data!.data!) {
+                              if (!_notificationViewModel.notificationList.contains(notify)) {
+                                _notificationViewModel.notificationList.add(notify);
                               }
                             }
+                          }
 
-                            if (_notificationViewModel.notificationList.isEmpty) {
-                              return SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                child: SizedBox(
-                                  height: constraints.maxHeight,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center,
-                                      children: [
-                                        SvgPicture.asset(ImageAssets.ordersIcon),
-                                        const SizedBox(height: AppSize.s10),
-                                        Text(
-                                          "No Notification Found",
-                                          style: getRegularStyle(
-                                            color: ColorManager.black,
-                                            fontSize: FontSize.size16,
-                                          ),
+                          if (_notificationViewModel.notificationList.isEmpty) {
+                            return SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: SizedBox(
+                                height: constraints.maxHeight,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .center,
+                                    children: [
+                                      SvgPicture.asset(ImageAssets.ordersIcon),
+                                      const SizedBox(height: AppSize.s10),
+                                      Text(
+                                        "No Notification Found",
+                                        style: getRegularStyle(
+                                          color: ColorManager.black,
+                                          fontSize: FontSize.size16,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            } else {
-                              // if (_searchController.text.isEmpty) {
-                              filteredNotification = _notificationViewModel.notificationList;
-                              // }
-                              print("ListSize ${filteredNotification.length}");
-                              return ConstrainedBox(
-                                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
-                                child: ListView.builder(
-                                  controller: _scrollController,
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  itemCount: filteredNotification.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: AppPadding.p8,
-                                          horizontal: AppPadding.p16),
-                                      child: NotificationItemCard(notification: filteredNotification[index],fun: (orderId){
-                                        Future.delayed(const Duration(milliseconds: 500), () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            HomeRoutes.reserveDetailsRoute,
-                                            arguments: {'orderId': "$orderId"},
-                                          );
-                                        });
-                                      }),
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
+                              ),
+                            );
+                          } else {
+                            // if (_searchController.text.isEmpty) {
+                            filteredNotification = _notificationViewModel.notificationList;
+                            // }
+                            print("ListSize ${filteredNotification.length}");
+                            return ConstrainedBox(
+                              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: filteredNotification.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: AppPadding.p8,
+                                        horizontal: AppPadding.p16),
+                                    child: NotificationItemCard(notification: filteredNotification[index],fun: (orderId){
+                                      Future.delayed(const Duration(milliseconds: 500), () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          HomeRoutes.reserveDetailsRoute,
+                                          arguments: {'orderId': "$orderId"},
+                                        );
+                                      });
+                                    }),
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                );
+              },
             ),
-          );
-        });
+          ),
+        ),
+      ],
+    );
   }
 
   _handleNotifyStateChanged(FlowState state) {

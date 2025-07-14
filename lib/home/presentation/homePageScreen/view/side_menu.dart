@@ -187,10 +187,7 @@ class _SideMenuState extends State<SideMenu> {
                   .setUserData(ModelLoginResponseRemote());
               await widget.appPreferences.setUserLoggedIn(false);
               await widget.appPreferences.setOrderId("");
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const SelectUserTypePageScreen()),
-              );
+              Phoenix.rebirth(context);
             },
           ),
           ListTile(

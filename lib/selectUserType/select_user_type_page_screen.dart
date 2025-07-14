@@ -29,8 +29,7 @@ class _SelectUserTypePageScreenState extends State<SelectUserTypePageScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async{
-        Navigator.pop(context);
-        return false;
+        return true;
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(

@@ -75,7 +75,7 @@ class EmployeeItemCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: AppSize.s4),
-                    Text("${employee.email}",overflow: TextOverflow.ellipsis,maxLines: 1,style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
+                    Text("${employee.name}",overflow: TextOverflow.ellipsis,maxLines: 1,style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
                     const SizedBox(height: AppSize.s4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

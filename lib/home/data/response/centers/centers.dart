@@ -76,6 +76,14 @@ class Data {
   Map<String, dynamic> toJson() {
     return _$DataToJson(this);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Data && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 @JsonSerializable()

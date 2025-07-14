@@ -155,7 +155,11 @@ class _EmployeeReviewPageScreenState extends State<EmployeeReviewPageScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: AppPadding.p8, horizontal: AppPadding.p16),
                             child: EmployeeReviewItemCard(ratedOrders: filteredOrders[index],fun: (orderId){
-                              _navigateToOrderDetails("$orderId");
+                              if(orderId != null) {
+                                _navigateToOrderDetails("$orderId");
+                              }else{
+                                context.showInfoToast(AppStrings.this_order_not_available.tr());
+                              }
                             }),
                           );
                         },

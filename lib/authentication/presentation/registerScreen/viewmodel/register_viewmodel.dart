@@ -60,7 +60,7 @@ class RegisterViewModel extends BaseViewModel implements LoginViewModelInputs,Lo
     return FormData.fromMap({
       "name": registerRequest.name,
       "email":  registerRequest.email,
-      "phone":  registerRequest.phone,
+      "phone":  registerRequest.phone.replaceAll("+", ""),
       // "image": registerRequest.image.isEmpty ? null : await MultipartFile.fromFile(registerRequest.image),
       "type": registerRequest.type,
       "password": registerRequest.password,
