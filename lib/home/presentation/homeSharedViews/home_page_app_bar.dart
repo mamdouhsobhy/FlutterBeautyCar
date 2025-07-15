@@ -28,30 +28,33 @@ class HomePageAppBar extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, HomeRoutes.notificationRoute);
             },
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                SvgPicture.asset(ImageAssets.notificationIcon),
-                Positioned(
-                  right: -4, // Adjust position as needed
-                  top: -8,   // Adjust position as needed
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: ColorManager.colorRedB2, // Badge color
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      unReadNotify, // Replace with your dynamic counter value
-                      style: const TextStyle(
-                        color: Colors.white, // Text color
-                        fontSize: FontSize.size12,       // Font size
-                        fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  SvgPicture.asset(ImageAssets.notificationIcon),
+                  Positioned(
+                    right: -4, // Adjust position as needed
+                    top: -8,   // Adjust position as needed
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: ColorManager.colorRedB2, // Badge color
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        unReadNotify, // Replace with your dynamic counter value
+                        style: const TextStyle(
+                          color: Colors.white, // Text color
+                          fontSize: FontSize.size12,       // Font size
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ],

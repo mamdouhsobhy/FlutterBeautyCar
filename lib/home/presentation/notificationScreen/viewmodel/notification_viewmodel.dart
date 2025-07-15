@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/home/data/response/getNotification/get_notification.dart';
 import 'package:beauty_car/home/domain/usecase/notification_usecase.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,6 +11,7 @@ import '../../../domain/usecase/employee_usecase.dart';
 class NotificationViewModel extends BaseViewModel implements NotificationViewModelInputs,NotificationViewModelOutputs{
 
   final StreamController _notificationStreamController = BehaviorSubject<ModelGetNotificationResponseRemote>();
+  final StreamController _updateReadStreamController = BehaviorSubject<BaseResponse>();
 
   final NotificationUseCase _notificationUseCase;
 
@@ -24,12 +26,14 @@ class NotificationViewModel extends BaseViewModel implements NotificationViewMod
   void dispose() {
      super.dispose();
      _notificationStreamController.close();
+     _updateReadStreamController.close();
   }
 
   @override
   void start() {
     inputState.add(ContentState());
     getNotification();
+    updateRead();
   }
 
   @override
@@ -58,6 +62,20 @@ class NotificationViewModel extends BaseViewModel implements NotificationViewMod
       isNotificationLoading = true;
       notifyData.add(data);
       inputState.add(SuccessState(""));
+    },
+    );
+  }
+
+  Future<void> updateRead() async {
+    isOutStateLoading = true;
+
+    inputState.add(LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
+
+    (await _notificationUseCase.executeReadNotify())
+        .fold(
+          (failure) {
+        inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
+      }, (data) {
     },
     );
   }

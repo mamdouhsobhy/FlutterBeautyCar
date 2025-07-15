@@ -143,6 +143,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             color: ColorManager.colorRedB2,
             onRefresh: () async {
               await _homeViewModel.getRecentOrders(); // Assuming a method to refresh data exists
+              await _homeViewModel.getStatistics(); // Assuming a method to refresh data exists
             },
             child: ListView(
               padding: EdgeInsets.zero,

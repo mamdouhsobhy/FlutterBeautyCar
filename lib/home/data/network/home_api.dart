@@ -181,4 +181,10 @@ abstract class HomeServiceClient {
   @GET("vendor/notifications")
   Future<ModelGetNotificationResponseRemote> getNotification(@Query("page") int page);
 
+  @POST("vendor/notifications/updateRead")
+  Future<BaseResponse> readNotify();
+
+  @POST("employee/notifications/updateRead")
+  Future<BaseResponse> readNotifyForEmployee();
+
 }

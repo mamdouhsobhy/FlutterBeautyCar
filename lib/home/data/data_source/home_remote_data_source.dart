@@ -66,6 +66,8 @@ abstract class HomeRemoteDataSource {
 
   Future<ModelGetNotificationResponseRemote> getNotification(int page);
 
+  Future<BaseResponse> readNotify();
+
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -237,6 +239,17 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       return await _homeServiceClient.getNotification(page);
     }else{
       return await _homeServiceClient.getNotificationForEmployee(page);
+    }
+  }
+
+  @override
+  Future<BaseResponse> readNotify() async{
+    int userType = _appPreferences.getUserType();
+
+    if(userType == 1) {
+      return await _homeServiceClient.readNotify();
+    }else{
+      return await _homeServiceClient.readNotifyForEmployee();
     }
   }
 

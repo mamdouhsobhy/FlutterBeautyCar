@@ -1,4 +1,5 @@
 
+import 'package:beauty_car/app/baseResponse/base_response.dart';
 import 'package:beauty_car/home/data/response/getNotification/get_notification.dart';
 import 'package:beauty_car/home/data/response/orders/orders.dart';
 import 'package:dartz/dartz.dart';
@@ -15,6 +16,11 @@ class NotificationUseCase implements BaseUseCase<int,ModelGetNotificationRespons
   @override
   Future<Either<Failure, ModelGetNotificationResponseRemote>> execute(int page) async{
     return await _repository.getNotification(page);
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> executeReadNotify() async{
+    return await _repository.readNotify();
   }
 
 

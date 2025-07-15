@@ -65,4 +65,7 @@ abstract class HomeRepository {
 
   Future<Either<Failure,ModelGetNotificationResponseRemote>> getNotification(int page);
 
+  Future<Either<Failure,BaseResponse>> readNotify();
+
+
 }

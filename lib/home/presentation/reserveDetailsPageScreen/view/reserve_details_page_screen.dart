@@ -1,3 +1,4 @@
+import 'package:beauty_car/app/sharedPrefs/app_prefs.dart';
 import 'package:beauty_car/home/presentation/homeSharedViews/reserve_details_item.dart';
 import 'package:beauty_car/home/presentation/reserveDetailsPageScreen/viewmodel/order_details_viewmodel.dart';
 import 'package:beauty_car/resources/fontManager.dart';
@@ -26,6 +27,7 @@ class ReserveDetailsPageScreen extends StatefulWidget {
 class _ReserveDetailsPageScreenState extends State<ReserveDetailsPageScreen> {
 
   final OrderDetailsViewModel _orderViewModel = instance<OrderDetailsViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   String? _orderId;
 
@@ -237,6 +239,29 @@ class _ReserveDetailsPageScreenState extends State<ReserveDetailsPageScreen> {
                             ],
                           )),
                       const SizedBox(height: AppSize.s25),
+                      _appPreferences.getUserType() == 1 ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(AppStrings.employee.tr(),
+                              style: getBoldStyle(
+                                  color: ColorManager.colorRedB2,
+                                  fontSize: FontSize.size18)),
+                          const SizedBox(height: AppSize.s4),
+                          Card(
+                              color: ColorManager.white,
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AppSize.s4)),
+                              child: Column(
+                                children: [
+                                  ReserveDetailsItem(
+                                      title: AppStrings.name.tr(), value: "${snapshot.data?.data![0].employeeName}"),
+                                ],
+                              )),
+                          const SizedBox(height: AppSize.s25),
+                        ],
+                      ) : SizedBox()
                     ],
                   ),
                 ),

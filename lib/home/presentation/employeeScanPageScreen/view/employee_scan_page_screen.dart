@@ -32,6 +32,7 @@ class EmployeeScanPageScreen extends StatefulWidget {
 
 class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
   final ScanViewModel _scanViewModel = instance<ScanViewModel>();
+  final ScrollController _scrollController = ScrollController();
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -61,6 +62,13 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
   @override
   void initState() {
     _bind();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
+        _scanViewModel.page++ ;
+        _scanViewModel.orderRequest.page = _scanViewModel.page;
+        _scanViewModel.getRecentOrders();
+      }
+    });
     super.initState();
   }
 
@@ -178,14 +186,15 @@ class _EmployeeScanPageScreenState extends State<EmployeeScanPageScreen> {
                             );
 
                           } else {
-                            if (_searchController.text.isEmpty) {
+                            // if (_searchController.text.isEmpty) {
                               filteredOrders = _scanViewModel.ordersList;
-                            }
+                            // }
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: AppPadding.p14, vertical: AppPadding.p5),
                               child: ListView.builder(
+                                controller: _scrollController,
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount: filteredOrders.length,
                                 itemBuilder: (context, index) {

@@ -109,12 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
         stream: _loginViewModel.outputLoginData,
         builder: (context, snapshot) {
           if (snapshot.data != null && snapshot.data?.status == true) {
-            WidgetsBinding.instance.addPostFrameCallback((_) async {
               if (_loginViewModel.isLoginLoading == true) {
                 _loginViewModel.isLoginLoading = false;
-                await _intentToHomeScreen(snapshot.data);
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  await _intentToHomeScreen(snapshot.data);
+                });
               }
-            });
           }
           return Form(
       autovalidateMode: AutovalidateMode.onUnfocus,

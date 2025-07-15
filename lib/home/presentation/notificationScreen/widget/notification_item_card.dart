@@ -69,7 +69,7 @@ class NotificationItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${notification.title}",
+                        "${notification.title}       #${notification.order_id}",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: getBoldStyle(
