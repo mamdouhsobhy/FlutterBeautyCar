@@ -17,7 +17,7 @@ class EmployeeReviewItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        fun(ratedOrders.id);
+        fun(ratedOrders.orderId);
       },
       child: Card(
         color: ColorManager.white,
@@ -66,7 +66,9 @@ class EmployeeReviewItemCard extends StatelessWidget {
                           children: [
                             Text("4.5",style: getRegularStyle(color: ColorManager.colorGray60,fontSize: FontSize.size12)),
                             Text(" "),
-                            SvgPicture.asset(ImageAssets.starIcon)
+                            SvgPicture.asset(ImageAssets.starIcon),
+                            SizedBox(width: 30),
+                            Text("#${ratedOrders.orderId}",style: getBoldStyle(color: ColorManager.colorBlack10,fontSize: FontSize.size14)),
                           ],
                         )
                       ],

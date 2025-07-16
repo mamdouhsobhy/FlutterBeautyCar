@@ -93,7 +93,7 @@ class _OrderScanItemCardState extends State<OrderScanItemCard> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("${widget.orders.id}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size16)),
+                          Text("#${widget.orders.id}",style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.size16)),
                           const SizedBox(height: AppSize.s4),
                           Text("${widget.orders.date}",style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.size12)),
                           const SizedBox(height: AppSize.s4),
