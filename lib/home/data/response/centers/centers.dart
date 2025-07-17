@@ -50,7 +50,7 @@ class Data {
   @JsonKey(name: "vendor_id")
   final int? vendorId;
   @JsonKey(name: "service_ids")
-  final List<dynamic>? serviceIds;
+  final List<String>? serviceIds;
   @JsonKey(name: "status")
   final int? status;
 

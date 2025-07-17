@@ -83,10 +83,10 @@ class EmployeeItemCard extends StatelessWidget {
                         Text("${employee.experiance} ${AppStrings.assignmentsCount.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
                         Row(
                           children: [
-                            Text("${employee.rateNumbers} ${AppStrings.reviews.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
+                            Text("${employee.rateEmployeeNum} ${AppStrings.reviews.tr()}",style: getRegularStyle(color: ColorManager.colorGray72,fontSize: FontSize.size14)),
                             Text(" "),
                             SvgPicture.asset(ImageAssets.starIcon),
-                            Text(" ${employee.rateAverage}",style: getRegularStyle(color: ColorManager.colorGray60,fontSize: FontSize.size12)),
+                            Text(" ${employee.rateEmployeeStartNum}",style: getRegularStyle(color: ColorManager.colorGray60,fontSize: FontSize.size12)),
                           ],
                         )
                       ],

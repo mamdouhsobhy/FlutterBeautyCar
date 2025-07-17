@@ -136,9 +136,9 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
     }
 
     if(center!=null && center.serviceIds?.isNotEmpty == true) {
-      for (int service in center.serviceIds!) {
+      for (String service in center.serviceIds!) {
         _createCenterViewModel.services.add(
-            Services(id: service, name: "", image: ""));
+            Services(id: int.parse(service), name: "", image: ""));
       }
     }
 
@@ -359,8 +359,7 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                           StreamBuilder<ModelEmployeesResponseRemote>(
                             stream: _createCenterViewModel.outputEmployeesData,
                             builder: (context, employeesSnapshot) {
-                              if (employeesSnapshot.hasData &&
-                                  employeesSnapshot.data?.data?.isNotEmpty == true) {
+                              if (employeesSnapshot.hasData && employeesSnapshot.data?.data?.isNotEmpty == true) {
                                 if (_createCenterViewModel.isEmployeesLoading) {
                                   _createCenterViewModel.isEmployeesLoading = false;
                                   employees = employeesSnapshot.data;
@@ -386,6 +385,11 @@ class _CreateCenterScreenState extends State<CreateCenterScreen> {
                                   takeValue: (value) {},
                                   action: () {
                                     if(employees!=null){
+                                        employees?.data?.forEach((item) {
+                                          if (_createCenterViewModel.createOrUpdateCenter.employeeId.contains(item.id.toString())) {
+                                            item.selected = true;
+                                          }
+                                        });
                                       _openBottomSheetEmployee(context, employees);
                                     }
                                   });

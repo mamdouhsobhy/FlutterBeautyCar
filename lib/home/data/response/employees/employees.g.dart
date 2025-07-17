@@ -12,6 +12,9 @@ ModelEmployeesResponseRemote _$ModelEmployeesResponseRemoteFromJson(
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
           .toList(),
+      pagination: json['pagination'] == null
+          ? null
+          : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
       status: json['status'] as bool?,
       code: (json['code'] as num?)?.toInt(),
       message: json['message'] as String?,
@@ -24,6 +27,7 @@ Map<String, dynamic> _$ModelEmployeesResponseRemoteToJson(
       'code': instance.code,
       'message': instance.message,
       'data': instance.data,
+      'pagination': instance.pagination,
     };
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
@@ -37,9 +41,10 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       startTime: json['start_time'] as String?,
       endTime: json['end_time'] as String?,
       vendorId: (json['vendor_id'] as num?)?.toInt(),
+      rateEmployeeNum: (json['rate_employee_num'] as num?)?.toInt(),
+      rateEmployeeStartNum: (json['rate_employee_start_num'] as num?)?.toInt(),
       status: (json['status'] as num?)?.toInt(),
-      rateNumbers: (json['rate_employee_num'] as num?)?.toInt(),
-      rateAverage: (json['rate_employee_start_num'] as num?)?.toDouble(),
+      notificationStatus: (json['notification_status'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -53,7 +58,27 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'start_time': instance.startTime,
       'end_time': instance.endTime,
       'vendor_id': instance.vendorId,
+      'rate_employee_num': instance.rateEmployeeNum,
+      'rate_employee_start_num': instance.rateEmployeeStartNum,
       'status': instance.status,
-      'rate_employee_num': instance.rateNumbers,
-      'rate_employee_start_num': instance.rateAverage,
+      'notification_status': instance.notificationStatus,
+    };
+
+Pagination _$PaginationFromJson(Map<String, dynamic> json) => Pagination(
+      total: (json['total'] as num?)?.toInt(),
+      perPage: (json['per_page'] as num?)?.toInt(),
+      currentPage: (json['current_page'] as num?)?.toInt(),
+      lastPage: (json['last_page'] as num?)?.toInt(),
+      from: (json['from'] as num?)?.toInt(),
+      to: (json['to'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$PaginationToJson(Pagination instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'per_page': instance.perPage,
+      'current_page': instance.currentPage,
+      'last_page': instance.lastPage,
+      'from': instance.from,
+      'to': instance.to,
     };

@@ -45,7 +45,9 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       openTime: json['open_time'] as String?,
       closeTime: json['close_time'] as String?,
       vendorId: (json['vendor_id'] as num?)?.toInt(),
-      serviceIds: json['service_ids'] as List<dynamic>?,
+      serviceIds: (json['service_ids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       status: (json['status'] as num?)?.toInt(),
     );
 

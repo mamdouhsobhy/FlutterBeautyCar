@@ -34,7 +34,10 @@ class _CenterEmployeeSelectedItemState
   @override
   void initState() {
     super.initState();
-    filteredEmployee = widget.employee!;  // Initially show all places
+    filteredEmployee = widget.employee!;
+    _selectedEmployee = filteredEmployee.where((e) => e.selected).isNotEmpty
+        ? filteredEmployee.firstWhere((e) => e.selected)
+        : null;
   }
 
   void _searchEmployee(String query) {
