@@ -22,6 +22,7 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
+
     final orderId = initialMessage.data['order_id'];
     if (orderId != null) {
       FireBaseApi.pendingOrderId = orderId;
